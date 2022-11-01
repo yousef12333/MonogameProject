@@ -20,7 +20,9 @@ namespace MonogameProject.Classes
         bool aanmaakBullet = false;
         private Texture2D fireballTexture;
         private int bulletDirection = 6;
-        Animation animation;
+
+        public AnimationModus animations { get; set; }
+        public Animation currentAnimation { get; set; }
         public int BulletDirection
         {
             get
@@ -38,27 +40,23 @@ namespace MonogameProject.Classes
             fireballTexture = texture;
             bullets = new List<Vector2>();
             directionFireball = new List<string>();
-            animation = new Animation();
-            for (int i = 0; i < 7; i++) { animation.AddFrame(new AnimationFrame(new Rectangle(71 * i, 0, 71, 28))); }
+            animations = new AnimationModus();
+            animations.MoveStateRight = new Animation();
+            animations.MoveStateLeft = new Animation();
+            for (int i = 0; i < 7; i++) { animations.MoveStateRight.AddFrame(new AnimationFrame(new Rectangle(71 * i, 0, 71, 28))); }
+            for (int i = 0; i < 7; i++) { animations.MoveStateLeft.AddFrame(new AnimationFrame(new Rectangle(71 * i, 28, 71, 28))); }
+            currentAnimation = animations.MoveStateRight;
+
 
 
 
         }
-        public void ShootRight()
-        {
-            animation = new Animation();
-            for (int i = 0; i < 7; i++) { animation.AddFrame(new AnimationFrame(new Rectangle(71 * i, 0, 71, 28))); } //functioneert niet als je beweegt
-        }
-        public void ShootLeft()
-        {
-            animation = new Animation();
-            for (int i = 0; i < 7; i++) { animation.AddFrame(new AnimationFrame(new Rectangle(71 * i, 28, 71, 28))); } //functioneert niet als je beweegt
-        }
+       
 
 
         public void Update(GameTime gameTime, Vector2 position2, Vector2 position, bool isLeft, bool isRight, Texture2D image1, Texture2D image2)
         {
-            animation.Update(gameTime);
+            currentAnimation.Update(gameTime);
 
             if (aanmaakBullet)
                 timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -100,13 +98,13 @@ namespace MonogameProject.Classes
                 bullets[i] = new Vector2(x, bullets[i].Y);
                 if (directionFireball[i] == "isRight")
                 {
-                    ShootRight();
+                    currentAnimation = animations.MoveStateRight;
 
                     bulletDirection = 6;
                 }
                 else if (directionFireball[i] == "isLeft")
                 {
-                    ShootLeft();
+                    currentAnimation = animations.MoveStateLeft;
                     bulletDirection = -6; //de richting van image veranderd bij waar je player naar draait
 
                 }
@@ -128,7 +126,7 @@ namespace MonogameProject.Classes
         {
             for (int i = 0; i < bullets.Count; i++)
             {
-                spriteBatch.Draw(fireballTexture, bullets[i], animation.CurrentFrame.SourceRectangle, Color.White);
+                spriteBatch.Draw(fireballTexture, bullets[i], currentAnimation.CurrentFrame.SourceRectangle, Color.White);
             }
         }
 

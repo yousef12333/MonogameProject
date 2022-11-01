@@ -45,13 +45,13 @@ namespace MonogameProject
         MouseState pastMouse;
         Texture2D fishTexture;
         FishMonsterTrap fish;
-        monsterMovement spook;
+        GhostMonster spook;
         Player player;
         Texture2D playerTexture;
         Texture2D fireballImage;
 
 
-        Camera camera;
+        
         public SpriteFont tekst;
         public static int score = 0;
 
@@ -67,7 +67,7 @@ namespace MonogameProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             fireballImage = Content.Load<Texture2D>("Fireball");
             backgroundje1 = Content.Load<Texture2D>("background");
             backgroundje2 = Content.Load<Texture2D>("Vulcanic_Background");
@@ -88,7 +88,7 @@ namespace MonogameProject
 
 
             base.Initialize();
-            spook = new monsterMovement(ghostTexture, 100);
+            spook = new GhostMonster(ghostTexture, 100);
             fish = new FishMonsterTrap(fishTexture);
             player = new Player(playerTexture, 100, fireballImage);
             portalSprite = new Portal(portalTexture);
@@ -97,14 +97,14 @@ namespace MonogameProject
         protected override void LoadContent()
         {
             IsMouseVisible = true;
-            spook = new monsterMovement(ghostTexture, 100);
+            spook = new GhostMonster(ghostTexture, 100);
             fish = new FishMonsterTrap(fishTexture);
             player = new Player(playerTexture, 100, fireballImage);
             healthTexture = Content.Load<Texture2D>("HealthBar");
             textures.Load(Content);
             playerTexture = Content.Load<Texture2D>("VerbeterigSpeler2");
             ghostTexture = Content.Load<Texture2D>("SpookBeweging");
-            fishTexture = Content.Load<Texture2D>("FishmonsterMovement");
+            fishTexture = Content.Load<Texture2D>("FishmonsterMovement4");
             portalTexture = Content.Load<Texture2D>("Portal");
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _graphics.PreferredBackBufferHeight = screenHeight;
@@ -119,7 +119,9 @@ namespace MonogameProject
             btnPlay = new MenuButton(Content.Load<Texture2D>("Start_Button"), Content.Load<Texture2D>("Quit_Button"), GraphicsDevice);
             winEindigKnop = new WinButton(Content.Load<Texture2D>("Quit_Button"), GraphicsDevice);
             restart = new Death(Content.Load<Texture2D>("Restart_Button"), GraphicsDevice);
-            /*
+
+          
+            
                 mapLevel1.Generate(new int[,]
                {
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -135,7 +137,7 @@ namespace MonogameProject
                 { 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 0, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
 
            }, 64);
-            */
+            
 
 
 
@@ -155,7 +157,7 @@ namespace MonogameProject
 
            }, 64);
 
-            /*
+            
                   mapLevel3.Generate(new int[,]
               {
                   { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
@@ -171,7 +173,7 @@ namespace MonogameProject
                   { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
 
               }, 64);
-              */
+              
 
             playerLife.Load(Content);
             IsMouseVisible = true;
@@ -246,31 +248,30 @@ namespace MonogameProject
 
             }
             portalSprite.Update(gameTime);
-            //if (CurrentGameState == GameState.Level1) 
-            //{
-            foreach (CollisionTiles tile in mapLevel1.CollisionTiles)
-            {
-                player.Collision(tile.Rectangle, mapLevel1.Width, mapLevel1.Height);
+          
+                foreach (CollisionTiles tile in mapLevel1.CollisionTiles)
+                {
+                    player.Collision(tile.Rectangle, mapLevel1.Width, mapLevel1.Height);
 
-                
-            }
-            //}
-            //if(CurrentGameState == GameState.Level2)
-            //{
-            foreach (CollisionTiles tile in mapLevel2.CollisionTiles)
+
+                }
+            
+            if (CurrentGameState == GameState.Level2)
             {
-                player.Collision(tile.Rectangle, mapLevel2.Width, mapLevel2.Height);
-               
+                foreach (CollisionTiles tile in mapLevel2.CollisionTiles)
+                {
+                    player.Collision(tile.Rectangle, mapLevel2.Width, mapLevel2.Height);
+
+                }
             }
-            //}
-            //if (CurrentGameState == GameState.Level3)
-            //{
-            foreach (CollisionTiles tile in mapLevel3.CollisionTiles)
+            if (CurrentGameState == GameState.Level3)
+            {
+                foreach (CollisionTiles tile in mapLevel3.CollisionTiles)
             {
                 player.Collision(tile.Rectangle, mapLevel3.Width, mapLevel3.Height);
               
             }
-            //}
+            }
 
             base.Update(gameTime);
         }
@@ -319,9 +320,10 @@ namespace MonogameProject
                     _spriteBatch.Draw(backgroundje3, rectje, Color.White);
 
                     music.Draw(_spriteBatch);
-                    playerLife.Draw(_spriteBatch);
+                   
                     mapLevel3.Draw(_spriteBatch);
                     player.Draw(_spriteBatch);
+                    playerLife.Draw(_spriteBatch);
                     _spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(screenWidth - 360, 0), Color.White);
                     break;
 

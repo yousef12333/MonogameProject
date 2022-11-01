@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonogameProject.Interfaces;
+using SharpDX.Direct3D9;
 
 
 namespace MonogameProject.Classes.Hero
@@ -20,13 +21,14 @@ namespace MonogameProject.Classes.Hero
      
         public Rectangle collisionHitbox { get; set; }
 
-        public Vector2 position = new Vector2(64, 384);
+        public Vector2 position = new Vector2(64, 600);
         public Vector2 velocity;
         public Rectangle rectangle;
         public int health;
         Fireball vuurbal;
-
-
+       
+        public AnimationModus animations { get; set; }
+        public Animation currentAnimation { get; set; }
         Vector2 position2;
 
         bool isLeft = false;
@@ -67,54 +69,42 @@ namespace MonogameProject.Classes.Hero
         {
 
             this.texture = texture;
-            animation = new Animation();
-            animation.AddFrame(new AnimationFrame(new Rectangle(0, 0, 40, 49)));
+          
 
             health = newHealth;
             vuurbal = new Fireball(bulletImage);
+
+            animations = new AnimationModus();
+
+            animations.MoveStateRight = new Animation();
+            animations.MoveStateLeft = new Animation();
+            animations.IdleStateRight = new Animation();
+
+            animations.IdleStateLeft = new Animation();
+            animations.JumpRight = new Animation();
+            animations.JumpLeft = new Animation();
+
+
+            for (int i = 0; i < 2; i++)
+            {
+                animations.MoveStateRight.AddFrame(new AnimationFrame(new Rectangle(40 * i, 0, 40, 47)));
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                animations.MoveStateLeft.AddFrame(new AnimationFrame(new Rectangle(40 * i, 49, 40, 49)));
+
+            }
+            animations.IdleStateRight.AddFrame(new AnimationFrame(new Rectangle(0, 0, 40, 47)));
+            animations.IdleStateLeft.AddFrame(new AnimationFrame(new Rectangle(0, 49, 40, 49)));
+            animations.JumpRight.AddFrame(new AnimationFrame(new Rectangle(120, 0, 40, 49)));
+            animations.JumpLeft.AddFrame(new AnimationFrame(new Rectangle(120, 49, 40, 49)));
+
+
+            currentAnimation = animations.IdleStateRight;
         }
 
 
-
-
-        Animation animation;
-
-        int shuifopX = 0;
-        public void StandRight()
-        {
-            animation = new Animation();
-            animation.AddFrame(new AnimationFrame(new Rectangle(0, 0, 40, 49)));
-        }
-        public void Standleft()
-        {
-            animation = new Animation();
-            animation.AddFrame(new AnimationFrame(new Rectangle(0, 49, 40, 49)));
-        }
-        public void MoveRight()
-        {
-            animation = new Animation();
-            for (int i = 0; i < 2; i++) { animation.AddFrame(new AnimationFrame(new Rectangle(40 * i, 0, 40, 49))); }
-        }
-        public void Moveleft()
-        {
-            animation = new Animation();
-            for (int i = 0; i < 2; i++) { animation.AddFrame(new AnimationFrame(new Rectangle(40 * i, 49, 40, 49))); }
-        }
-        public void JumpRight()
-        {
-            animation = new Animation();
-            animation.AddFrame(new AnimationFrame(new Rectangle(120, 0, 40, 49)));
-        }
-        public void JumpLeft()
-        {
-            animation = new Animation();
-            animation.AddFrame(new AnimationFrame(new Rectangle(120, 49, 40, 49)));
-        }
-
-
-
-
-
+       
         public void Load(ContentManager Content)
         {
 
@@ -126,23 +116,32 @@ namespace MonogameProject.Classes.Hero
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 velocity.X = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 7;
-                if (hasJumped == false) MoveRight();
+                if (hasJumped == false) currentAnimation = animations.MoveStateRight;
                 isRight = true;
                 isLeft = false;
+                
 
             }
-
             else if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
                 velocity.X = -(float)gameTime.ElapsedGameTime.TotalMilliseconds / 7;
-                if (hasJumped == false) Moveleft();
+                if (hasJumped == false) currentAnimation = animations.MoveStateLeft;
                 isLeft = true;
                 isRight = false;
-
+                
             }
             else
             {
+                
                 velocity.X = 0F;
+                if (isRight && hasJumped == false)
+                {
+                    currentAnimation = animations.IdleStateRight;
+                }
+                else if (isLeft && hasJumped == false)
+                {
+                    currentAnimation = animations.IdleStateLeft;
+                }
             }
 
 
@@ -152,7 +151,7 @@ namespace MonogameProject.Classes.Hero
                 velocity.Y = -5F;
                 hasJumped = true;
 
-                JumpRight();
+                currentAnimation = animations.JumpRight;
 
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && hasJumped == false && isLeft)
@@ -160,43 +159,22 @@ namespace MonogameProject.Classes.Hero
                 position.Y -= 3F;
                 velocity.Y = -5F;
                 hasJumped = true;
-                JumpLeft();
-
-
+                currentAnimation = animations.JumpLeft;
 
             }
-
-
-
-            /*   1. Aanmaken eigen klasse met eigen property, 2. in die klasse ervoor zorgen dat bij schieten de zelfgekozen waarde al gekozen is*/
-
-
-
         }
 
 
         public void Update(GameTime gameTime)
         {
-            animation.Update(gameTime);
-
-
-            shuifopX += 40; //moet je ook fixen bij verandering
-            if (shuifopX > 159)
-            {
-                shuifopX = 0;
-            }
-            rectangle.X = shuifopX;
+            currentAnimation.Update(gameTime);
             vuurbal.Update(gameTime, position2, position, isLeft, isRight, bulletImage, bulletImage);
             position += velocity;
             position2 = position;
             rectangle = new Rectangle((int)position.X, (int)position.Y, 64, 64);
 
-
-
-
-
             Input(gameTime);
-
+            
             if (velocity.Y < 10) velocity.Y += 0.2F; //hoe hoog je springt
         }
 
@@ -230,7 +208,7 @@ namespace MonogameProject.Classes.Hero
         {
             if (health > 0)
             {
-                spriteBatch.Draw(texture, rectangle, animation.CurrentFrame.SourceRectangle, Color.White);
+                spriteBatch.Draw(texture, rectangle, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
             }
 
             vuurbal.Draw(spriteBatch);

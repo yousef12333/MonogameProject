@@ -9,10 +9,12 @@ namespace MonogameProject.Classes
 {
     internal class Animation
     {
+        //bron: slides over animaties
         public AnimationFrame CurrentFrame { get; set; }
         private List<AnimationFrame> frames;
         private int counter;
         private double secondCounter = 0;
+        int fps = 10;
 
         public Animation()
         {
@@ -23,29 +25,12 @@ namespace MonogameProject.Classes
             frames.Add(frame);
             CurrentFrame = frames[0];
         }
-
-
-        public void GetFramesFromTextureProperties(int width, int height, int numberOfWidthSprites, int numberOfHeightSprites)
-        {
-            int widthOfFrame = width / numberOfWidthSprites;
-            int heightOfFrame = height / numberOfHeightSprites;
-
-            for (int y = 0; y <= height - heightOfFrame; y += heightOfFrame)
-            {
-                for (int x = 0; x <= width - widthOfFrame; x += widthOfFrame)
-                {
-                    frames.Add(new AnimationFrame(new Rectangle(x, y, widthOfFrame, heightOfFrame)));
-                }
-            }
-        }
-
-
         public void Update(GameTime gameTime)
         {
             CurrentFrame = frames[counter];
 
             secondCounter += gameTime.ElapsedGameTime.TotalSeconds;
-            int fps = 10;
+            
 
             if (secondCounter >= 1d / fps)
             {

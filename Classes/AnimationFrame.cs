@@ -9,6 +9,7 @@ namespace MonogameProject.Classes
 {
     internal class AnimationFrame
     {
+        //bron: slides over animaties
         public Rectangle SourceRectangle { get; set; }
 
         public AnimationFrame(Rectangle sourceRectangle)
