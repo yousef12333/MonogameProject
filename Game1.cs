@@ -1,7 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
+using MonogameProject.Classes;
+using MonogameProject.Classes.Enemies;
+using MonogameProject.Classes.Hero;
+using MonogameProject.Tiles;
+
+
+using MonogameProject.ViewStates;
 
 namespace MonogameProject
 {
@@ -9,7 +15,7 @@ namespace MonogameProject
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        public enum GameState { MainMenu, Death, Level1, Level2 , Level3, Win}
+        public enum GameState { MainMenu, Death, Level1, Level2, Level3, Win }
         public GameState CurrentGameState = GameState.MainMenu;
 
         int screenWidth = 1790, screenHeight = 705;
@@ -25,7 +31,7 @@ namespace MonogameProject
         private Texture2D backgroundje3;
         private Texture2D winScreen;
         GraphicsDevice grap;
-       
+
         Map mapLevel1;
         Map mapLevel2;
         Map mapLevel3;
@@ -75,8 +81,8 @@ namespace MonogameProject
             textures = new Textures();
 
             playerLife = new Health();
-           
-        
+
+
             tekst = Content.Load<SpriteFont>("File");
 
 
@@ -107,8 +113,9 @@ namespace MonogameProject
             grap = GraphicsDevice;
             screenWidth = grap.PresentationParameters.BackBufferWidth;
             screenHeight = grap.PresentationParameters.BackBufferHeight;
-            Tiles.Content = Content;
-            camera = new Camera(GraphicsDevice.Viewport);
+            Tiles.Tiles.Content = Content;
+           
+
             btnPlay = new MenuButton(Content.Load<Texture2D>("Start_Button"), Content.Load<Texture2D>("Quit_Button"), GraphicsDevice);
             winEindigKnop = new WinButton(Content.Load<Texture2D>("Quit_Button"), GraphicsDevice);
             restart = new Death(Content.Load<Texture2D>("Restart_Button"), GraphicsDevice);
@@ -129,11 +136,11 @@ namespace MonogameProject
 
            }, 64);
             */
-            
-            
-          
-                mapLevel2.Generate(new int[,]
-               {
+
+
+
+            mapLevel2.Generate(new int[,]
+           {
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 { 0, 0, 0, 0, 0, 0, 6, 0, 0, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -146,34 +153,34 @@ namespace MonogameProject
                 { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 0, 0, 0, 0, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7},
                 { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
 
-               }, 64);
-            
-          /*
-                mapLevel3.Generate(new int[,]
-            {
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 3, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3},
-                { 3, 0, 0, 0, 0, 0, 4, 0, 0, 4, 4, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 0, 0, 0, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 0, 0, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+           }, 64);
 
-            }, 64);
-            */
-            
+            /*
+                  mapLevel3.Generate(new int[,]
+              {
+                  { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+                  { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+                  { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+                  { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 3, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3},
+                  { 3, 0, 0, 0, 0, 0, 4, 0, 0, 4, 4, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                  { 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                  { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                  { 3, 0, 0, 0, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                  { 3, 0, 0, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                  { 3, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                  { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+
+              }, 64);
+              */
+
             playerLife.Load(Content);
             IsMouseVisible = true;
             btnPlay.SetPosition(new Vector2(75, 300), new Vector2(75, 450));
             winEindigKnop.SetPosition(new Vector2(600, 450));
             restart.setPosition(new Vector2(600, 250));
             music.Load(Content);
-            
-            
+
+
         }
 
 
@@ -184,7 +191,7 @@ namespace MonogameProject
             healthRectangle = new Rectangle(player.rectangle.X - 10, player.Rectangle.Y - 25, player.health, 15);
             textures.Update(gameTime);
 
-            if(mouseRectangle.Intersects(player.rectangle))
+            if (mouseRectangle.Intersects(player.rectangle))
             {
                 player.health -= 10;
             }
@@ -192,14 +199,14 @@ namespace MonogameProject
             switch (CurrentGameState)
             {
                 case GameState.MainMenu:
-                    if (btnPlay.isClicked == true) { CurrentGameState = GameState.Level1;}
+                    if (btnPlay.isClicked == true) { CurrentGameState = GameState.Level1; }
                     else if (btnPlay.isClosed == true) Exit();
                     btnPlay.Update(mouse);
                     break;
 
 
                 case GameState.Level1:
-                    if (Keyboard.GetState().IsKeyDown(Keys.A)){ CurrentGameState = GameState.Death; }
+                    if (Keyboard.GetState().IsKeyDown(Keys.A)) { CurrentGameState = GameState.Death; }
                     if (Keyboard.GetState().IsKeyDown(Keys.R)) CurrentGameState = GameState.Level2;
                     if (portalSprite.teleported == true)
                     {
@@ -208,7 +215,8 @@ namespace MonogameProject
                     break;
 
 
-                case GameState.Level2: if (Keyboard.GetState().IsKeyDown(Keys.T)) { CurrentGameState = GameState.Level3; }
+                case GameState.Level2:
+                    if (Keyboard.GetState().IsKeyDown(Keys.T)) { CurrentGameState = GameState.Level3; }
                     break;
                 case GameState.Level3:
                     if (Keyboard.GetState().IsKeyDown(Keys.P)) { CurrentGameState = GameState.Win; }
@@ -218,12 +226,13 @@ namespace MonogameProject
                     if (winEindigKnop.isClicked == true) Exit();
                     winEindigKnop.Update(mouse);
                     break;
-                case GameState.Death: if (restart.isRestarted == true) CurrentGameState = GameState.Level1;
+                case GameState.Death:
+                    if (restart.isRestarted == true) CurrentGameState = GameState.Level1;
                     restart.Update(mouse);
                     break;
             }
 
-            
+
             player.Update(gameTime);
             spook.Update(gameTime);
             fish.Update(gameTime);
@@ -239,28 +248,28 @@ namespace MonogameProject
             portalSprite.Update(gameTime);
             //if (CurrentGameState == GameState.Level1) 
             //{
-                foreach (CollisionTiles tile in mapLevel1.CollisionTiles)
-                {
-                    player.Collision(tile.Rectangle, mapLevel1.Width, mapLevel1.Height);
-               
-                    camera.Update(player.Position, mapLevel1.Width, mapLevel1.Height);
-                }
+            foreach (CollisionTiles tile in mapLevel1.CollisionTiles)
+            {
+                player.Collision(tile.Rectangle, mapLevel1.Width, mapLevel1.Height);
+
+                
+            }
             //}
             //if(CurrentGameState == GameState.Level2)
             //{
-                foreach (CollisionTiles tile in mapLevel2.CollisionTiles)
-                {
-                    player.Collision(tile.Rectangle, mapLevel2.Width, mapLevel2.Height);
-                    camera.Update(player.Position, mapLevel2.Width, mapLevel2.Height);
-                }
+            foreach (CollisionTiles tile in mapLevel2.CollisionTiles)
+            {
+                player.Collision(tile.Rectangle, mapLevel2.Width, mapLevel2.Height);
+               
+            }
             //}
             //if (CurrentGameState == GameState.Level3)
             //{
-                foreach (CollisionTiles tile in mapLevel3.CollisionTiles)
-                {
-                    player.Collision(tile.Rectangle, mapLevel3.Width, mapLevel3.Height);
-                    camera.Update(player.Position, mapLevel3.Width, mapLevel3.Height);
-                }
+            foreach (CollisionTiles tile in mapLevel3.CollisionTiles)
+            {
+                player.Collision(tile.Rectangle, mapLevel3.Width, mapLevel3.Height);
+              
+            }
             //}
 
             base.Update(gameTime);
@@ -273,13 +282,13 @@ namespace MonogameProject
             Rectangle rectje = new Rectangle(0, 0, screenWidth + 50, screenHeight + 30);
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null);
 
             switch (CurrentGameState)
             {
                 case GameState.MainMenu:
-                    
-                    _spriteBatch.Draw(Content.Load<Texture2D>("MenuScreen"), new Rectangle(0, 0, screenWidth+80, screenHeight), Color.White);
+
+                    _spriteBatch.Draw(Content.Load<Texture2D>("MenuScreen"), new Rectangle(0, 0, screenWidth + 80, screenHeight), Color.White);
                     btnPlay.Draw(_spriteBatch);
                     break;
                 case GameState.Level1:
@@ -292,11 +301,11 @@ namespace MonogameProject
                     spook.Draw(_spriteBatch);
                     _spriteBatch.Draw(healthTexture, healthRectangle, Color.White);
                     player.Draw(_spriteBatch);
-                   
-                    
-                    _spriteBatch.DrawString(tekst, "Score: "+score, new Vector2((screenWidth - 360), 0), Color.White);;
+
+
+                    _spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(screenWidth - 360, 0), Color.White); ;
                     break;
-                    
+
                 case GameState.Level2:
                     _spriteBatch.Draw(backgroundje2, rectje, Color.White);
                     music.Draw(_spriteBatch);
@@ -315,7 +324,7 @@ namespace MonogameProject
                     player.Draw(_spriteBatch);
                     _spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(screenWidth - 360, 0), Color.White);
                     break;
-                    
+
                 case GameState.Win:
                     _spriteBatch.Draw(winScreen, new Rectangle(0, 0, screenWidth + 80, screenHeight), Color.White);
                     winEindigKnop.Draw(_spriteBatch);
@@ -324,7 +333,7 @@ namespace MonogameProject
                     _spriteBatch.Draw(Content.Load<Texture2D>("Death_Screen"), new Rectangle(0, 0, screenWidth + 80, screenHeight), Color.White);
                     restart.Draw(_spriteBatch);
                     break;
-            }     
+            }
             _spriteBatch.End();
 
             base.Draw(gameTime);
