@@ -38,14 +38,19 @@ namespace MonogameProject
         Portal portalSprite;
         Texture2D portalTexture;
         Textures textures;
-
+        Ufo ufo;
+        Texture2D ufoTexture;
 
         Texture2D healthTexture;
         Rectangle healthRectangle;
         MouseState pastMouse;
         Texture2D fishTexture;
         FishMonsterTrap fish;
+        BossMonster boss;
+        Texture2D bossTexture;
         GhostMonster spook;
+        Texture2D lavaBallTexture;
+        LavaBall lBall;
         Player player;
         Texture2D playerTexture;
         Texture2D fireballImage;
@@ -73,13 +78,13 @@ namespace MonogameProject
             backgroundje2 = Content.Load<Texture2D>("Vulcanic_Background");
             backgroundje3 = Content.Load<Texture2D>("Castle_Background");
             winScreen = Content.Load<Texture2D>("Win_Background");
-
+            ufoTexture = Content.Load<Texture2D>("Pixel_Ufo");
             music = new BackgroundMusic();
             mapLevel1 = new Map();
             mapLevel2 = new Map();
             mapLevel3 = new Map();
             textures = new Textures();
-
+            
             playerLife = new Health();
 
 
@@ -89,21 +94,29 @@ namespace MonogameProject
 
             base.Initialize();
             spook = new GhostMonster(ghostTexture, 100);
+            boss = new BossMonster(bossTexture);
+            lBall = new LavaBall(lavaBallTexture);
             fish = new FishMonsterTrap(fishTexture);
             player = new Player(playerTexture, 100, fireballImage);
             portalSprite = new Portal(portalTexture);
+            ufo = new Ufo(ufoTexture);
         }
 
         protected override void LoadContent()
         {
             IsMouseVisible = true;
             spook = new GhostMonster(ghostTexture, 100);
+            boss = new BossMonster(bossTexture);
+            ufo = new Ufo(ufoTexture);
+            lBall = new LavaBall(lavaBallTexture);
             fish = new FishMonsterTrap(fishTexture);
             player = new Player(playerTexture, 100, fireballImage);
             healthTexture = Content.Load<Texture2D>("HealthBar");
             textures.Load(Content);
             playerTexture = Content.Load<Texture2D>("VerbeterigSpeler2");
             ghostTexture = Content.Load<Texture2D>("SpookBeweging");
+            bossTexture = Content.Load<Texture2D>("BossMonsterMovement2");
+            lavaBallTexture = Content.Load<Texture2D>("Lava_Ball2");
             fishTexture = Content.Load<Texture2D>("FishmonsterMovement4");
             portalTexture = Content.Load<Texture2D>("Portal");
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -130,11 +143,11 @@ namespace MonogameProject
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 0, 1, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-                { 1, 0, 0, 1, 2, 1, 1, 0, 1, 0, 1, 2, 2, 2, 2, 0, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-                { 1, 1, 1, 2, 2, 2, 2, 1, 2, 0, 2, 2, 2, 2, 2, 0, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-                { 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 0, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
+                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
+                { 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
+                { 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
 
            }, 64);
             
@@ -143,34 +156,34 @@ namespace MonogameProject
 
             mapLevel2.Generate(new int[,]
            {
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 6, 0, 0, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 6, 7, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 6, 6, 6, 6, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 0, 0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6},
-                { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 0, 0, 0, 0, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-                { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 0, 0, 6, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-                { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 0, 0, 0, 0, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7},
-                { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                { 0, 0, 0, 0, 0, 0, 6, 0, 0, 6, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                { 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                { 0, 0, 0, 0, 6, 7, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                { 6, 6, 6, 6, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 0, 0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6},
+                { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 0, 0, 0, 0, 6, 7, 7, 7, 7, 7, 7, 7, 7},
+                { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 0, 0, 6, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7},
+                { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 0, 0, 0, 0, 6, 7, 7, 7, 7, 7, 7, 7, 7},
+                { 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7},
 
            }, 64);
 
             
                   mapLevel3.Generate(new int[,]
               {
-                  { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-                  { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-                  { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-                  { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 3, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3, 0, 3},
-                  { 3, 0, 0, 0, 0, 0, 4, 0, 0, 4, 4, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                  { 3, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                  { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                  { 3, 0, 0, 0, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                  { 3, 0, 0, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                  { 3, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                  { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+                { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                { 3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 3},
+                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+                { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
 
               }, 64);
               
@@ -178,8 +191,8 @@ namespace MonogameProject
             playerLife.Load(Content);
             IsMouseVisible = true;
             btnPlay.SetPosition(new Vector2(75, 300), new Vector2(75, 450));
-            winEindigKnop.SetPosition(new Vector2(600, 450));
-            restart.setPosition(new Vector2(600, 250));
+            winEindigKnop.SetPosition(new Vector2(640, 450));
+            restart.setPosition(new Vector2(620, 250));
             music.Load(Content);
 
 
@@ -188,6 +201,7 @@ namespace MonogameProject
 
         protected override void Update(GameTime gameTime)
         {
+            ufo.Update(gameTime);
             MouseState mouse = Mouse.GetState();
             Rectangle mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
             healthRectangle = new Rectangle(player.rectangle.X - 10, player.Rectangle.Y - 25, player.health, 15);
@@ -237,6 +251,8 @@ namespace MonogameProject
 
             player.Update(gameTime);
             spook.Update(gameTime);
+            boss.Update(gameTime);
+            lBall.Update(gameTime);
             fish.Update(gameTime);
             pastMouse = mouse;
 
@@ -248,14 +264,15 @@ namespace MonogameProject
 
             }
             portalSprite.Update(gameTime);
-          
+            if (CurrentGameState == GameState.Level1)
+            {
                 foreach (CollisionTiles tile in mapLevel1.CollisionTiles)
                 {
                     player.Collision(tile.Rectangle, mapLevel1.Width, mapLevel1.Height);
 
 
                 }
-            
+            }
             if (CurrentGameState == GameState.Level2)
             {
                 foreach (CollisionTiles tile in mapLevel2.CollisionTiles)
@@ -301,8 +318,9 @@ namespace MonogameProject
                     mapLevel1.Draw(_spriteBatch);
                     spook.Draw(_spriteBatch);
                     _spriteBatch.Draw(healthTexture, healthRectangle, Color.White);
+                    
                     player.Draw(_spriteBatch);
-
+                    ufo.Draw(_spriteBatch);
 
                     _spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(screenWidth - 360, 0), Color.White); ;
                     break;
@@ -311,6 +329,7 @@ namespace MonogameProject
                     _spriteBatch.Draw(backgroundje2, rectje, Color.White);
                     music.Draw(_spriteBatch);
                     playerLife.Draw(_spriteBatch);
+                    lBall.Draw(_spriteBatch);
                     mapLevel2.Draw(_spriteBatch);
                     fish.Draw(_spriteBatch);
                     player.Draw(_spriteBatch);
@@ -322,6 +341,7 @@ namespace MonogameProject
                     music.Draw(_spriteBatch);
                    
                     mapLevel3.Draw(_spriteBatch);
+                    boss.Draw(_spriteBatch);
                     player.Draw(_spriteBatch);
                     playerLife.Draw(_spriteBatch);
                     _spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(screenWidth - 360, 0), Color.White);

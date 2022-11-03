@@ -59,12 +59,7 @@ namespace MonogameProject.Classes.Enemies
 
         }
 
-        public void Load(ContentManager Content)
-        {
-            ghost = Content.Load<Texture2D>("SpookBeweging");
-            file = Content.Load<SpriteFont>("File");
-
-        }
+     
         public void Update(GameTime gameTime)
         {
 

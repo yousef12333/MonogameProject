@@ -21,7 +21,7 @@ namespace MonogameProject.Classes.Hero
      
         public Rectangle collisionHitbox { get; set; }
 
-        public Vector2 position = new Vector2(64, 600);
+        public Vector2 position = new Vector2(200, 200);
         public Vector2 velocity;
         public Rectangle rectangle;
         public int health;
@@ -30,6 +30,7 @@ namespace MonogameProject.Classes.Hero
         public AnimationModus animations { get; set; }
         public Animation currentAnimation { get; set; }
         Vector2 position2;
+        int timer;
 
         bool isLeft = false;
         bool isRight = false;
@@ -115,7 +116,11 @@ namespace MonogameProject.Classes.Hero
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                velocity.X = (float)gameTime.ElapsedGameTime.TotalMilliseconds / 7;
+                
+                if(velocity.X < 3.7F)
+                {
+                    velocity.X += 0.15F;
+                }
                 if (hasJumped == false) currentAnimation = animations.MoveStateRight;
                 isRight = true;
                 isLeft = false;
@@ -124,7 +129,11 @@ namespace MonogameProject.Classes.Hero
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                velocity.X = -(float)gameTime.ElapsedGameTime.TotalMilliseconds / 7;
+                
+                if (velocity.X > -3.7F)
+                {
+                    velocity.X -= 0.15F;
+                }
                 if (hasJumped == false) currentAnimation = animations.MoveStateLeft;
                 isLeft = true;
                 isRight = false;
@@ -147,8 +156,8 @@ namespace MonogameProject.Classes.Hero
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && hasJumped == false && isRight)
             {
-                position.Y -= 3F;
-                velocity.Y = -5F;
+                position.Y -= 4F;
+                velocity.Y = -9F;
                 hasJumped = true;
 
                 currentAnimation = animations.JumpRight;
@@ -156,8 +165,8 @@ namespace MonogameProject.Classes.Hero
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && hasJumped == false && isLeft)
             {
-                position.Y -= 3F;
-                velocity.Y = -5F;
+                position.Y -= 4F;
+                velocity.Y = -9F;
                 hasJumped = true;
                 currentAnimation = animations.JumpLeft;
 
@@ -167,15 +176,27 @@ namespace MonogameProject.Classes.Hero
 
         public void Update(GameTime gameTime)
         {
-            currentAnimation.Update(gameTime);
-            vuurbal.Update(gameTime, position2, position, isLeft, isRight, bulletImage, bulletImage);
             position += velocity;
             position2 = position;
+            currentAnimation.Update(gameTime);
+            timer = (int)gameTime.TotalGameTime.TotalSeconds;
+            if (timer > 2)
+            {
+                if (velocity.Y < 20) velocity.Y += 0.22F; //hoe hoog je springt
+               
+            }
+            else
+            {
+                velocity.X = 0;
+            }
+            vuurbal.Update(gameTime, position2, position, isLeft, isRight, bulletImage, bulletImage);
+            
             rectangle = new Rectangle((int)position.X, (int)position.Y, 64, 64);
 
             Input(gameTime);
             
-            if (velocity.Y < 10) velocity.Y += 0.2F; //hoe hoog je springt
+            
+            
         }
 
         public void Collision(Rectangle newRectangle, int xOffset, int yOffset)
