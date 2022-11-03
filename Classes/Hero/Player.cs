@@ -215,13 +215,13 @@ namespace MonogameProject.Classes.Hero
             }
             if (rectangle.TouchRightOf(newRectangle))
             {
-                position.X = newRectangle.X + rectangle.Width + 17F;
+                position.X = newRectangle.X + rectangle.Width;
             }
             if (rectangle.TouchBottomOf(newRectangle)) velocity.Y = 1F;
 
             if (position.X < 0) position.X = 0;
             if (position.X > xOffset - rectangle.Width) position.X = xOffset - rectangle.Width;
-            if (position.Y < 0) velocity.Y = 1F;
+            if (position.Y < 0) velocity.Y = 0;
             if (position.Y > yOffset - rectangle.Height) position.Y = yOffset - rectangle.Height;
         }
 

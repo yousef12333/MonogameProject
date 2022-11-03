@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace MonogameProject.Tiles
                 for (int y = 0; y < map.GetLength(0); y++)
                 {
                     number = map[y, x];
-                    if (number > 0) collisionTiles.Add(new CollisionTiles(number, new Microsoft.Xna.Framework.Rectangle(x * size, y * size, size, size)));
+                    if (number > 0) collisionTiles.Add(new CollisionTiles(number, new Rectangle(x * size, y * size, size, size)));
                     width = (x + 1) * size;
                     height = (y + 1) * size;
                 }
