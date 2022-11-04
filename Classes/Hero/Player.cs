@@ -3,18 +3,13 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonogameProject.Interfaces;
-using SharpDX.Direct3D9;
+
 
 
 namespace MonogameProject.Classes.Hero
 {
     internal class Player : IGameObject, ICollision
     {
-
-
-
-
-
         public Texture2D texture;
 
         public Texture2D bulletImage;
@@ -39,6 +34,30 @@ namespace MonogameProject.Classes.Hero
 
 
         private bool hasJumped = false;
+        private int heartRate = 3;
+
+        public int HeartRate
+        {
+            get { return heartRate; }
+            set
+            {
+                if (value > -1 && value < 4)
+                    heartRate = value;
+            }
+        }
+        private static Player instance;
+
+        public static Player Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new Player();
+                    
+                return instance;
+            }
+        }
+
         public Rectangle Rectangle
         {
             get
@@ -104,8 +123,10 @@ namespace MonogameProject.Classes.Hero
             currentAnimation = animations.IdleStateRight;
         }
 
+        public Player()
+        {
+        }
 
-       
         public void Load(ContentManager Content)
         {
 
@@ -183,22 +204,23 @@ namespace MonogameProject.Classes.Hero
             if (timer > 2)
             {
                 if (velocity.Y < 20) velocity.Y += 0.22F; //hoe hoog je springt
-               
+
             }
             else
             {
                 velocity.X = 0;
             }
             vuurbal.Update(gameTime, position2, position, isLeft, isRight, bulletImage, bulletImage);
-            
+
             rectangle = new Rectangle((int)position.X, (int)position.Y, 64, 64);
 
             Input(gameTime);
-            
-            
-            
-        }
+            if (Keyboard.GetState().IsKeyDown(Keys.L))
+            {
+                --Instance.HeartRate;
 
+            }
+        }
         public void Collision(Rectangle newRectangle, int xOffset, int yOffset)
         {
             if (rectangle.TouchTopOf(newRectangle))
@@ -221,7 +243,11 @@ namespace MonogameProject.Classes.Hero
 
             if (position.X < 0) position.X = 0;
             if (position.X > xOffset - rectangle.Width) position.X = xOffset - rectangle.Width;
-            if (position.Y < 0) velocity.Y = 0;
+            if (position.Y < 0) {
+                velocity.Y = 0;
+                position.Y = 0.01F;
+                
+            }
             if (position.Y > yOffset - rectangle.Height) position.Y = yOffset - rectangle.Height;
         }
 

@@ -22,7 +22,7 @@ namespace MonogameProject.Classes.Enemies
         public bool goRight = false;
         public bool timerLeft = false;
         public bool timerRight = false;
-
+        public int health;
 
 
 
@@ -48,7 +48,7 @@ namespace MonogameProject.Classes.Enemies
 
         }
 
-        public BossMonster(Texture2D texture)
+        public BossMonster(Texture2D texture, int newHealth)
         {
 
             boss = texture;
@@ -58,7 +58,7 @@ namespace MonogameProject.Classes.Enemies
             animations.MoveStateLeft = new Animation();
             for (int i = 0; i < 5; i++) { animations.MoveStateRight.AddFrame(new AnimationFrame(new Rectangle(89 * i, 0, 86, 71))); }
             for (int i = 0; i < 5; i++) { animations.MoveStateLeft.AddFrame(new AnimationFrame(new Rectangle(88 * i, 71, 86, 71))); }
-           
+            health = newHealth;
 
             currentAnimation = animations.MoveStateRight;
 
@@ -138,8 +138,11 @@ namespace MonogameProject.Classes.Enemies
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            
+            if (health > 0)
+            {
                 spriteBatch.Draw(boss, rectangle, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
+            }
+            
             
         }
     }

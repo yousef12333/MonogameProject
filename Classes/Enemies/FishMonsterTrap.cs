@@ -19,7 +19,7 @@ namespace MonogameProject.Classes.Enemies
         public Texture2D fishImage;
         public Rectangle rectangle;
         Animation animation;
-        
+        public int health;
 
         public Rectangle Rectangle
         {
@@ -38,13 +38,13 @@ namespace MonogameProject.Classes.Enemies
             }
 
         }
-        public FishMonsterTrap(Texture2D texture)
+        public FishMonsterTrap(Texture2D texture, int newHealth)
         {
 
             fishImage = texture;
             animation = new Animation();
             for (int i = 0; i < 4; i++) { animation.AddFrame(new AnimationFrame(new Rectangle(142 * i, 75, 142, 75))); }
-            //player = new Player();
+            health = newHealth;
         }
         public void Load(ContentManager Content)
         {
@@ -94,7 +94,10 @@ namespace MonogameProject.Classes.Enemies
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(fishImage, rectangle, animation.CurrentFrame.SourceRectangle, Color.White);
+            if (health > 0)
+            {
+                spriteBatch.Draw(fishImage, rectangle, animation.CurrentFrame.SourceRectangle, Color.White);
+            }
         }
     }
 }
