@@ -13,8 +13,8 @@ namespace MonogameProject.Classes.Enemies
 {
     internal class LavaBall :IGameObject
     {
-        Vector2 lavaBallPosition = new Vector2(458, 0);
-        Vector2 lavaBallPosition2 = new Vector2(650, 400);
+        Vector2 lavaBallPosition = new Vector2(470, 0);
+        Vector2 lavaBallPosition2 = new Vector2(670, 400);
         Vector2 velocity = new Vector2(0, 9);
         Vector2 velocity2 = new Vector2(0, 9);
         public Texture2D lavaBall;
@@ -93,8 +93,8 @@ namespace MonogameProject.Classes.Enemies
             velocity.Y += 0.10F;
             velocity2.Y += 0.10F;
 
-            rectangle = new Rectangle((int)lavaBallPosition.X, (int)lavaBallPosition.Y, 120, 100);
-            rectangle2 = new Rectangle((int)lavaBallPosition2.X, (int)lavaBallPosition2.Y, 120, 100);
+            rectangle = new Rectangle((int)lavaBallPosition.X, (int)lavaBallPosition.Y, 80, 60);
+            rectangle2 = new Rectangle((int)lavaBallPosition2.X, (int)lavaBallPosition2.Y, 80, 60);
 
         }
         public void Draw(SpriteBatch spriteBatch)

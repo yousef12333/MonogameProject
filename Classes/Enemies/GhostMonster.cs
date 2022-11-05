@@ -24,6 +24,7 @@ namespace MonogameProject.Classes.Enemies
         public Animation currentAnimation { get; set; }
         public Rectangle Rectangle { get { return rectangle; } }
         public Vector2 Position{ get{ return ghostPosition; }}
+        public Vector2 Velocity { get { return velocity; } set{ velocity = value; }}
         public GhostMonster(Texture2D texture, int newHealth)
         {
             ghost = texture;

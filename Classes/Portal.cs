@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Interfaces;
-
+using System.Collections.Generic;
 
 namespace MonogameProject.Classes
 {
@@ -10,9 +10,8 @@ namespace MonogameProject.Classes
         Animation animation;
         private Texture2D portal1;
         public bool teleported = false;
-        private Rectangle portal = new Rectangle(1150, 640, 128, 64);
+        public List<Rectangle> portals = new List<Rectangle>();
 
-       
 
         public Portal(Texture2D texture)
         {
@@ -23,13 +22,21 @@ namespace MonogameProject.Classes
 
 
         }
+        public void AddPortal(Rectangle rect)
+        {
+            portals.Add(rect);
+        }
         public void Update(GameTime gameTime)
         {
             animation.Update(gameTime);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(portal1, portal, animation.CurrentFrame.SourceRectangle, Color.White);
+            for (int i = 0; i < portals.Count; i++)
+            {
+                spriteBatch.Draw(portal1, portals[i], animation.CurrentFrame.SourceRectangle, Color.White);
+            }
+            
         }
     }
 }

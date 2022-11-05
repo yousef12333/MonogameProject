@@ -26,7 +26,7 @@ namespace MonogameProject.Classes
         public static bool TouchLeftOf(this Rectangle r1, Rectangle r2)
         {
             return r1.Right <= r2.Right &&
-                    r1.Right >= r2.Left + 4 &&
+                    r1.Right >= r2.Left &&
                     r1.Top <= r2.Bottom - r2.Width / 4 &&
                     r1.Bottom >= r2.Top + r2.Width / 4;
         }

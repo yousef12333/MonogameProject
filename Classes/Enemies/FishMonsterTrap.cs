@@ -14,7 +14,7 @@ namespace MonogameProject.Classes.Enemies
 {
     internal class FishMonsterTrap : IGameObject
     {
-        Vector2 fishPosition = new Vector2(1400, 320);
+        Vector2 fishPosition = new Vector2(1200, 60);
         Vector2 velocity = new Vector2(2, 0);
         public Texture2D fishImage;
         public Rectangle rectangle;
@@ -75,13 +75,13 @@ namespace MonogameProject.Classes.Enemies
             fishPosition.X += velocity.X;
 
 
-            if ((fishPosition.X - rectangle.Width) > 1600)
+            if ((fishPosition.X - rectangle.Width) > 1480)
             {
                 velocity.X *= -1;
                 MoveLeft();
 
             }
-            else if ((fishPosition.X - rectangle.Width) < 1300)
+            else if ((fishPosition.X - rectangle.Width) < 1000)
             {
                 velocity.X *= -1;
                 MoveRight();
@@ -94,7 +94,7 @@ namespace MonogameProject.Classes.Enemies
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (health > 0)
+            if (health > 0) //zet later op iets anders, het is niet de bedoeling dat het enkel onzichtbaar wordt;
             {
                 spriteBatch.Draw(fishImage, rectangle, animation.CurrentFrame.SourceRectangle, Color.White);
             }
