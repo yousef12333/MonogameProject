@@ -27,7 +27,7 @@ namespace MonogameProject.ViewStates
 
         }
         bool down;
-        public bool isRestarted;
+        public bool isRestarted = false;
 
         public void Update(MouseState mouse)
         {

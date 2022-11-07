@@ -31,7 +31,7 @@ namespace MonogameProject.Classes
 
         }
         bool down;
-        public bool isClicked;
+        public bool isClicked = false;
         public bool isClosed;
         public void Update(MouseState mouse)
         {
@@ -67,6 +67,7 @@ namespace MonogameProject.Classes
                 colour2.A += 3;
                 isClosed = false;
             }
+           
         }
         public void SetPosition(Vector2 newPosition, Vector2 newPosition2)
         {

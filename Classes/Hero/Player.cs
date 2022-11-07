@@ -3,8 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonogameProject.Interfaces;
-
-
+using System;
 
 namespace MonogameProject.Classes.Hero
 {
@@ -13,7 +12,7 @@ namespace MonogameProject.Classes.Hero
         public Texture2D texture;
 
         public Texture2D bulletImage;
-     
+        public Color color { get; set; }
         public Rectangle collisionHitbox { get; set; }
 
         public Vector2 position = new Vector2(200, 200);
@@ -26,10 +25,12 @@ namespace MonogameProject.Classes.Hero
         public Animation currentAnimation { get; set; }
         Vector2 position2;
         int timer;
+        float hitCounter = 0;
 
         bool isLeft = false;
         bool isRight = false;
-
+        
+        public bool isHit { get; set; } = false;
 
 
 
@@ -93,7 +94,8 @@ namespace MonogameProject.Classes.Hero
 
             health = newHealth;
             vuurbal = new Fireball(bulletImage);
-
+            color = new Color();
+            color = Color.White;
             animations = new AnimationModus();
 
             animations.MoveStateRight = new Animation();
@@ -197,19 +199,37 @@ namespace MonogameProject.Classes.Hero
 
         public void Update(GameTime gameTime)
         {
+            
             position += velocity;
             position2 = position;
             currentAnimation.Update(gameTime);
             timer = (int)gameTime.TotalGameTime.TotalSeconds;
             if (timer > 2)
             {
-                if (velocity.Y < 20) velocity.Y += 0.22F; //hoe hoog je springt
+                if (velocity.Y < 20) velocity.Y += 0.22F; 
 
             }
             else
             {
                 velocity.X = 0;
             }
+
+
+            if (isHit == true)
+            {
+                
+                color = Color.Red;
+                hitCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            }
+            if(hitCounter > 2)
+            {
+                color = Color.White;
+                hitCounter = 0;
+                isHit = false;
+            }
+
+
             vuurbal.Update(gameTime, position2, position, isLeft, isRight, bulletImage, bulletImage);
 
             rectangle = new Rectangle((int)position.X, (int)position.Y, 64, 64);
@@ -255,7 +275,7 @@ namespace MonogameProject.Classes.Hero
         {
             if (health > 0)
             {
-                spriteBatch.Draw(texture, rectangle, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
+                spriteBatch.Draw(texture, rectangle, currentAnimation.CurrentFrame.SourceRectangle, color);
             }
 
             vuurbal.Draw(spriteBatch);

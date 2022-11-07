@@ -14,16 +14,18 @@ namespace MonogameProject.Classes
     {
         public List<Vector2> bullets;
         List<string> directionFireball;
+        Rectangle fireballRect;
         private float timer;
         bool aanmaakBullet = false;
         private Texture2D fireballTexture;
         private int bulletDirection = 6;
         public AnimationModus animations { get; set; }
         public Animation currentAnimation { get; set; }
+        public Rectangle Rectangle { get { return fireballRect; } set { fireballRect = value; } }
         public int BulletDirection { get { return bulletDirection; } set { bulletDirection = value; } }
         public Fireball(Texture2D texture)
         {
-
+            
             fireballTexture = texture;
             bullets = new List<Vector2>();
             directionFireball = new List<string>();
@@ -65,6 +67,7 @@ namespace MonogameProject.Classes
             {
                 int x = (int)bullets[i].X;
                 bullets[i] = new Vector2(x, bullets[i].Y);
+                fireballRect = new Rectangle(x, (int)bullets[i].Y, currentAnimation.CurrentFrame.SourceRectangle.Width, currentAnimation.CurrentFrame.SourceRectangle.Height);
                 if (directionFireball[i] == "isRight")
                 {
                     currentAnimation = animations.MoveStateRight;
@@ -76,6 +79,7 @@ namespace MonogameProject.Classes
                     bulletDirection = -6; //de richting van image veranderd bij waar je player naar draait
                 }
                 bullets[i] += new Vector2(bulletDirection, 0);
+                fireballRect.X += bulletDirection;
                 if (timer > 2)
                 {
                     bullets.Remove(bullets[i]);
@@ -84,6 +88,7 @@ namespace MonogameProject.Classes
                     timer = 0;
                 }
             }
+            
         }
         public void Draw(SpriteBatch spriteBatch)
         {

@@ -48,12 +48,20 @@ namespace MonogameProject.Classes.Enemies
             if (ghostPosition.X > 1700)
             {
                 velocity.X *= -1;
-                currentAnimation = animations.MoveStateLeft;
+                
             }
             else if (ghostPosition.X < 1300)
             {
                 velocity.X *= -1;
+                
+            }
+            if(velocity.X > 1)
+            {
                 currentAnimation = animations.MoveStateRight;
+            }
+            else if(velocity.X < -1)
+            {
+                currentAnimation = animations.MoveStateLeft;
             }
         }
         public void Draw(SpriteBatch spriteBatch)

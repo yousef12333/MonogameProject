@@ -13,6 +13,7 @@ namespace MonogameProject
 {
     public class Game1 : Game
     {
+        Rectangle mouseRectangle;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public enum GameState { MainMenu, Death, Level1, Level2, Level3, Win }
@@ -23,6 +24,7 @@ namespace MonogameProject
         MenuButton btnPlay;
         Death restart;
         Texture2D ghostTexture;
+        Texture2D mouseTexture;
         BackgroundMusic music;
         Health playerLife;
         WinButton winEindigKnop;
@@ -68,7 +70,9 @@ namespace MonogameProject
         Fireball fireball;
         bool levelLoaded = false;
         bool objectInitialized = false;
-        
+        float monsterHitCounter;
+        bool monsterHit = false;
+
         public SpriteFont tekst;
         public SpriteFont title;
         public SpriteFont titleEdge;
@@ -81,7 +85,7 @@ namespace MonogameProject
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
+            fireball = new Fireball(fireballImage);
         }
 
         protected override void Initialize()
@@ -98,8 +102,6 @@ namespace MonogameProject
             mapLevel1 = new Map();
             mapLevel2 = new Map();
             mapLevel3 = new Map();
-          
-            
             playerLife = new Health();
 
 
@@ -125,7 +127,9 @@ namespace MonogameProject
         protected override void LoadContent()
         {
             IsMouseVisible = true;
-           
+            mouseTexture = new Texture2D(GraphicsDevice, 1, 1);
+            mouseTexture.SetData(new[] { Color.White });
+
 
             ufo = new Ufo(ufoTexture);
             lBall = new LavaBall(lavaBallTexture);
@@ -212,7 +216,7 @@ namespace MonogameProject
 
             playerLife.Load(Content);
             IsMouseVisible = true;
-            btnPlay.SetPosition(new Vector2(75, 200), new Vector2(75, 350));
+            btnPlay.SetPosition(new Vector2(40, 200), new Vector2(40, 350));
             winEindigKnop.SetPosition(new Vector2(640, 450));
             restart.setPosition(new Vector2(620, 250));
             music.Load(Content);
@@ -227,7 +231,7 @@ namespace MonogameProject
         
             
             MouseState mouse = Mouse.GetState();
-            Rectangle mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
+            mouseRectangle = new Rectangle(mouse.X, mouse.Y, 5, 5);
 
             if(objectInitialized == false)
             {
@@ -258,16 +262,35 @@ namespace MonogameProject
             // Perfect werkende collisie gedeelte, je hebt hier muis-onzin verwijderd, verkeerde afstand van collisie ligde aan muis lol
             if ((player.rectangle.Intersects(spook.rectangle) && CurrentGameState == GameState.Level1) || (player.rectangle.Intersects(boss.rectangle) && CurrentGameState == GameState.Level3) || (player.rectangle.Intersects(fish.rectangle) && CurrentGameState == GameState.Level2 || (player.rectangle.Intersects(lBall.rectangle) && CurrentGameState == GameState.Level2)))
             {
-                Player.Instance.HeartRate--;
+                if(player.isHit == false)
+                {
+                    player.isHit = true;
+                    Player.Instance.HeartRate--;
+                }
+                
             }
             if((player.rectangle.Intersects(spook.rectangle) && CurrentGameState == GameState.Level1))
             {
-                spook.Velocity *= new Vector2(-1,0); //zal heel snel telkens doen, maar animatie is dan fout
+                if(monsterHit == false)
+                {
+                    monsterHit = true;
+                    spook.Velocity *= new Vector2(-1, 0); //zal heel snel telkens doen, maar animatie is dan fout
+                }
+                
             }
-            //if ((fireball(new Rectangle(bullets)).Intersects(spook.rectangle) && CurrentGameState == GameState.Level1))
-            //{
-            //    spook.Velocity *= new Vector2(-1, 0); //zal heel snel telkens doen, maar animatie is dan fout
-            //}
+            if(monsterHit == true)
+            {
+                monsterHitCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (monsterHitCounter > 1)
+                {
+                    monsterHit = false;
+                    monsterHitCounter = 0;
+                }
+            }
+            if (fireball.Rectangle.Intersects(spook.rectangle) && CurrentGameState == GameState.Level1)
+            {
+                spook.Velocity += new Vector2(-1, 0); //er is geen collisie, zelfs niet beetje
+            }
             for (int i = 0; i < coinLevel1.coins.Count; i++)
                 {
                 if (player.rectangle.Intersects(coinLevel1.coins[i]) && CurrentGameState == GameState.Level1)
@@ -320,13 +343,31 @@ namespace MonogameProject
             //{
             //    fish.health -= 10;
             //}
-
+            if (levelLoaded)
+            {
+                ufo.Update(gameTime);
+                player.Update(gameTime);
+            }
+            if (Player.Instance.HeartRate < 1)
+            {
+                CurrentGameState = GameState.Death;
+            }
+            else if (boss.health < 1)
+            {
+                CurrentGameState = GameState.Win;
+            }
             switch (CurrentGameState)
             {
                 case GameState.MainMenu:
-                    if (btnPlay.isClicked == true) { CurrentGameState = GameState.Level1; }
-                    else if (btnPlay.isClosed == true) Exit();
                     btnPlay.Update(mouse);
+                    if (btnPlay.isClicked == true) {
+                        restart.isRestarted = false;
+                        CurrentGameState = GameState.Level1; 
+                    
+                    }
+                    else if (btnPlay.isClosed == true) Exit();
+                    
+                    
                     break;
 
 
@@ -352,16 +393,18 @@ namespace MonogameProject
                     winEindigKnop.Update(mouse);
                     break;
                 case GameState.Death:
-                    if (restart.isRestarted == true) CurrentGameState = GameState.Level1;
                     restart.Update(mouse);
+                    if (restart.isRestarted == true) {
+                        btnPlay.isClicked = false;
+                        CurrentGameState = GameState.MainMenu; //bug, gaat van menu direct naar level1
+                        
+
+                    }
+                    
                     break;
             }
 
-            if (levelLoaded)
-            {
-                ufo.Update(gameTime);
-                player.Update(gameTime);
-            }
+            
            
             spook.Update(gameTime);
             boss.Update(gameTime);
@@ -428,7 +471,7 @@ namespace MonogameProject
                     btnPlay.Draw(_spriteBatch);
                     _spriteBatch.DrawString(titleEdge, "BIOHUNT", new Vector2(565, 15), Color.Black);
                     _spriteBatch.DrawString(title, "BIOHUNT", new Vector2(550, 0), Color.DarkViolet);
-                    _spriteBatch.DrawString(InputExplanation, "Controls:\n- Left button to go left.\n- Right button to go right\n- Space button to jump\n- \'E\' button to shoot fireball", new Vector2(100, 500), Color.DarkGreen);
+                    _spriteBatch.DrawString(InputExplanation, "Controls:\n- Left button to go left.\n- Right button to go right\n- Space button to jump\n- \'E\' button to shoot fireball", new Vector2(40, 500), Color.DarkGreen);
 
                     break;
                 case GameState.Level1:
@@ -479,6 +522,7 @@ namespace MonogameProject
                     restart.Draw(_spriteBatch);
                     break;
             }
+            _spriteBatch.Draw(mouseTexture, mouseRectangle, Color.Red);
             _spriteBatch.End();
 
             base.Draw(gameTime);
