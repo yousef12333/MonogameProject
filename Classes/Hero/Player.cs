@@ -19,7 +19,7 @@ namespace MonogameProject.Classes.Hero
         public Vector2 velocity;
         public Rectangle rectangle;
         public int health;
-        Fireball vuurbal;
+        public Fireball vuurbal;
        
         public AnimationModus animations { get; set; }
         public Animation currentAnimation { get; set; }
@@ -243,6 +243,17 @@ namespace MonogameProject.Classes.Hero
         }
         public void Collision(Rectangle newRectangle, int xOffset, int yOffset)
         {
+            for(int i = 0; i < vuurbal.Rectangle.Count; i++)
+            {
+                if (vuurbal.Rectangle[i].CollideLeft(newRectangle) || vuurbal.Rectangle[i].CollideRight(newRectangle))
+                {
+                    vuurbal.bullets.Remove(vuurbal.bullets[i]);
+                    vuurbal.fireballRect.Remove(vuurbal.fireballRect[i]);
+                    vuurbal.aanmaakBullet = false;
+                    vuurbal.timer = 0;
+                    vuurbal.directionFireball.RemoveAt(vuurbal.directionFireball.Count - 1);
+                }
+            }
             if (rectangle.TouchTopOf(newRectangle))
             {
                 rectangle.Y = newRectangle.Y - rectangle.Height + 5;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Classes;
 using MonogameProject.Interfaces;
+using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,11 @@ namespace MonogameProject.Classes.Enemies
     {
         Vector2 fishPosition = new Vector2(1200, 60);
         Vector2 velocity = new Vector2(2, 0);
+        public Vector2 Velocity { get { return velocity; } set { velocity = value; } }
         public Texture2D fishImage;
         public Rectangle rectangle;
-        Animation animation;
+        public AnimationModus animations { get; set; }
+        public Animation currentAnimation { get; set; }
         public int health;
 
         public Rectangle Rectangle
@@ -42,8 +45,12 @@ namespace MonogameProject.Classes.Enemies
         {
 
             fishImage = texture;
-            animation = new Animation();
-            for (int i = 0; i < 4; i++) { animation.AddFrame(new AnimationFrame(new Rectangle(142 * i, 75, 142, 75))); }
+            animations = new AnimationModus();
+            animations.MoveStateRight = new Animation();
+            animations.MoveStateLeft = new Animation();
+            for (int i = 0; i < 4; i++) { animations.MoveStateRight.AddFrame(new AnimationFrame(new Rectangle(142 * i, 0, 142, 75))); }
+            for (int i = 0; i < 4; i++) { animations.MoveStateLeft.AddFrame(new AnimationFrame(new Rectangle(142 * i, 75, 142, 75))); }
+            currentAnimation = animations.MoveStateRight;
             health = newHealth;
         }
         public void Load(ContentManager Content)
@@ -51,23 +58,20 @@ namespace MonogameProject.Classes.Enemies
             fishImage = Content.Load<Texture2D>("FishmonsterMovement4");
 
         }
-        public void MoveLeft()
-        {
-            animation = new Animation();
-            for (int i = 0; i < 4; i++) { animation.AddFrame(new AnimationFrame(new Rectangle(142 * i, 75, 142, 75))); }
-        }
-        public void MoveRight()
-        {
-            animation = new Animation();
-            for (int i = 0; i < 4; i++) { animation.AddFrame(new AnimationFrame(new Rectangle(142 * i, 0, 142, 75))); }
-        }
 
         public void Update(GameTime gameTime)
         {
 
 
-            animation.Update(gameTime);
-            rectangle = new Rectangle((int)fishPosition.X, (int)fishPosition.Y, 64, 64);
+            currentAnimation.Update(gameTime);
+            if (health < 1)
+            {
+                rectangle = new Rectangle(1900, (int)fishPosition.Y, 130, 80);
+            }
+            else
+            {
+                rectangle = new Rectangle((int)fishPosition.X, (int)fishPosition.Y, 130, 80);
+            }
             move();
         }
         private void move()
@@ -75,18 +79,26 @@ namespace MonogameProject.Classes.Enemies
             fishPosition.X += velocity.X;
 
 
-            if ((fishPosition.X - rectangle.Width) > 1480)
+            if ((fishPosition.X - rectangle.Width) > 1380)
             {
                 velocity.X *= -1;
-                MoveLeft();
+                
 
             }
-            else if ((fishPosition.X - rectangle.Width) < 1000)
+            else if ((fishPosition.X - rectangle.Width) < 950)
             {
                 velocity.X *= -1;
-                MoveRight();
+               
             }
-            rectangle = new Rectangle((int)fishPosition.X, (int)fishPosition.Y, 128, 80);
+            if (velocity.X > 1)
+            {
+                currentAnimation = animations.MoveStateRight;
+            }
+            else if (velocity.X < -1)
+            {
+                currentAnimation = animations.MoveStateLeft;
+            }
+            
 
 
 
@@ -94,10 +106,9 @@ namespace MonogameProject.Classes.Enemies
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (health > 0) //zet later op iets anders, het is niet de bedoeling dat het enkel onzichtbaar wordt;
-            {
-                spriteBatch.Draw(fishImage, rectangle, animation.CurrentFrame.SourceRectangle, Color.White);
-            }
+            
+                spriteBatch.Draw(fishImage, rectangle, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
+            
         }
     }
 }

@@ -13,21 +13,23 @@ namespace MonogameProject.Classes
     internal class Fireball
     {
         public List<Vector2> bullets;
-        List<string> directionFireball;
-        Rectangle fireballRect;
-        private float timer;
-        bool aanmaakBullet = false;
+        public List<string> directionFireball;
+        public List<Rectangle> fireballRect;
+        public float timer;
+        public bool aanmaakBullet = false;
         private Texture2D fireballTexture;
         private int bulletDirection = 6;
         public AnimationModus animations { get; set; }
         public Animation currentAnimation { get; set; }
-        public Rectangle Rectangle { get { return fireballRect; } set { fireballRect = value; } }
+        public List<Rectangle> Rectangle { get { return fireballRect; } set { fireballRect = value; } }
+
         public int BulletDirection { get { return bulletDirection; } set { bulletDirection = value; } }
         public Fireball(Texture2D texture)
         {
             
             fireballTexture = texture;
             bullets = new List<Vector2>();
+            fireballRect = new List<Rectangle>();
             directionFireball = new List<string>();
             animations = new AnimationModus();
             animations.MoveStateRight = new Animation();
@@ -44,6 +46,7 @@ namespace MonogameProject.Classes
             {
                 position2.Y = position.Y + 10;
                 bullets.Add(position2);
+                fireballRect.Add(new Rectangle((int)position2.X, (int)position2.Y, currentAnimation.CurrentFrame.SourceRectangle.Width, currentAnimation.CurrentFrame.SourceRectangle.Height));
                 if (isRight)
                 {
                     directionFireball.Add("isRight");
@@ -57,7 +60,7 @@ namespace MonogameProject.Classes
                 {
                     directionFireball.Add("isRight");
                 }
-                if (directionFireball.Count > bullets.Count)
+                if (directionFireball.Count > fireballRect.Count)
                 {
                     directionFireball.RemoveAt(directionFireball.Count - 1);
                 }
@@ -67,7 +70,7 @@ namespace MonogameProject.Classes
             {
                 int x = (int)bullets[i].X;
                 bullets[i] = new Vector2(x, bullets[i].Y);
-                fireballRect = new Rectangle(x, (int)bullets[i].Y, currentAnimation.CurrentFrame.SourceRectangle.Width, currentAnimation.CurrentFrame.SourceRectangle.Height);
+               
                 if (directionFireball[i] == "isRight")
                 {
                     currentAnimation = animations.MoveStateRight;
@@ -79,13 +82,15 @@ namespace MonogameProject.Classes
                     bulletDirection = -6; //de richting van image veranderd bij waar je player naar draait
                 }
                 bullets[i] += new Vector2(bulletDirection, 0);
-                fireballRect.X += bulletDirection;
+                fireballRect[i] = new Rectangle((int)bullets[i].X, (int)bullets[i].Y, currentAnimation.CurrentFrame.SourceRectangle.Width, currentAnimation.CurrentFrame.SourceRectangle.Height);
+
                 if (timer > 2)
                 {
                     bullets.Remove(bullets[i]);
-                    directionFireball.Remove(directionFireball[i]);
+                    fireballRect.Remove(fireballRect[i]);
                     aanmaakBullet = false;
                     timer = 0;
+                    directionFireball.RemoveAt(directionFireball.Count - 1);
                 }
             }
             
@@ -94,7 +99,7 @@ namespace MonogameProject.Classes
         {
             for (int i = 0; i < bullets.Count; i++)
             {
-                spriteBatch.Draw(fireballTexture, bullets[i], currentAnimation.CurrentFrame.SourceRectangle, Color.White);
+                spriteBatch.Draw(fireballTexture, fireballRect[i], currentAnimation.CurrentFrame.SourceRectangle, Color.White);
             }
         }
 

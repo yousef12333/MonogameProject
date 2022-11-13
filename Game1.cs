@@ -8,6 +8,7 @@ using MonogameProject.Tiles;
 
 
 using MonogameProject.ViewStates;
+using System.Diagnostics;
 
 namespace MonogameProject
 {
@@ -78,7 +79,7 @@ namespace MonogameProject
         public SpriteFont titleEdge;
         public SpriteFont InputExplanation;
         public static int score = 0;
-
+        
 
         public Game1()
         {
@@ -168,11 +169,11 @@ namespace MonogameProject
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-                { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-                { 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+                { 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
+                { 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
+                { 2, 2, 2, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
                 { 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
 
            }, 64);
@@ -185,7 +186,7 @@ namespace MonogameProject
                 { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
                 { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
                 { 6, 0, 0, 0, 0, 0, 6, 0, 0, 6, 0, 0, 6, 0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 6},
-                { 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
+                { 6, 0, 0, 0, 0, 6, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
                 { 6, 0, 0, 6, 6, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
                 { 6, 6, 6, 6, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6},
                 { 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
@@ -274,11 +275,63 @@ namespace MonogameProject
                 if(monsterHit == false)
                 {
                     monsterHit = true;
-                    spook.Velocity *= new Vector2(-1, 0); //zal heel snel telkens doen, maar animatie is dan fout
+                    
+                    spook.Velocity *= new Vector2(-1, 0); 
                 }
-                
             }
-            if(monsterHit == true)
+            else if ((player.rectangle.Intersects(fish.rectangle) && CurrentGameState == GameState.Level2))
+            {
+                if (monsterHit == false)
+                {
+                    monsterHit = true;
+                    fish.Velocity *= new Vector2(-1, 0);
+                }
+            }
+            if ((player.rectangle.Intersects(boss.rectangle)&& player.rectangle.X - boss.rectangle.X < 0 && CurrentGameState == GameState.Level3)) //werkt niet
+            {
+                if (monsterHit == false)
+                {
+                    monsterHit = true;
+                    boss.VelocityX = -9;
+                    boss.VelocityX *= -1;
+
+                    boss.goLeft = false;
+                    boss.goRight = true;
+
+
+                }
+            }
+            else if((player.rectangle.Intersects(boss.rectangle) && player.rectangle.X - boss.rectangle.X > 0 && CurrentGameState == GameState.Level3))
+            {
+                if (monsterHit == false)
+                {
+                    monsterHit = true;
+                    
+                    boss.VelocityX = 9;
+                    boss.VelocityX *= -1;
+
+                    boss.goLeft = true;
+                    boss.goRight = false;
+                }
+            }
+            
+            if((player.rectangle.X- boss.rectangle.X  < -500) && CurrentGameState == GameState.Level3)
+            {
+                boss.VelocityX = 9;
+                boss.VelocityX *= -1;
+
+                boss.goLeft = true;
+                boss.goRight = false;
+            }
+            else if((player.rectangle.X - boss.rectangle.X > 500) && CurrentGameState == GameState.Level3)
+            {
+                boss.VelocityX = -9;
+                boss.VelocityX *= -1;
+
+                boss.goLeft = false;
+                boss.goRight = true;
+            }
+            if (monsterHit == true)
             {
                 monsterHitCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (monsterHitCounter > 1)
@@ -287,10 +340,7 @@ namespace MonogameProject
                     monsterHitCounter = 0;
                 }
             }
-            if (fireball.Rectangle.Intersects(spook.rectangle) && CurrentGameState == GameState.Level1)
-            {
-                spook.Velocity += new Vector2(-1, 0); //er is geen collisie, zelfs niet beetje
-            }
+           
             for (int i = 0; i < coinLevel1.coins.Count; i++)
                 {
                 if (player.rectangle.Intersects(coinLevel1.coins[i]) && CurrentGameState == GameState.Level1)
@@ -327,13 +377,38 @@ namespace MonogameProject
 
             // stel later een rectangle in fireball in, de x en y waarden moeten hetzelfde als bullet[i door te doen= rect.X = bullet[i].X enzo..
 
-            //for (int i = 0; i < fireball.bullets.Count; i++)
-            //{
-            //    if (fireball.bullets[i].Intersects(boss.rectangle))
-            //    {
-            //        boss.health -= 10;
-            //    }
-            //}
+            for (int i = 0; i < player.vuurbal.fireballRect.Count; i++)
+            {
+                if (player.vuurbal.fireballRect[i].Intersects(spook.rectangle) && CurrentGameState == GameState.Level1) //zoek manier om fireball bij collision te verwijderen
+                {
+                    spook.health -= 10;
+                    player.vuurbal.bullets.Remove(player.vuurbal.bullets[i]);
+                    player.vuurbal.fireballRect.Remove(player.vuurbal.fireballRect[i]);
+                    player.vuurbal.aanmaakBullet = false;
+                    player.vuurbal.timer = 0;
+                    player.vuurbal.directionFireball.RemoveAt(player.vuurbal.directionFireball.Count - 1);
+                }
+                else if(player.vuurbal.fireballRect[i].Intersects(fish.rectangle) && CurrentGameState == GameState.Level2)
+                {
+                    fish.health -= 10;
+                    player.vuurbal.bullets.Remove(player.vuurbal.bullets[i]);
+                    player.vuurbal.fireballRect.Remove(player.vuurbal.fireballRect[i]);
+                    player.vuurbal.aanmaakBullet = false;
+                    player.vuurbal.timer = 0;
+                    player.vuurbal.directionFireball.RemoveAt(player.vuurbal.directionFireball.Count - 1);
+                }
+                else if (player.vuurbal.fireballRect[i].Intersects(boss.rectangle) && CurrentGameState == GameState.Level3)
+                {
+                    boss.health -= 10;
+                    player.vuurbal.bullets.Remove(player.vuurbal.bullets[i]);
+                    player.vuurbal.fireballRect.Remove(player.vuurbal.fireballRect[i]);
+                    player.vuurbal.aanmaakBullet = false;
+                    player.vuurbal.timer = 0;
+                    player.vuurbal.directionFireball.RemoveAt(player.vuurbal.directionFireball.Count - 1);
+                }
+
+
+            }
 
             //else if (mouseRectangle.Intersects(player.rectangle))
             //{

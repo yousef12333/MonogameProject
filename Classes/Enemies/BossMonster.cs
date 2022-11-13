@@ -23,7 +23,8 @@ namespace MonogameProject.Classes.Enemies
         public bool timerLeft = false;
         public bool timerRight = false;
         public int health;
-
+        public Vector2 Velocity { get { return velocity; } set { velocity = value; } }
+        public float VelocityX { get { return velocity.X; } set { velocity.X = value; } }
 
 
 
@@ -92,7 +93,7 @@ namespace MonogameProject.Classes.Enemies
               
                 goLeft = true;
                 goRight = false;
-                currentAnimation = animations.MoveStateLeft;
+                
 
             }
             else if (bossPosition.X < 50)
@@ -102,7 +103,15 @@ namespace MonogameProject.Classes.Enemies
               
                 goLeft = false;
                 goRight = true;
+                
+            }
+            if (velocity.X > 1)
+            {
                 currentAnimation = animations.MoveStateRight;
+            }
+            else if (velocity.X < -1)
+            {
+                currentAnimation = animations.MoveStateLeft;
             }
             if (goLeft)
             {

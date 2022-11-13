@@ -39,8 +39,16 @@ namespace MonogameProject.Classes.Enemies
         public void Update(GameTime gameTime)
         {
             currentAnimation.Update(gameTime);
-            rectangle = new Rectangle((int)ghostPosition.X, (int)ghostPosition.Y, 74, 74);
+            if (health < 1)
+            {
+                rectangle = new Rectangle(1900, (int)ghostPosition.Y, 74, 74);
+            }
+            else
+            {
+                rectangle = new Rectangle((int)ghostPosition.X, (int)ghostPosition.Y, 74, 74);
+            }
             move();
+         
         }
         private void move()
         {
@@ -66,10 +74,9 @@ namespace MonogameProject.Classes.Enemies
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (health > 0)
-            {
+           
                 spriteBatch.Draw(ghost, rectangle, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
-            }
+            
         }
     }
 }
