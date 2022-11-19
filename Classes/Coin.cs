@@ -15,14 +15,11 @@ namespace MonogameProject.Classes
         public List<Rectangle> coins = new List<Rectangle>();
         Animation animation;
         private Texture2D coinImage;
-     
         public Coin(Texture2D texture)
         {
             coinImage = texture;
             animation = new Animation();
             for (int i = 0; i < 4; i++) { animation.AddFrame(new AnimationFrame(new Rectangle(264 * i, 0, 264, 245))); }
-           
-
         }
         public void AddCoin(Rectangle rect)
         {

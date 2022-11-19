@@ -22,11 +22,8 @@ namespace MonogameProject.Classes
         public AnimationModus animations { get; set; }
         public Animation currentAnimation { get; set; }
         public List<Rectangle> Rectangle { get { return fireballRect; } set { fireballRect = value; } }
-
-        public int BulletDirection { get { return bulletDirection; } set { bulletDirection = value; } }
         public Fireball(Texture2D texture)
         {
-            
             fireballTexture = texture;
             bullets = new List<Vector2>();
             fireballRect = new List<Rectangle>();
@@ -79,7 +76,7 @@ namespace MonogameProject.Classes
                 else if (directionFireball[i] == "isLeft")
                 {
                     currentAnimation = animations.MoveStateLeft;
-                    bulletDirection = -6; //de richting van image veranderd bij waar je player naar draait
+                    bulletDirection = -6; 
                 }
                 bullets[i] += new Vector2(bulletDirection, 0);
                 fireballRect[i] = new Rectangle((int)bullets[i].X, (int)bullets[i].Y, currentAnimation.CurrentFrame.SourceRectangle.Width, currentAnimation.CurrentFrame.SourceRectangle.Height);

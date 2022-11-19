@@ -12,46 +12,10 @@ namespace MonogameProject.Classes
 {
     internal class Health
     {
-        /* private list<Animationframe> frames..
-         * const FPS = 60; bovenaan
-         * 
-         *                              gebruik ergens anders animation.addframe
-         * 
-         * in update
-         CurrentFrame = frames[counter];
-        secondCounter += gameTime.ElapsedGameTime.TotalSeconds;
-        if(secondCounter >= 1.0/FPS){
-        counter++;
-        secondCounter = 0;
-
-
-        private void moveclasse(){
-        
-        positie += snelheid;
-        if(positie.X > 800 || positie.X < 0)
-        {
-            snelheid.X *= -1;
-        
-        }
-        if(positie.Y > 480 || positie.Y < 0)
-        {
-        snelheid.Y *= -1;
-        }
-
-
-
-        }
-         
-         
-         */
         private Texture2D heart;
-
         private List<Texture2D> amountOfHealth;
 
-
-
         public Health() { }
-
         public void Load(ContentManager Content)
         {
             amountOfHealth = new List<Texture2D>();
@@ -60,7 +24,6 @@ namespace MonogameProject.Classes
                 amountOfHealth.Add(heart);
             }
             heart = Content.Load<Texture2D>("Health1");
-
         }
         public void Update(GameTime gameTime)
         {
@@ -69,9 +32,6 @@ namespace MonogameProject.Classes
             {
                 healthReduce();
             }
-        
-
-
         }
         public void healthReduce()
         {
@@ -81,10 +41,7 @@ namespace MonogameProject.Classes
         {
             for (int i = 0; i < amountOfHealth.Count; i++)
             {
-               
-                    spriteBatch.Draw(heart, new Rectangle(i * 130, 0, 150, 100), Color.White);
-                
-                
+                    spriteBatch.Draw(heart, new Rectangle(i * 130, 0, 150, 100), Color.White);  
             }
         }
     }

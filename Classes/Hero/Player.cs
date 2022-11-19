@@ -7,24 +7,24 @@ using System;
 
 namespace MonogameProject.Classes.Hero
 {
-    internal class Player : IGameObject, ICollision
+    internal class Player : IGameObject
     {
         public Texture2D texture;
 
         public Texture2D bulletImage;
         public Color color { get; set; }
         public Rectangle collisionHitbox { get; set; }
-
+        
         public Vector2 position = new Vector2(200, 200);
         public Vector2 velocity;
         public Rectangle rectangle;
         public int health;
         public Fireball vuurbal;
-       
+        public bool restarted;
         public AnimationModus animations { get; set; }
         public Animation currentAnimation { get; set; }
         Vector2 position2;
-        int timer;
+        public int timer;
         float hitCounter = 0;
 
         bool isLeft = false;
@@ -72,6 +72,10 @@ namespace MonogameProject.Classes.Hero
             get
             {
                 return position;
+            }
+            set
+            {
+                position = value;
             }
 
         }
@@ -123,6 +127,7 @@ namespace MonogameProject.Classes.Hero
 
 
             currentAnimation = animations.IdleStateRight;
+           
         }
 
         public Player()
@@ -199,19 +204,30 @@ namespace MonogameProject.Classes.Hero
 
         public void Update(GameTime gameTime)
         {
-            
+            if (restarted == true)
+            {
+                Position = new Vector2(203, 200);
+                velocity.Y = 0F;
+            }
             position += velocity;
             position2 = position;
+          
             currentAnimation.Update(gameTime);
             timer = (int)gameTime.TotalGameTime.TotalSeconds;
             if (timer > 2)
             {
-                if (velocity.Y < 20) velocity.Y += 0.22F; 
+                if (velocity.Y < 20) velocity.Y += 0.22F;
+                 
+                    restarted = false;
+                
+                
+                
 
             }
             else
             {
                 velocity.X = 0;
+                
             }
 
 
@@ -240,6 +256,7 @@ namespace MonogameProject.Classes.Hero
                 --Instance.HeartRate;
 
             }
+            
         }
         public void Collision(Rectangle newRectangle, int xOffset, int yOffset)
         {
@@ -279,17 +296,14 @@ namespace MonogameProject.Classes.Hero
                 position.Y = 0.01F;
                 
             }
-            if (position.Y > yOffset - rectangle.Height) position.Y = yOffset - rectangle.Height;
+            if (position.Y > yOffset - rectangle.Height) Game1.CurrentGameState = Game1.GameState.Death;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (health > 0)
-            {
-                spriteBatch.Draw(texture, rectangle, currentAnimation.CurrentFrame.SourceRectangle, color);
-            }
-
-            vuurbal.Draw(spriteBatch);
+           
+          spriteBatch.Draw(texture, rectangle, currentAnimation.CurrentFrame.SourceRectangle, color);
+          vuurbal.Draw(spriteBatch);
 
         }
 

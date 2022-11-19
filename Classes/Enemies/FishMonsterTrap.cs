@@ -23,27 +23,15 @@ namespace MonogameProject.Classes.Enemies
         public AnimationModus animations { get; set; }
         public Animation currentAnimation { get; set; }
         public int health;
-
         public Rectangle Rectangle
         {
             get
             {
                 return rectangle;
             }
-
-        }
-
-        public Vector2 Position
-        {
-            get
-            {
-                return fishPosition;
-            }
-
         }
         public FishMonsterTrap(Texture2D texture, int newHealth)
         {
-
             fishImage = texture;
             animations = new AnimationModus();
             animations.MoveStateRight = new Animation();
@@ -53,42 +41,23 @@ namespace MonogameProject.Classes.Enemies
             currentAnimation = animations.MoveStateRight;
             health = newHealth;
         }
-        public void Load(ContentManager Content)
-        {
-            fishImage = Content.Load<Texture2D>("FishmonsterMovement4");
-
-        }
-
         public void Update(GameTime gameTime)
         {
-
-
             currentAnimation.Update(gameTime);
-            if (health < 1)
-            {
-                rectangle = new Rectangle(1900, (int)fishPosition.Y, 130, 80);
-            }
-            else
-            {
-                rectangle = new Rectangle((int)fishPosition.X, (int)fishPosition.Y, 130, 80);
-            }
+            if (health < 1) rectangle = new Rectangle(1900, (int)fishPosition.Y, 130, 80); 
+            else{rectangle = new Rectangle((int)fishPosition.X, (int)fishPosition.Y, 130, 80);}
             move();
         }
         private void move()
         {
             fishPosition.X += velocity.X;
-
-
             if ((fishPosition.X - rectangle.Width) > 1380)
             {
                 velocity.X *= -1;
-                
-
             }
             else if ((fishPosition.X - rectangle.Width) < 950)
             {
                 velocity.X *= -1;
-               
             }
             if (velocity.X > 1)
             {
@@ -98,17 +67,10 @@ namespace MonogameProject.Classes.Enemies
             {
                 currentAnimation = animations.MoveStateLeft;
             }
-            
-
-
-
-
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            
-                spriteBatch.Draw(fishImage, rectangle, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
-            
+            spriteBatch.Draw(fishImage, rectangle, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
         }
     }
 }

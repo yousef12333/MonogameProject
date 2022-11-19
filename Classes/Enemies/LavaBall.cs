@@ -13,56 +13,24 @@ namespace MonogameProject.Classes.Enemies
 {
     internal class LavaBall :IGameObject
     {
-        Vector2 lavaBallPosition = new Vector2(470, 0);
-        Vector2 lavaBallPosition2 = new Vector2(670, 400);
+        public List<Vector2> lavaballList = new List<Vector2>();
         Vector2 velocity = new Vector2(0, 9);
-        Vector2 velocity2 = new Vector2(0, 9);
         public Texture2D lavaBall;
-        public Rectangle rectangle;
-        public Rectangle rectangle2;
-
-        //verwijder dubbels en maak het object oriented, dus zorg gewoon voor dat ht in game1 met juiste waarden er 2 kunnen staan.
-
-
+        private Rectangle rectangle;
         public Rectangle Rectangle
         {
             get
             {
                 return rectangle;
             }
-
         }
-        public Rectangle Rectangle2
+        public void AddLavaball(Vector2 pos)
         {
-            get
-            {
-                return rectangle2;
-            }
-
+            lavaballList.Add(pos);
         }
-
-        public Vector2 Position
-        {
-            get
-            {
-                return lavaBallPosition;
-            }
-
-        }
-        public Vector2 Position2
-        {
-            get
-            {
-                return lavaBallPosition2;
-            }
-
-        }
-
         public LavaBall(Texture2D texture)
         {
-
             lavaBall = texture;
-
         }
         public void Update(GameTime gameTime)
         {
@@ -70,37 +38,21 @@ namespace MonogameProject.Classes.Enemies
         }
         private void move()
         {
-
-            lavaBallPosition.Y += velocity.Y;
-            lavaBallPosition2.Y += velocity2.Y;
-
-
-            if (lavaBallPosition.Y > 400)
+            for(int i = 0; i < lavaballList.Count; i++)
             {
-                velocity.Y = 9;
-                velocity.Y *= -1;
-               
-
-
-
-
+                lavaballList[i] += new Vector2(0, velocity.Y);
+                if (lavaballList[i].Y > 400)
+                {
+                    velocity.Y = 9;
+                    velocity.Y *= -1;
+                }
+                velocity.Y += 0.10F;
+                rectangle = new Rectangle((int)lavaballList[i].X, (int)lavaballList[i].Y, 80, 60);
             }
-            else if(lavaBallPosition2.Y > 400)
-            {
-                velocity2.Y = 9;
-                velocity2.Y *= -1;
-            }
-            velocity.Y += 0.10F;
-            velocity2.Y += 0.10F;
-
-            rectangle = new Rectangle((int)lavaBallPosition.X, (int)lavaBallPosition.Y, 80, 60);
-            rectangle2 = new Rectangle((int)lavaBallPosition2.X, (int)lavaBallPosition2.Y, 80, 60);
-
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(lavaBall, rectangle, Color.White);
-            spriteBatch.Draw(lavaBall, rectangle2, Color.White);
+            for (int i = 0; i < lavaballList.Count; i++){spriteBatch.Draw(lavaBall, rectangle, Color.White);}
         }
     }
 }

@@ -8,6 +8,8 @@ using MonogameProject.Tiles;
 
 
 using MonogameProject.ViewStates;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace MonogameProject
@@ -18,11 +20,16 @@ namespace MonogameProject
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public enum GameState { MainMenu, Death, Level1, Level2, Level3, Win }
-        public GameState CurrentGameState = GameState.MainMenu;
+        public static GameState CurrentGameState = GameState.MainMenu;
 
-        int screenWidth = 1790, screenHeight = 705;
+        public int screenWidth = 1790, screenHeight = 703;
+        public int Screenwidth
+        {
+            get{ return screenWidth; }
+        }
+        
 
-        MenuButton btnPlay;
+        MenuButtons btnPlay;
         Death restart;
         Texture2D ghostTexture;
         Texture2D mouseTexture;
@@ -64,7 +71,9 @@ namespace MonogameProject
         Texture2D bossTexture;
         GhostMonster spook;
         Texture2D lavaBallTexture;
-        LavaBall lBall;
+        LavaBall lBall1;
+        LavaBall lBall2;
+
         Player player;
         Texture2D playerTexture;
         Texture2D fireballImage;
@@ -78,15 +87,27 @@ namespace MonogameProject
         public SpriteFont title;
         public SpriteFont titleEdge;
         public SpriteFont InputExplanation;
-        public static int score = 0;
-        
+        Score score;
 
+        private static Game1 instance;
+
+        public static Game1 Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new Game1();
+
+                return instance;
+            }
+        }
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             fireball = new Fireball(fireballImage);
+            score = new Score(tekst);
         }
 
         protected override void Initialize()
@@ -104,6 +125,7 @@ namespace MonogameProject
             mapLevel2 = new Map();
             mapLevel3 = new Map();
             playerLife = new Health();
+          
 
 
             tekst = Content.Load<SpriteFont>("File");
@@ -114,7 +136,8 @@ namespace MonogameProject
             base.Initialize();
             spook = new GhostMonster(ghostTexture, 100);
             boss = new BossMonster(bossTexture, 200);
-            lBall = new LavaBall(lavaBallTexture);
+            lBall1 = new LavaBall(lavaBallTexture);
+            lBall2 = new LavaBall(lavaBallTexture);
             fish = new FishMonsterTrap(fishTexture, 150);
             player = new Player(playerTexture, 100, fireballImage);
             portal1 = new Portal(portalTexture);
@@ -133,9 +156,9 @@ namespace MonogameProject
 
 
             ufo = new Ufo(ufoTexture);
-            lBall = new LavaBall(lavaBallTexture);
-            
-           
+
+            score = new Score(tekst);
+
             player = new Player(playerTexture, 100, fireballImage);
             healthTexture = Content.Load<Texture2D>("HealthBar");
       
@@ -156,7 +179,7 @@ namespace MonogameProject
             Tiles.Tiles.Content = Content;
            
 
-            btnPlay = new MenuButton(Content.Load<Texture2D>("Start_Button"), Content.Load<Texture2D>("Quit_Button"), GraphicsDevice);
+            btnPlay = new MenuButtons(Content.Load<Texture2D>("Start_Button"), Content.Load<Texture2D>("Quit_Button"), GraphicsDevice);
             winEindigKnop = new WinButton(Content.Load<Texture2D>("Quit_Button"), GraphicsDevice);
             restart = new Death(Content.Load<Texture2D>("Restart_Button"), GraphicsDevice);
 
@@ -228,9 +251,13 @@ namespace MonogameProject
 
         protected override void Update(GameTime gameTime)
         {
+            Debug.WriteLine(gameTime.TotalGameTime);
             if(CurrentGameState == GameState.Level1) levelLoaded = true;
-        
-            
+
+          
+
+
+
             MouseState mouse = Mouse.GetState();
             mouseRectangle = new Rectangle(mouse.X, mouse.Y, 5, 5);
 
@@ -250,9 +277,13 @@ namespace MonogameProject
                 portal1.AddPortal(new Rectangle(1150, 625, 128, 64));
 
                 portal2.AddPortal(new Rectangle(65, 257, 128, 64));
+
+                lBall1.AddLavaball(new Vector2(470, 0));
+                lBall2.AddLavaball(new Vector2(670, 400));
                 objectInitialized = true;
             }
-            
+           
+
 
             healthRectangleGhost = new Rectangle(spook.rectangle.X - 10, spook.Rectangle.Y - 25, spook.health, 15);
             healthRectangleFish = new Rectangle(fish.rectangle.X - 2, fish.Rectangle.Y - 25, fish.health, 15);
@@ -260,8 +291,8 @@ namespace MonogameProject
 
            
 
-            // Perfect werkende collisie gedeelte, je hebt hier muis-onzin verwijderd, verkeerde afstand van collisie ligde aan muis lol
-            if ((player.rectangle.Intersects(spook.rectangle) && CurrentGameState == GameState.Level1) || (player.rectangle.Intersects(boss.rectangle) && CurrentGameState == GameState.Level3) || (player.rectangle.Intersects(fish.rectangle) && CurrentGameState == GameState.Level2 || (player.rectangle.Intersects(lBall.rectangle) && CurrentGameState == GameState.Level2)))
+            
+            if ((player.rectangle.Intersects(spook.rectangle) && CurrentGameState == GameState.Level1) || (player.rectangle.Intersects(boss.rectangle) && CurrentGameState == GameState.Level3) || (player.rectangle.Intersects(fish.rectangle) && CurrentGameState == GameState.Level2 || (player.rectangle.Intersects(lBall1.Rectangle) && CurrentGameState == GameState.Level2 || (player.rectangle.Intersects(lBall2.Rectangle) && CurrentGameState == GameState.Level2))))
             {
                 if(player.isHit == false)
                 {
@@ -346,7 +377,7 @@ namespace MonogameProject
                 if (player.rectangle.Intersects(coinLevel1.coins[i]) && CurrentGameState == GameState.Level1)
                 {
                     coinLevel1.coins.RemoveAt(i);
-                    score++;
+                    score.ScoreUp();
                 }
                 }
             for (int i = 0; i < coinLevel2.coins.Count; i++)
@@ -354,7 +385,7 @@ namespace MonogameProject
                 if (player.rectangle.Intersects(coinLevel2.coins[i]) && CurrentGameState == GameState.Level2)
                 {
                     coinLevel2.coins.RemoveAt(i);
-                    score++;
+                    score.ScoreUp();
                 }
             }
             for (int i = 0; i < coinLevel3.coins.Count; i++)
@@ -362,7 +393,7 @@ namespace MonogameProject
                 if (player.rectangle.Intersects(coinLevel3.coins[i]) && CurrentGameState == GameState.Level3)
                 {
                     coinLevel3.coins.RemoveAt(i);
-                    score++;
+                    score.ScoreUp();
                 }
             }
            
@@ -375,11 +406,11 @@ namespace MonogameProject
                 CurrentGameState = GameState.Level3;
             }
 
-            // stel later een rectangle in fireball in, de x en y waarden moeten hetzelfde als bullet[i door te doen= rect.X = bullet[i].X enzo..
+           
 
             for (int i = 0; i < player.vuurbal.fireballRect.Count; i++)
             {
-                if (player.vuurbal.fireballRect[i].Intersects(spook.rectangle) && CurrentGameState == GameState.Level1) //zoek manier om fireball bij collision te verwijderen
+                if (player.vuurbal.fireballRect[i].Intersects(spook.rectangle) && CurrentGameState == GameState.Level1) 
                 {
                     spook.health -= 10;
                     player.vuurbal.bullets.Remove(player.vuurbal.bullets[i]);
@@ -410,11 +441,11 @@ namespace MonogameProject
 
             }
 
-            //else if (mouseRectangle.Intersects(player.rectangle))
+            //else if (mouseRectangle.Intersects(player.rectanglePlay))
             //{
             //    player.health -= 10;
             //}
-            //else if (mouseRectangle.Intersects(fish.rectangle))
+            //else if (mouseRectangle.Intersects(fish.rectanglePlay))
             //{
             //    fish.health -= 10;
             //}
@@ -437,8 +468,10 @@ namespace MonogameProject
                     btnPlay.Update(mouse);
                     if (btnPlay.isClicked == true) {
                         restart.isRestarted = false;
-                        CurrentGameState = GameState.Level1; 
-                    
+                       
+                        CurrentGameState = GameState.Level1; //zet player op juiste positie samen met spaceship en reset timer
+
+
                     }
                     else if (btnPlay.isClosed == true) Exit();
                     
@@ -453,11 +486,17 @@ namespace MonogameProject
                     {
                         CurrentGameState = GameState.Level2;
                     }
+                   
+
                     break;
 
 
                 case GameState.Level2:
                     if (Keyboard.GetState().IsKeyDown(Keys.T)) { CurrentGameState = GameState.Level3; }
+                    if (Keyboard.GetState().IsKeyDown(Keys.U))
+                    {
+                        CurrentGameState = GameState.Death;
+                    }
                     break;
                 case GameState.Level3:
                     if (Keyboard.GetState().IsKeyDown(Keys.P)) { CurrentGameState = GameState.Win; }
@@ -470,10 +509,20 @@ namespace MonogameProject
                 case GameState.Death:
                     restart.Update(mouse);
                     if (restart.isRestarted == true) {
+                        gameTime.TotalGameTime = TimeSpan.Zero;
                         btnPlay.isClicked = false;
-                        CurrentGameState = GameState.MainMenu; //bug, gaat van menu direct naar level1
-                        
+                        CurrentGameState = GameState.Level1; //bug, bij hoverout gaat het steeds terug van menu naar death
 
+
+                      
+                        player.timer = 0; //werkt gewoon, komt door knop bug, hij blijft 0 als je ingedrukt houdt en als je loslaat wordt het 2,3,4.. zie debug.writeline
+                        ufo.timer = 0;
+
+
+                   
+                        player.restarted = true;
+                        ufo.restarted = true;
+                        
                     }
                     
                     break;
@@ -483,7 +532,8 @@ namespace MonogameProject
            
             spook.Update(gameTime);
             boss.Update(gameTime);
-            lBall.Update(gameTime);
+            lBall1.Update(gameTime);
+            lBall2.Update(gameTime);
             fish.Update(gameTime);
             
 
@@ -491,7 +541,7 @@ namespace MonogameProject
             playerLife.Update(gameTime);
             if (Keyboard.GetState().IsKeyDown(Keys.H))
             {
-                score++;
+                score.ScoreUp();
 
             }
             coinLevel1.Update(gameTime);
@@ -535,7 +585,7 @@ namespace MonogameProject
 
             Rectangle rectje = new Rectangle(0, 0, screenWidth + 50, screenHeight + 30);
 
-            // TODO: Add your drawing code here
+   
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null);
 
             switch (CurrentGameState)
@@ -553,20 +603,21 @@ namespace MonogameProject
                     music.Draw(_spriteBatch);
                     _spriteBatch.Draw(backgroundje1, rectje, Color.White);
                     mapLevel1.Draw(_spriteBatch);
-                    spook.Draw(_spriteBatch);
                     _spriteBatch.Draw(healthTexture, healthRectangleGhost, Color.White);
                     portal1.Draw(_spriteBatch);
                     player.Draw(_spriteBatch);
                     ufo.Draw(_spriteBatch);
                     coinLevel1.Draw(_spriteBatch);
+                    spook.Draw(_spriteBatch);
                     playerLife.Draw(_spriteBatch);
-                    _spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(screenWidth - 360, 0), Color.White); ;
+                    score.Draw(_spriteBatch); 
                     break;
 
                 case GameState.Level2:
                     _spriteBatch.Draw(backgroundje2, rectje, Color.White);
                     music.Draw(_spriteBatch);
-                    lBall.Draw(_spriteBatch);
+                    lBall1.Draw(_spriteBatch);
+                    lBall2.Draw(_spriteBatch);
                     mapLevel2.Draw(_spriteBatch);
                     coinLevel2.Draw(_spriteBatch);
                     fish.Draw(_spriteBatch);
@@ -574,7 +625,8 @@ namespace MonogameProject
                     _spriteBatch.Draw(healthTexture, healthRectangleFish, Color.White);
                     player.Draw(_spriteBatch);
                     playerLife.Draw(_spriteBatch);
-                    _spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(screenWidth - 360, 0), Color.White);
+                    score.Draw(_spriteBatch);
+
                     break;
                 case GameState.Level3:
                     _spriteBatch.Draw(backgroundje3, rectje, Color.White);
@@ -585,7 +637,7 @@ namespace MonogameProject
                     _spriteBatch.Draw(healthTexture, healthRectangleBoss, Color.White);
                     player.Draw(_spriteBatch);
                     playerLife.Draw(_spriteBatch);
-                    _spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(screenWidth - 360, 0), Color.White);
+                    score.Draw(_spriteBatch);
                     break;
 
                 case GameState.Win:

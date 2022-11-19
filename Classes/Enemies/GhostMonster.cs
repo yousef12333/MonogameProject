@@ -23,7 +23,6 @@ namespace MonogameProject.Classes.Enemies
         public AnimationModus animations { get; set; }
         public Animation currentAnimation { get; set; }
         public Rectangle Rectangle { get { return rectangle; } }
-        public Vector2 Position{ get{ return ghostPosition; }}
         public Vector2 Velocity { get { return velocity; } set{ velocity = value; }}
         public GhostMonster(Texture2D texture, int newHealth)
         {
@@ -39,16 +38,9 @@ namespace MonogameProject.Classes.Enemies
         public void Update(GameTime gameTime)
         {
             currentAnimation.Update(gameTime);
-            if (health < 1)
-            {
-                rectangle = new Rectangle(1900, (int)ghostPosition.Y, 74, 74);
-            }
-            else
-            {
-                rectangle = new Rectangle((int)ghostPosition.X, (int)ghostPosition.Y, 74, 74);
-            }
+            if (health < 1) rectangle = new Rectangle(1900, (int)ghostPosition.Y, 74, 74);
+            else{rectangle = new Rectangle((int)ghostPosition.X, (int)ghostPosition.Y, 74, 74);}
             move();
-         
         }
         private void move()
         {
@@ -56,12 +48,10 @@ namespace MonogameProject.Classes.Enemies
             if (ghostPosition.X > 1700)
             {
                 velocity.X *= -1;
-                
             }
             else if (ghostPosition.X < 1300)
             {
                 velocity.X *= -1;
-                
             }
             if(velocity.X > 1)
             {
@@ -74,9 +64,7 @@ namespace MonogameProject.Classes.Enemies
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-           
                 spriteBatch.Draw(ghost, rectangle, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
-            
         }
     }
 }

@@ -16,7 +16,7 @@ namespace MonogameProject.Tiles
         private int width, height, number;
         public int Width { get { return width; } }
         public int Height { get { return height; } }
-        public int Number { get { return number; } }
+
 
         public Map() { }
         public void Generate(int[,] map, int size)
