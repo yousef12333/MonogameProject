@@ -32,7 +32,7 @@ namespace MonogameProject.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             
-            spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(Game1.Instance.screenWidth - 350, 10), Color.White);
+            spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(BioHunt.Instance.screenWidth - 350, 10), Color.White);
         }
 
      
