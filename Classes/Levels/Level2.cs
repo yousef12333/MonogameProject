@@ -16,6 +16,8 @@ using static System.Net.Mime.MediaTypeNames;
 using SharpDX.Direct3D9;
 using MonogameProject.Classes.Enemies;
 using Microsoft.Xna.Framework.Content;
+using MonogameProject.Screen;
+using MonogameProject.Collision;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -25,7 +27,7 @@ namespace MonogameProject.Classes.Levels
         bool levelLoaded = false;
         Health playerLife;
         public SpriteFont tekst;
-        Portal portal2;
+        public Portal portal2;
         Texture2D coinTexture;
         Player player;
         Texture2D playerTexture;
@@ -45,6 +47,8 @@ namespace MonogameProject.Classes.Levels
         Texture2D lavaBallTexture;
         LavaBall lBall1;
         LavaBall lBall2;
+        Transitions transitions;
+        CollisionManager collision;
         public Level2()
         {
             fireball = new Fireball(fireballImage);
@@ -57,6 +61,18 @@ namespace MonogameProject.Classes.Levels
             portal2 = new Portal(portalTexture);
 
             coinLevel2 = new Coin(coinTexture);
+        }
+        private static Level2 instance;
+
+        public static Level2 Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new Level2();
+
+                return instance;
+            }
         }
         public void Load(ContentManager Content)
         {
@@ -124,8 +140,10 @@ namespace MonogameProject.Classes.Levels
             portal2.Update(gameTime);
             coinLevel2.Update(gameTime);
             healthRectangleFish = new Rectangle(fish.rectangle.X - 2, fish.Rectangle.Y - 25, fish.health, 15);
+            transitions.Update(gameTime);
+            collision.Update(gameTime);
         }
-        Rectangle rectje = new Rectangle(0, 0, BioHunt.Instance.screenWidth + 50, BioHunt.Instance.screenHeight + 30);
+        Rectangle rectje = new Rectangle(0, 0, ScreenSettings.Instance.screenWidth + 50, ScreenSettings.Instance.screenHeight + 30);
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(backgroundje2, rectje, Color.White);

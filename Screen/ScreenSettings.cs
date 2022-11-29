@@ -9,10 +9,21 @@ namespace MonogameProject.Screen
     internal class ScreenSettings
     {
         public int screenWidth = 1790, screenHeight = 703;
-        bool objectInitialized = false;
-        public BioHunt bioHunt;
-        bool monsterHit = false;
+        public bool objectInitialized = false;
+        public bool monsterHit = false;
         public bool IsMouseVisible = true;
+
+        private static ScreenSettings instance;
+        public static ScreenSettings Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new ScreenSettings();
+
+                return instance;
+            }
+        }
 
     }
 }

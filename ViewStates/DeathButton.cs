@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MonogameProject.ViewStates
 {
-    internal class DeathButton
+    public class DeathButton
     {
         Texture2D texture;
         Vector2 position;

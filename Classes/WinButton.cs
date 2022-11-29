@@ -15,13 +15,13 @@ namespace MonogameProject.Classes
         Texture2D texture;
         Vector2 position;
         Rectangle rectangle;
-
         Color colour = new Color(255, 255, 255, 255);
 
         public Vector2 size;
         public WinButton(Texture2D newTexture, GraphicsDevice graphics)
         {
             texture = newTexture;
+            
             size = new Vector2(graphics.Viewport.Width / 3, graphics.Viewport.Height / 5);
 
         }

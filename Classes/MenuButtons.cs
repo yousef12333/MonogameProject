@@ -38,7 +38,7 @@ namespace MonogameProject.Classes
             rectanglePlay = new Rectangle((int)positionPlay.X, (int)positionPlay.Y, (int)size.X, (int)size.Y);
             rectangleQuit = new Rectangle((int)positionQuit.X, (int)positionQuit.Y, (int)size.X, (int)size.Y);
 
-            Rectangle mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
+            Rectangle mouseRectangle = new(mouse.X, mouse.Y, 1, 1);
 
            
                 if (mouseRectangle.Intersects(rectanglePlay))

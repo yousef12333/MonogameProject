@@ -16,6 +16,8 @@ using static System.Net.Mime.MediaTypeNames;
 using SharpDX.Direct3D9;
 using MonogameProject.Classes.Enemies;
 using Microsoft.Xna.Framework.Content;
+using MonogameProject.Screen;
+using MonogameProject.Collision;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -45,7 +47,8 @@ namespace MonogameProject.Classes.Levels
         Texture2D bossTexture;
         BackgroundMusic music;
         private Texture2D backgroundjeLevel3;
-
+        Transitions transitions;
+        CollisionManager collision;
         public Level3()
         {
             fireball = new Fireball(fireballImage);
@@ -55,6 +58,18 @@ namespace MonogameProject.Classes.Levels
             boss = new BossMonster(bossTexture, 200);
 
             coinLevel3 = new Coin(coinTexture);
+        }
+        private static Level3 instance;
+
+        public static Level3 Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new Level3();
+
+                return instance;
+            }
         }
         public void Load(ContentManager Content)
         {
@@ -114,8 +129,10 @@ namespace MonogameProject.Classes.Levels
             coinLevel3.Update(gameTime);
           
             healthRectangleBoss = new Rectangle(boss.rectangle.X, boss.Rectangle.Y - 25, boss.health, 15);
+            transitions.Update(gameTime);
+            collision.Update(gameTime);
         }
-        Rectangle rectje = new Rectangle(0, 0, BioHunt.Instance.screenWidth + 50, BioHunt.Instance.screenHeight + 30);
+        Rectangle rectje = new Rectangle(0, 0, ScreenSettings.Instance.screenWidth + 50, ScreenSettings.Instance.screenHeight + 30);
 
         public void Draw(SpriteBatch spriteBatch)
         {

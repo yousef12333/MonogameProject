@@ -1,21 +1,11 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Reflection.Metadata;
-using Microsoft.VisualBasic.Devices;
-using Mouse = Microsoft.Xna.Framework.Input.Mouse;
-using MonogameProject.ViewStates;
 using MonogameProject.Classes.Hero;
 using MonogameProject.Tiles;
-using static System.Net.Mime.MediaTypeNames;
-using SharpDX.Direct3D9;
 using MonogameProject.Classes.Enemies;
+using MonogameProject.Screen;
+using MonogameProject.Collision;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -42,11 +32,26 @@ namespace MonogameProject.Classes.Levels
         Rectangle healthRectangleGhost;
         private Texture2D backgroundjeLevel1;
         Texture2D ghostTexture;
+        Transitions transitions;
+        CollisionManager collision;
+
         public Level1()
         {
             levelLoaded = true;
             fireball = new Fireball(fireballImage);
             score = new Score(tekst);
+        }
+        private static Level1 instance;
+
+        public static Level1 Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new Level1();
+
+                return instance;
+            }
         }
         public void Load(ContentManager Content)
         {
@@ -103,11 +108,12 @@ namespace MonogameProject.Classes.Levels
             coinLevel1.Update(gameTime);
             spook.Update(gameTime);
             healthRectangleGhost = new Rectangle(spook.rectangle.X - 10, spook.Rectangle.Y - 25, spook.health, 15);
-         
+            transitions.Update(gameTime);
+            collision.Update(gameTime);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            Rectangle rectje = new Rectangle(0, 0, BioHunt.Instance.screenWidth + 50, BioHunt.Instance.screenHeight + 30);
+            Rectangle rectje = new Rectangle(0, 0, ScreenSettings.Instance.screenWidth + 50, ScreenSettings.Instance.screenHeight + 30);
             playerLife.Draw(spriteBatch);
             portal1.Draw(spriteBatch);
             score.Draw(spriteBatch);

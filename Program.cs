@@ -1,3 +1,3 @@
 ﻿
-using var game = new MonogameProject.Game1();
+using var game = new MonogameProject.BioHunt();
 game.Run();

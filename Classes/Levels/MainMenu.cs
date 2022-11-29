@@ -11,6 +11,7 @@ using System.Reflection.Metadata;
 using Microsoft.VisualBasic.Devices;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 using MonogameProject.ViewStates;
+using MonogameProject.Screen;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -39,7 +40,7 @@ namespace MonogameProject.Classes.Levels
             public void Draw(SpriteBatch spriteBatch)
         {
 
-            spriteBatch.Draw(backgroundMainMenu, new Rectangle(0, 0, BioHunt.Instance.screenWidth + 80, BioHunt.Instance.screenHeight), Color.White);
+            spriteBatch.Draw(backgroundMainMenu, new Rectangle(0, 0, ScreenSettings.Instance.screenWidth + 80, ScreenSettings.Instance.screenHeight), Color.White);
             btnPlay.Draw(spriteBatch);
             spriteBatch.DrawString(titleEdge, "BIOHUNT", new Vector2(565, 15), Color.Black);
             spriteBatch.DrawString(title, "BIOHUNT", new Vector2(550, 0), Color.DarkViolet);

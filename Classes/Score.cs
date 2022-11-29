@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonogameProject.Interfaces;
+using MonogameProject.Screen;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Text;
@@ -32,7 +33,7 @@ namespace MonogameProject.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             
-            spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(BioHunt.Instance.screenWidth - 350, 10), Color.White);
+            spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(ScreenSettings.Instance.screenWidth - 350, 10), Color.White);
         }
 
      
