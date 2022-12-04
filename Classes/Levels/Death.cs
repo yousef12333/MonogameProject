@@ -18,40 +18,53 @@ namespace MonogameProject.Classes.Levels
 {
     internal class Death
     {
-        Player player;
-        Ufo ufo;
-        public DeathButton restart;
-        public Texture2D backgroundDeath;
-        public MenuButtons btnPlay;
-        
+        Texture2D texture;
+        Vector2 position;
+        Rectangle rectangle;
+        Color colour = new Color(255, 255, 255, 255);
 
-        public void Load(ContentManager Content)
+
+        public Vector2 size;
+        public Death(Texture2D newTexture, GraphicsDevice graphics)
         {
-            backgroundDeath = Content.Load<Texture2D>("Death_Screen");
-            restart.setPosition(new Vector2(620, 250));
+            texture = newTexture;
+
+            size = new Vector2(graphics.Viewport.Width / 3, graphics.Viewport.Height / 5);
+
+        }
+        bool down;
+        public bool isRestarted;
+
+        public void Update(MouseState mouse)
+        {
+            rectangle = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+
+
+            Rectangle mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
+
+            if (mouseRectangle.Intersects(rectangle))
+            {
+                if (colour.A == 255) down = false;
+                if (colour.A == 0) down = true;
+                if (down) colour.A += 3;
+                else colour.A -= 3;
+                if (mouse.LeftButton == ButtonState.Pressed) isRestarted = true;
+            }
+            else if (colour.A < 255)
+            {
+                colour.A += 3;
+                isRestarted = false;
+            }
+
+        }
+        public void setPosition(Vector2 newPosition)
+        {
+            position = newPosition;
+
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(backgroundDeath, new Rectangle(0, 0, ScreenSettings.Instance.screenWidth + 80, ScreenSettings.Instance.screenHeight), Color.White);
-            restart.Draw(spriteBatch);
-        }
-
-        public void Update(GameTime gameTime)
-        {
-            MouseState mouse = Mouse.GetState();
-            restart.Update(mouse);
-            if (restart.isRestarted == true)
-            {
-                btnPlay.isClicked = false;
-                BioHunt.Instance.LevelStates = LevelStates.Level1; //bug, bij hoverout gaat het steeds terug van menu naar death
-                player.timer = 0; //werkt gewoon, komt door knop bug, hij blijft 0 als je ingedrukt houdt en als je loslaat wordt het 2,3,4.. zie debug.writeline
-                ufo.timer = 0;
-                player.restarted = true;
-                ufo.restarted = true;
-
-            }
-
-
+            spriteBatch.Draw(texture, rectangle, colour);
 
         }
     }

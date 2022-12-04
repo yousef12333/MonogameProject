@@ -28,7 +28,7 @@ namespace MonogameProject.Classes
         public void Update(GameTime gameTime)
         {
             
-           if(Player.Instance.HeartRate != amountOfHealth.Count) 
+           if(Player.Instance.HeartRate != amountOfHealth.Count) //hier hier hier hier hier hier
             {
                 healthReduce();
             }

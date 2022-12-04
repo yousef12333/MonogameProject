@@ -11,17 +11,17 @@ namespace MonogameProject.Classes.Levels
 {
     internal class Level1
     {
+
         Texture2D healthTexture;
-        bool levelLoaded = false;
         Ufo ufo;
         Texture2D ufoTexture;
         Health playerLife;
         public SpriteFont tekst;
-        Portal portal1;
+        public Portal portal1;
         Texture2D coinTexture;
         Player player;
         public bool objectInitialized = false;
-        Map mapLevel1;
+
         Coin coinLevel1;
         Texture2D portalTexture;
         Texture2D fireballImage;
@@ -34,12 +34,20 @@ namespace MonogameProject.Classes.Levels
         Texture2D ghostTexture;
         Transitions transitions;
         CollisionManager collision;
+        Texture2D playerTexture;
 
         public Level1()
         {
-            levelLoaded = true;
+            player = new Player(playerTexture, 100, fireballImage);
             fireball = new Fireball(fireballImage);
             score = new Score(tekst);
+            coinLevel1 = new Coin(coinTexture);
+            ufo = new Ufo(ufoTexture);
+            portal1 = new Portal(portalTexture);
+            score = new Score(tekst);
+            playerLife = new Health();
+            music = new BackgroundMusic();
+            spook = new GhostMonster(ghostTexture, 100);
         }
         private static Level1 instance;
 
@@ -55,46 +63,29 @@ namespace MonogameProject.Classes.Levels
         }
         public void Load(ContentManager Content)
         {
-            mapLevel1.Generate(new int[,]
-              {
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-                { 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-                { 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-                { 2, 2, 2, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-                { 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
 
-          }, 64);
+            playerTexture = Content.Load<Texture2D>("VerbeterigSpeler2");
 
-            coinLevel1 = new Coin(coinTexture);
-            mapLevel1 = new Map();
+            player = new Player(playerTexture, 100, fireballImage);
             coinTexture = Content.Load<Texture2D>("CoinMovement2");
-            portal1 = new Portal(portalTexture);
+            
             portalTexture = Content.Load<Texture2D>("Portal");
-            score = new Score(tekst);
-            playerLife = new Health();
-            music = new BackgroundMusic();
+           
             music.Load(Content);
             playerLife.Load(Content);
-            spook = new GhostMonster(ghostTexture, 100);
+            
             ghostTexture = Content.Load<Texture2D>("SpookBeweging");
             ufoTexture = Content.Load<Texture2D>("Pixel_Ufo");
-            ufo = new Ufo(ufoTexture);
+           
             healthTexture = Content.Load<Texture2D>("HealthBar");
             backgroundjeLevel1 = Content.Load<Texture2D>("background");
         }
         public void Update(GameTime gameTime)
         {
-            if (levelLoaded)
-            {
+           
                 ufo.Update(gameTime);
                 player.Update(gameTime);
-            }
+            
             if (objectInitialized == false)
             {
                 coinLevel1.AddCoin(new Rectangle(910, 290, 32, 32));
@@ -104,12 +95,14 @@ namespace MonogameProject.Classes.Levels
                 objectInitialized = true;
             }
             playerLife.Update(gameTime);
-            portal1.Update(gameTime);
+          
             coinLevel1.Update(gameTime);
             spook.Update(gameTime);
             healthRectangleGhost = new Rectangle(spook.rectangle.X - 10, spook.Rectangle.Y - 25, spook.health, 15);
-            transitions.Update(gameTime);
-            collision.Update(gameTime);
+            
+           
+            portal1.Update(gameTime);
+
         }
         public void Draw(SpriteBatch spriteBatch)
         {
