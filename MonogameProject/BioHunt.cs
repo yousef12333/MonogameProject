@@ -40,13 +40,13 @@ namespace MonogameProject
         
         Health playerLife;
         WinButton winEindigKnop;
-        private Texture2D backgroundje1;
+       
         private Texture2D backgroundje2;
         private Texture2D backgroundje3;
         private Texture2D winScreen;
         GraphicsDevice grap;
 
-        Map mapLevel1;
+       
         Map mapLevel2;
         Map mapLevel3;
 
@@ -55,7 +55,8 @@ namespace MonogameProject
         //Portal portal2;
         //Texture2D portalTexture;
 
-        Coin coinLevel1;
+        
+
         Coin coinLevel2;
         Coin coinLevel3;
         Texture2D coinTexture;
@@ -63,17 +64,17 @@ namespace MonogameProject
 
 
         //Ufo ufo;
-        //Texture2D ufoTexture;
-
+        Texture2D ufoTexture;
+        Texture2D portalTexture;
         Texture2D healthTexture;
         Rectangle healthRectangleFish;
-        Rectangle healthRectangleGhost;
+        
         Rectangle healthRectangleBoss;
         Texture2D fishTexture;
         FishMonsterTrap fish;
         BossMonster boss;
         Texture2D bossTexture;
-        GhostMonster spook;
+        //GhostMonster spook;
         Texture2D lavaBallTexture;
         LavaBall lBall1;
         LavaBall lBall2;
@@ -114,7 +115,7 @@ namespace MonogameProject
             IsMouseVisible = true;
             fireball = new Fireball(fireballImage);
             score = new Score(tekst);
-
+            
         }
 
         protected override void Initialize()
@@ -122,30 +123,35 @@ namespace MonogameProject
             // TODO: Add your initialization logic here
 
             fireballImage = Content.Load<Texture2D>("Fireball");
-            backgroundje1 = Content.Load<Texture2D>("background");
+            
             backgroundje2 = Content.Load<Texture2D>("Vulcanic_Background");
             backgroundje3 = Content.Load<Texture2D>("Castle_Background");
             winScreen = Content.Load<Texture2D>("Win_Background");
-            //ufoTexture = Content.Load<Texture2D>("Pixel_Ufo");
-       
-            mapLevel1 = new Map();
+            ufoTexture = Content.Load<Texture2D>("Pixel_Ufo");
+            portalTexture = Content.Load<Texture2D>("Portal");
+            ghostTexture = Content.Load<Texture2D>("SpookBeweging");
+            coinTexture = Content.Load<Texture2D>("CoinMovement2");
+            playerTexture = Content.Load<Texture2D>("VerbeterigSpeler2");
+            fireballImage = Content.Load<Texture2D>("Fireball");
+            tekst = Content.Load<SpriteFont>("File");
+
             mapLevel2 = new Map();
             mapLevel3 = new Map();
             playerLife = new Health();
-           
+            level1 = new Level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst);
             level2 = new Level2();
             level3 = new Level3();
             //hier moeten de levels, BOVEN base.initialize
 
 
-            tekst = Content.Load<SpriteFont>("File");
+           
             title = Content.Load<SpriteFont>("Title");
             titleEdge = Content.Load<SpriteFont>("TitleEdge");
             InputExplanation = Content.Load<SpriteFont>("Explanation");
-            level1 = new Level1();
+            
             base.Initialize();
             
-            spook = new GhostMonster(ghostTexture, 100);
+            
             boss = new BossMonster(bossTexture, 200);
             lBall1 = new LavaBall(lavaBallTexture);
             lBall2 = new LavaBall(lavaBallTexture);
@@ -153,7 +159,7 @@ namespace MonogameProject
             player = new Player(playerTexture, 100, fireballImage);
             
             //portal2 = new Portal(portalTexture);
-            coinLevel1 = new Coin(coinTexture);
+            
             coinLevel2 = new Coin(coinTexture);
             coinLevel3 = new Coin(coinTexture);
             //ufo = new Ufo(ufoTexture);
@@ -175,13 +181,13 @@ namespace MonogameProject
             player = new Player(playerTexture, 100, fireballImage);
             healthTexture = Content.Load<Texture2D>("HealthBar");
 
-            playerTexture = Content.Load<Texture2D>("VerbeterigSpeler2");
-            ghostTexture = Content.Load<Texture2D>("SpookBeweging");
+           
+            
             bossTexture = Content.Load<Texture2D>("BossMonsterMovement2");
             lavaBallTexture = Content.Load<Texture2D>("Lava_Ball2");
             fishTexture = Content.Load<Texture2D>("FishmonsterMovement4");
             //portalTexture = Content.Load<Texture2D>("Portal");
-            coinTexture = Content.Load<Texture2D>("CoinMovement2");
+           
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _graphics.PreferredBackBufferHeight = screenHeight;
             _graphics.PreferredBackBufferWidth = screenWidth;
@@ -198,21 +204,7 @@ namespace MonogameProject
 
 
 
-            mapLevel1.Generate(new int[,]
-           {
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-                { 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-                { 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-                { 2, 2, 2, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-                { 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2},
-
-       }, 64);
+           
 
 
 
@@ -265,7 +257,7 @@ namespace MonogameProject
         protected override void Update(GameTime gameTime)
         {
             Debug.WriteLine(gameTime.TotalGameTime);
-            if (LevelStates == LevelStates.Level1) levelLoaded = true;
+            
 
 
 
@@ -276,9 +268,7 @@ namespace MonogameProject
 
             if (objectInitialized == false)
             {
-                coinLevel1.AddCoin(new Rectangle(910, 290, 32, 32));
-                coinLevel1.AddCoin(new Rectangle(1200, 580, 32, 32));
-                coinLevel1.AddCoin(new Rectangle(1700, 355, 32, 32));
+               
 
                 coinLevel2.AddCoin(new Rectangle(594, 95, 32, 32));
                 coinLevel2.AddCoin(new Rectangle(1110, 95, 32, 32));
@@ -298,117 +288,117 @@ namespace MonogameProject
 
 
 
-            healthRectangleGhost = new Rectangle(spook.rectangle.X - 10, spook.Rectangle.Y - 25, spook.health, 15);
-            healthRectangleFish = new Rectangle(fish.rectangle.X - 2, fish.Rectangle.Y - 25, fish.health, 15);
-            healthRectangleBoss = new Rectangle(boss.rectangle.X, boss.Rectangle.Y - 25, boss.health, 15);
+            
+            //healthRectangleFish = new Rectangle(fish.rectangle.X - 2, fish.Rectangle.Y - 25, fish.health, 15);
+            //healthRectangleBoss = new Rectangle(boss.rectangle.X, boss.Rectangle.Y - 25, boss.health, 15);
 
 
 
 
-            if ((player.rectangle.Intersects(spook.rectangle) && LevelStates == LevelStates.Level1) || (player.rectangle.Intersects(boss.rectangle) && LevelStates == LevelStates.Level3) || (player.rectangle.Intersects(fish.rectangle) && LevelStates == LevelStates.Level2 || (player.rectangle.Intersects(lBall1.Rectangle) && LevelStates == LevelStates.Level2 || (player.rectangle.Intersects(lBall2.Rectangle) && LevelStates == LevelStates.Level2))))
-            {
-                if (player.isHit == false)
-                {
-                    player.isHit = true;
-                    Player.Instance.HeartRate--;
-                }
+            //if ((player.rectangle.Intersects(spook.rectangle) && LevelStates == LevelStates.Level1) || (player.rectangle.Intersects(boss.rectangle) && LevelStates == LevelStates.Level3) || (player.rectangle.Intersects(fish.rectangle) && LevelStates == LevelStates.Level2 || (player.rectangle.Intersects(lBall1.Rectangle) && LevelStates == LevelStates.Level2 || (player.rectangle.Intersects(lBall2.Rectangle) && LevelStates == LevelStates.Level2))))
+            //{
+            //    if (player.isHit == false)
+            //    {
+            //        player.isHit = true;
+            //        Player.Instance.HeartRate--;
+            //    }
 
-            }
-            if ((player.rectangle.Intersects(spook.rectangle) && LevelStates == LevelStates.Level1))
-            {
-                if (monsterHit == false)
-                {
-                    monsterHit = true;
+            //}
+            //if ((player.rectangle.Intersects(spook.rectangle) && LevelStates == LevelStates.Level1))
+            //{
+            //    if (monsterHit == false)
+            //    {
+            //        monsterHit = true;
 
-                    spook.Velocity *= new Vector2(-1, 0);
-                }
-            }
-            else if ((player.rectangle.Intersects(fish.rectangle) && LevelStates == LevelStates.Level2))
-            {
-                if (monsterHit == false)
-                {
-                    monsterHit = true;
-                    fish.Velocity *= new Vector2(-1, 0);
-                }
-            }
-            if ((player.rectangle.Intersects(boss.rectangle) && player.rectangle.X - boss.rectangle.X < 0 && LevelStates == LevelStates.Level3)) //werkt niet
-            {
-                if (monsterHit == false)
-                {
-                    monsterHit = true;
-                    boss.VelocityX = -9;
-                    boss.VelocityX *= -1;
+            //        spook.Velocity *= new Vector2(-1, 0);
+            //    }
+            //}
+            //else if ((player.rectangle.Intersects(fish.rectangle) && LevelStates == LevelStates.Level2))
+            //{
+            //    if (monsterHit == false)
+            //    {
+            //        monsterHit = true;
+            //        fish.Velocity *= new Vector2(-1, 0);
+            //    }
+            //}
+            //if ((player.rectangle.Intersects(boss.rectangle) && player.rectangle.X - boss.rectangle.X < 0 && LevelStates == LevelStates.Level3)) //werkt niet
+            //{
+            //    if (monsterHit == false)
+            //    {
+            //        monsterHit = true;
+            //        boss.VelocityX = -9;
+            //        boss.VelocityX *= -1;
 
-                    boss.goLeft = false;
-                    boss.goRight = true;
+            //        boss.goLeft = false;
+            //        boss.goRight = true;
 
 
-                }
-            }
-            else if ((player.rectangle.Intersects(boss.rectangle) && player.rectangle.X - boss.rectangle.X > 0 && LevelStates == LevelStates.Level3))
-            {
-                if (monsterHit == false)
-                {
-                    monsterHit = true;
+            //    }
+            //}
+            //else if ((player.rectangle.Intersects(boss.rectangle) && player.rectangle.X - boss.rectangle.X > 0 && LevelStates == LevelStates.Level3))
+            //{
+            //    if (monsterHit == false)
+            //    {
+            //        monsterHit = true;
 
-                    boss.VelocityX = 9;
-                    boss.VelocityX *= -1;
+            //        boss.VelocityX = 9;
+            //        boss.VelocityX *= -1;
 
-                    boss.goLeft = true;
-                    boss.goRight = false;
-                }
-            }
+            //        boss.goLeft = true;
+            //        boss.goRight = false;
+            //    }
+            //}
 
-            if ((player.rectangle.X - boss.rectangle.X < -500) && LevelStates == LevelStates.Level3)
-            {
-                boss.VelocityX = 9;
-                boss.VelocityX *= -1;
+            //if ((player.rectangle.X - boss.rectangle.X < -500) && LevelStates == LevelStates.Level3)
+            //{
+            //    boss.VelocityX = 9;
+            //    boss.VelocityX *= -1;
 
-                boss.goLeft = true;
-                boss.goRight = false;
-            }
-            else if ((player.rectangle.X - boss.rectangle.X > 500) && LevelStates == LevelStates.Level3)
-            {
-                boss.VelocityX = -9;
-                boss.VelocityX *= -1;
+            //    boss.goLeft = true;
+            //    boss.goRight = false;
+            //}
+            //else if ((player.rectangle.X - boss.rectangle.X > 500) && LevelStates == LevelStates.Level3)
+            //{
+            //    boss.VelocityX = -9;
+            //    boss.VelocityX *= -1;
 
-                boss.goLeft = false;
-                boss.goRight = true;
-            }
-            if (monsterHit == true)
-            {
-                monsterHitCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (monsterHitCounter > 1)
-                {
-                    monsterHit = false;
-                    monsterHitCounter = 0;
-                }
-            }
+            //    boss.goLeft = false;
+            //    boss.goRight = true;
+            //}
+            //if (monsterHit == true)
+            //{
+            //    monsterHitCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //    if (monsterHitCounter > 1)
+            //    {
+            //        monsterHit = false;
+            //        monsterHitCounter = 0;
+            //    }
+            //}
 
-            for (int i = 0; i < coinLevel1.coins.Count; i++)
-            {
-                if (player.rectangle.Intersects(coinLevel1.coins[i]) && LevelStates == LevelStates.Level1)
-                {
-                    coinLevel1.coins.RemoveAt(i);
-                    score.ScoreUp();
-                }
-            }
-            for (int i = 0; i < coinLevel2.coins.Count; i++)
-            {
-                if (player.rectangle.Intersects(coinLevel2.coins[i]) && LevelStates == LevelStates.Level2)
-                {
-                    coinLevel2.coins.RemoveAt(i);
-                    score.ScoreUp();
-                }
-            }
-            for (int i = 0; i < coinLevel3.coins.Count; i++)
-            {
-                if (player.rectangle.Intersects(coinLevel3.coins[i]) && LevelStates == LevelStates.Level3)
-                {
-                    coinLevel3.coins.RemoveAt(i);
-                    score.ScoreUp();
-                }
-            }
+            //for (int i = 0; i < coinLevel1.coins.Count; i++)
+            //{
+            //    if (player.rectangle.Intersects(coinLevel1.coins[i]) && LevelStates == LevelStates.Level1)
+            //    {
+            //        coinLevel1.coins.RemoveAt(i);
+            //        score.ScoreUp();
+            //    }
+            //}
+            //for (int i = 0; i < coinLevel2.coins.Count; i++)
+            //{
+            //    if (player.rectangle.Intersects(coinLevel2.coins[i]) && LevelStates == LevelStates.Level2)
+            //    {
+            //        coinLevel2.coins.RemoveAt(i);
+            //        score.ScoreUp();
+            //    }
+            //}
+            //for (int i = 0; i < coinLevel3.coins.Count; i++)
+            //{
+            //    if (player.rectangle.Intersects(coinLevel3.coins[i]) && LevelStates == LevelStates.Level3)
+            //    {
+            //        coinLevel3.coins.RemoveAt(i);
+            //        score.ScoreUp();
+            //    }
+            //}
 
             //if (player.rectangle.Intersects(portal1.portals[0]) && LevelStates == LevelStates.Level1)
             //{
@@ -421,38 +411,38 @@ namespace MonogameProject
 
 
 
-            for (int i = 0; i < player.vuurbal.fireballRect.Count; i++)
-            {
-                if (player.vuurbal.fireballRect[i].Intersects(spook.rectangle) && LevelStates == LevelStates.Level1)
-                {
-                    spook.health -= 10;
-                    player.vuurbal.bullets.Remove(player.vuurbal.bullets[i]);
-                    player.vuurbal.fireballRect.Remove(player.vuurbal.fireballRect[i]);
-                    player.vuurbal.aanmaakBullet = false;
-                    player.vuurbal.timer = 0;
-                    player.vuurbal.directionFireball.RemoveAt(player.vuurbal.directionFireball.Count - 1);
-                }
-                else if (player.vuurbal.fireballRect[i].Intersects(fish.rectangle) && LevelStates == LevelStates.Level2)
-                {
-                    fish.health -= 10;
-                    player.vuurbal.bullets.Remove(player.vuurbal.bullets[i]);
-                    player.vuurbal.fireballRect.Remove(player.vuurbal.fireballRect[i]);
-                    player.vuurbal.aanmaakBullet = false;
-                    player.vuurbal.timer = 0;
-                    player.vuurbal.directionFireball.RemoveAt(player.vuurbal.directionFireball.Count - 1);
-                }
-                else if (player.vuurbal.fireballRect[i].Intersects(boss.rectangle) && LevelStates == LevelStates.Level3)
-                {
-                    boss.health -= 10;
-                    player.vuurbal.bullets.Remove(player.vuurbal.bullets[i]);
-                    player.vuurbal.fireballRect.Remove(player.vuurbal.fireballRect[i]);
-                    player.vuurbal.aanmaakBullet = false;
-                    player.vuurbal.timer = 0;
-                    player.vuurbal.directionFireball.RemoveAt(player.vuurbal.directionFireball.Count - 1);
-                }
+            //for (int i = 0; i < player.vuurbal.fireballRect.Count; i++)
+            //{
+            //    if (player.vuurbal.fireballRect[i].Intersects(spook.rectangle) && LevelStates == LevelStates.Level1)
+            //    {
+            //        spook.health -= 10;
+            //        player.vuurbal.bullets.Remove(player.vuurbal.bullets[i]);
+            //        player.vuurbal.fireballRect.Remove(player.vuurbal.fireballRect[i]);
+            //        player.vuurbal.aanmaakBullet = false;
+            //        player.vuurbal.timer = 0;
+            //        player.vuurbal.directionFireball.RemoveAt(player.vuurbal.directionFireball.Count - 1);
+            //    }
+            //    else if (player.vuurbal.fireballRect[i].Intersects(fish.rectangle) && LevelStates == LevelStates.Level2)
+            //    {
+            //        fish.health -= 10;
+            //        player.vuurbal.bullets.Remove(player.vuurbal.bullets[i]);
+            //        player.vuurbal.fireballRect.Remove(player.vuurbal.fireballRect[i]);
+            //        player.vuurbal.aanmaakBullet = false;
+            //        player.vuurbal.timer = 0;
+            //        player.vuurbal.directionFireball.RemoveAt(player.vuurbal.directionFireball.Count - 1);
+            //    }
+            //    else if (player.vuurbal.fireballRect[i].Intersects(boss.rectangle) && LevelStates == LevelStates.Level3)
+            //    {
+            //        boss.health -= 10;
+            //        player.vuurbal.bullets.Remove(player.vuurbal.bullets[i]);
+            //        player.vuurbal.fireballRect.Remove(player.vuurbal.fireballRect[i]);
+            //        player.vuurbal.aanmaakBullet = false;
+            //        player.vuurbal.timer = 0;
+            //        player.vuurbal.directionFireball.RemoveAt(player.vuurbal.directionFireball.Count - 1);
+            //    }
 
 
-            }
+            //}
 
             //else if (mouseRectangle.Intersects(player.rectanglePlay))
             //{
@@ -478,6 +468,7 @@ namespace MonogameProject
             switch (LevelStates)
             {
                 case LevelStates.MainMenu:
+                    if (Keyboard.GetState().IsKeyDown(Keys.A)) { LevelStates = LevelStates.Level1; }
                     btnPlay.Update(mouse);
                     if (btnPlay.isClicked == true)
                     {
@@ -494,7 +485,7 @@ namespace MonogameProject
 
 
                 case LevelStates.Level1:
-                    if (Keyboard.GetState().IsKeyDown(Keys.A)) { LevelStates = LevelStates.Death; }
+                 
                     if (Keyboard.GetState().IsKeyDown(Keys.R)) LevelStates = LevelStates.Level2;
                     //if (portal2.teleported == true)
                     //{
@@ -545,7 +536,7 @@ namespace MonogameProject
 
 
 
-            spook.Update(gameTime);
+            
             boss.Update(gameTime);
             lBall1.Update(gameTime);
             lBall2.Update(gameTime);
@@ -559,7 +550,7 @@ namespace MonogameProject
                 score.ScoreUp();
 
             }
-            coinLevel1.Update(gameTime);
+          
             coinLevel2.Update(gameTime);
             coinLevel3.Update(gameTime);
          
@@ -567,15 +558,7 @@ namespace MonogameProject
             level1.Update(gameTime);
             level2.Update(gameTime);
             level3.Update(gameTime);
-            if (LevelStates == LevelStates.Level1)
-            {
-                foreach (CollisionTiles tile in mapLevel1.CollisionTiles)
-                {
-                    player.Collision(tile.Rectangle, mapLevel1.Width, mapLevel1.Height);
-
-
-                }
-            }
+           
             if (LevelStates == LevelStates.Level2)
             {
                 foreach (CollisionTiles tile in mapLevel2.CollisionTiles)
@@ -600,7 +583,7 @@ namespace MonogameProject
         {
             GraphicsDevice.Clear(Color.DarkViolet);
 
-            Rectangle rectje = new Rectangle(0, 0, screenWidth + 50, screenHeight + 30);
+           
 
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null);
@@ -618,22 +601,11 @@ namespace MonogameProject
                     break;
                 case LevelStates.Level1:
                     level1.Draw(_spriteBatch); //hier
-                    
-                    _spriteBatch.Draw(backgroundje1, rectje, Color.White);
-                    mapLevel1.Draw(_spriteBatch);
-                    _spriteBatch.Draw(healthTexture, healthRectangleGhost, Color.White);
-                   
-                    player.Draw(_spriteBatch);
-                    //ufo.Draw(_spriteBatch);
-                    coinLevel1.Draw(_spriteBatch);
-                    spook.Draw(_spriteBatch);
-                    playerLife.Draw(_spriteBatch);
-                    score.Draw(_spriteBatch);
                     break;
 
                 case LevelStates.Level2:
                     level2.Draw(_spriteBatch);
-                    _spriteBatch.Draw(backgroundje2, rectje, Color.White);
+                    //_spriteBatch.Draw(backgroundje2, rectje, Color.White);
                
                     lBall1.Draw(_spriteBatch);
                     lBall2.Draw(_spriteBatch);
@@ -649,7 +621,7 @@ namespace MonogameProject
                     break;
                 case LevelStates.Level3:
                     level3.Draw(_spriteBatch);
-                    _spriteBatch.Draw(backgroundje3, rectje, Color.White);
+                    //_spriteBatch.Draw(backgroundje3, rectje, Color.White);
                  
                     mapLevel3.Draw(_spriteBatch);
                     coinLevel3.Draw(_spriteBatch);
