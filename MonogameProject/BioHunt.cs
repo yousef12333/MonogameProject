@@ -47,17 +47,17 @@ namespace MonogameProject
         GraphicsDevice grap;
 
        
-        Map mapLevel2;
+     
         Map mapLevel3;
 
 
       
-        //Portal portal2;
+        
         //Texture2D portalTexture;
 
         
 
-        Coin coinLevel2;
+        
         Coin coinLevel3;
         Texture2D coinTexture;
 
@@ -76,8 +76,7 @@ namespace MonogameProject
         Texture2D bossTexture;
         //GhostMonster spook;
         Texture2D lavaBallTexture;
-        LavaBall lBall1;
-        LavaBall lBall2;
+
 
         Player player;
         Texture2D playerTexture;
@@ -134,12 +133,15 @@ namespace MonogameProject
             playerTexture = Content.Load<Texture2D>("VerbeterigSpeler2");
             fireballImage = Content.Load<Texture2D>("Fireball");
             tekst = Content.Load<SpriteFont>("File");
+            lavaBallTexture = Content.Load<Texture2D>("Lava_Ball2");
+            fishTexture = Content.Load<Texture2D>("FishmonsterMovement4");
 
-            mapLevel2 = new Map();
+            
             mapLevel3 = new Map();
             playerLife = new Health();
+            level2 = new Level2(portalTexture, coinTexture, playerTexture, fireballImage, tekst, lavaBallTexture, fishTexture);
             level1 = new Level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst);
-            level2 = new Level2();
+           
             level3 = new Level3();
             //hier moeten de levels, BOVEN base.initialize
 
@@ -153,14 +155,12 @@ namespace MonogameProject
             
             
             boss = new BossMonster(bossTexture, 200);
-            lBall1 = new LavaBall(lavaBallTexture);
-            lBall2 = new LavaBall(lavaBallTexture);
-            fish = new FishMonsterTrap(fishTexture, 150);
+
             player = new Player(playerTexture, 100, fireballImage);
             
-            //portal2 = new Portal(portalTexture);
+
             
-            coinLevel2 = new Coin(coinTexture);
+       
             coinLevel3 = new Coin(coinTexture);
             //ufo = new Ufo(ufoTexture);
         }
@@ -184,8 +184,7 @@ namespace MonogameProject
            
             
             bossTexture = Content.Load<Texture2D>("BossMonsterMovement2");
-            lavaBallTexture = Content.Load<Texture2D>("Lava_Ball2");
-            fishTexture = Content.Load<Texture2D>("FishmonsterMovement4");
+         
             //portalTexture = Content.Load<Texture2D>("Portal");
            
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -209,21 +208,7 @@ namespace MonogameProject
 
 
 
-            mapLevel2.Generate(new int[,]
-           {
-                { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
-                { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
-                { 6, 0, 0, 0, 0, 0, 6, 0, 0, 6, 0, 0, 6, 0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 6},
-                { 6, 0, 0, 0, 0, 6, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
-                { 6, 0, 0, 6, 6, 7, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
-                { 6, 6, 6, 6, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 6, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6},
-                { 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
-                { 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 6, 0, 0, 0, 0, 6, 0, 0, 0, 0, 6},
-                { 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
-                { 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6},
-                { 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6},
-
-           }, 64);
+           
 
 
             mapLevel3.Generate(new int[,]
@@ -270,26 +255,21 @@ namespace MonogameProject
             {
                
 
-                coinLevel2.AddCoin(new Rectangle(594, 95, 32, 32));
-                coinLevel2.AddCoin(new Rectangle(1110, 95, 32, 32));
-                coinLevel2.AddCoin(new Rectangle(1687, 287, 32, 32));
+               
 
                 coinLevel3.AddCoin(new Rectangle(1300, 250, 32, 32));
                 coinLevel3.AddCoin(new Rectangle(880, 520, 32, 32));
 
               
 
-                //portal2.AddPortal(new Rectangle(65, 257, 128, 64));
-
-                lBall1.AddLavaball(new Vector2(470, 0));
-                lBall2.AddLavaball(new Vector2(670, 400));
+                
                 objectInitialized = true;
             }
 
 
 
             
-            //healthRectangleFish = new Rectangle(fish.rectangle.X - 2, fish.Rectangle.Y - 25, fish.health, 15);
+            //
             //healthRectangleBoss = new Rectangle(boss.rectangle.X, boss.Rectangle.Y - 25, boss.health, 15);
 
 
@@ -538,9 +518,8 @@ namespace MonogameProject
 
             
             boss.Update(gameTime);
-            lBall1.Update(gameTime);
-            lBall2.Update(gameTime);
-            fish.Update(gameTime);
+     
+            
 
 
 
@@ -551,22 +530,15 @@ namespace MonogameProject
 
             }
           
-            coinLevel2.Update(gameTime);
+         
             coinLevel3.Update(gameTime);
          
-            //portal2.Update(gameTime);
+         
             level1.Update(gameTime);
             level2.Update(gameTime);
             level3.Update(gameTime);
            
-            if (LevelStates == LevelStates.Level2)
-            {
-                foreach (CollisionTiles tile in mapLevel2.CollisionTiles)
-                {
-                    player.Collision(tile.Rectangle, mapLevel2.Width, mapLevel2.Height);
-
-                }
-            }
+           
             if (LevelStates == LevelStates.Level3)
             {
                 foreach (CollisionTiles tile in mapLevel3.CollisionTiles)
@@ -605,18 +577,7 @@ namespace MonogameProject
 
                 case LevelStates.Level2:
                     level2.Draw(_spriteBatch);
-                    //_spriteBatch.Draw(backgroundje2, rectje, Color.White);
-               
-                    lBall1.Draw(_spriteBatch);
-                    lBall2.Draw(_spriteBatch);
-                    mapLevel2.Draw(_spriteBatch);
-                    coinLevel2.Draw(_spriteBatch);
-                    fish.Draw(_spriteBatch);
-                    //portal2.Draw(_spriteBatch);
-                    _spriteBatch.Draw(healthTexture, healthRectangleFish, Color.White);
-                    player.Draw(_spriteBatch);
-                    playerLife.Draw(_spriteBatch);
-                    score.Draw(_spriteBatch);
+        
 
                     break;
                 case LevelStates.Level3:
