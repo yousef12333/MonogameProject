@@ -6,13 +6,9 @@ using MonogameProject.Classes;
 using MonogameProject.Classes.Enemies;
 using MonogameProject.Classes.Hero;
 using MonogameProject.Classes.Levels;
-using MonogameProject.Tiles;
-
-
-using MonogameProject.ViewStates;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+
 
 namespace MonogameProject
 {
@@ -24,7 +20,7 @@ namespace MonogameProject
         Level1 level1;
         Level2 level2;
         Level3 level3;
-
+        SpriteFont tekst;
         public LevelStates LevelStates = LevelStates.MainMenu;
         public int screenWidth = 1790, screenHeight = 703;
         public int Screenwidth
@@ -41,57 +37,60 @@ namespace MonogameProject
         Health playerLife;
         WinButton winEindigKnop;
        
-        private Texture2D backgroundje2;
-        private Texture2D backgroundje3;
+       
+        
         private Texture2D winScreen;
         GraphicsDevice grap;
 
        
      
-        Map mapLevel3;
+        
 
 
       
         
-        //Texture2D portalTexture;
+     
 
         
 
         
-        Coin coinLevel3;
+        
         Texture2D coinTexture;
 
 
 
-        //Ufo ufo;
+       
         Texture2D ufoTexture;
         Texture2D portalTexture;
         Texture2D healthTexture;
         Rectangle healthRectangleFish;
         
-        Rectangle healthRectangleBoss;
+        
         Texture2D fishTexture;
         FishMonsterTrap fish;
-        BossMonster boss;
+        
         Texture2D bossTexture;
         //GhostMonster spook;
         Texture2D lavaBallTexture;
-
+        Texture2D backgroundje2;
+        Texture2D backgroundje3;
+        Score score;
+        BossMonster boss;
 
         Player player;
         Texture2D playerTexture;
         Texture2D fireballImage;
         Fireball fireball;
         bool levelLoaded = false;
-        bool objectInitialized = false;
+        
         float monsterHitCounter;
         bool monsterHit = false;
 
-        public SpriteFont tekst;
+        
         public SpriteFont title;
         public SpriteFont titleEdge;
         public SpriteFont InputExplanation;
-        Score score;
+       
 
         private static BioHunt instance;
 
@@ -135,14 +134,11 @@ namespace MonogameProject
             tekst = Content.Load<SpriteFont>("File");
             lavaBallTexture = Content.Load<Texture2D>("Lava_Ball2");
             fishTexture = Content.Load<Texture2D>("FishmonsterMovement4");
+            bossTexture = Content.Load<Texture2D>("BossMonsterMovement2");
 
-            
-            mapLevel3 = new Map();
-            playerLife = new Health();
-            level2 = new Level2(portalTexture, coinTexture, playerTexture, fireballImage, tekst, lavaBallTexture, fishTexture);
             level1 = new Level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst);
-           
-            level3 = new Level3();
+            level2 = new Level2(portalTexture, coinTexture, playerTexture, fireballImage, tekst, lavaBallTexture, fishTexture);
+            level3 = new Level3(healthTexture, bossTexture, playerTexture, fireballImage, coinTexture, tekst);
             //hier moeten de levels, BOVEN base.initialize
 
 
@@ -154,14 +150,7 @@ namespace MonogameProject
             base.Initialize();
             
             
-            boss = new BossMonster(bossTexture, 200);
-
-            player = new Player(playerTexture, 100, fireballImage);
-            
-
-            
-       
-            coinLevel3 = new Coin(coinTexture);
+           
             //ufo = new Ufo(ufoTexture);
         }
 
@@ -176,14 +165,14 @@ namespace MonogameProject
             level3.Load(Content);
             //ufo = new Ufo(ufoTexture);
 
-            score = new Score(tekst);
+           
 
             player = new Player(playerTexture, 100, fireballImage);
             healthTexture = Content.Load<Texture2D>("HealthBar");
 
            
             
-            bossTexture = Content.Load<Texture2D>("BossMonsterMovement2");
+           
          
             //portalTexture = Content.Load<Texture2D>("Portal");
            
@@ -211,24 +200,10 @@ namespace MonogameProject
            
 
 
-            mapLevel3.Generate(new int[,]
-        {
-                { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-                { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-
-        }, 64);
+            
 
 
-            playerLife.Load(Content);
+           
             IsMouseVisible = true;
             btnPlay.SetPosition(new Vector2(40, 200), new Vector2(40, 350));
             winEindigKnop.SetPosition(new Vector2(640, 450));
@@ -242,39 +217,8 @@ namespace MonogameProject
         protected override void Update(GameTime gameTime)
         {
             Debug.WriteLine(gameTime.TotalGameTime);
-            
-
-
-
-
-
             MouseState mouse = Mouse.GetState();
             mouseRectangle = new Rectangle(mouse.X, mouse.Y, 5, 5);
-
-            if (objectInitialized == false)
-            {
-               
-
-               
-
-                coinLevel3.AddCoin(new Rectangle(1300, 250, 32, 32));
-                coinLevel3.AddCoin(new Rectangle(880, 520, 32, 32));
-
-              
-
-                
-                objectInitialized = true;
-            }
-
-
-
-            
-            //
-            //healthRectangleBoss = new Rectangle(boss.rectangle.X, boss.Rectangle.Y - 25, boss.health, 15);
-
-
-
-
             //if ((player.rectangle.Intersects(spook.rectangle) && LevelStates == LevelStates.Level1) || (player.rectangle.Intersects(boss.rectangle) && LevelStates == LevelStates.Level3) || (player.rectangle.Intersects(fish.rectangle) && LevelStates == LevelStates.Level2 || (player.rectangle.Intersects(lBall1.Rectangle) && LevelStates == LevelStates.Level2 || (player.rectangle.Intersects(lBall2.Rectangle) && LevelStates == LevelStates.Level2))))
             //{
             //    if (player.isHit == false)
@@ -432,19 +376,19 @@ namespace MonogameProject
             //{
             //    fish.health -= 10;
             //}
-            if (levelLoaded)
-            {
-                //ufo.Update(gameTime);
-                player.Update(gameTime);
-            }
-            if (Player.Instance.HeartRate < 1)
-            {
-                LevelStates = LevelStates.Death;
-            }
-            else if (boss.health < 1)
-            {
-                LevelStates = LevelStates.Win;
-            }
+            //if (levelLoaded)
+            //{
+            //ufo.Update(gameTime);
+            //    player.Update(gameTime);
+            //}
+            //if (Player.Instance.HeartRate < 1)
+            //{
+            //    LevelStates = LevelStates.Death;
+            //}
+            //else if (boss.health < 1)
+            //{
+            //    LevelStates = LevelStates.Win;
+            //}
             switch (LevelStates)
             {
                 case LevelStates.MainMenu:
@@ -517,13 +461,13 @@ namespace MonogameProject
 
 
             
-            boss.Update(gameTime);
+            
      
             
 
 
 
-            playerLife.Update(gameTime);
+           
             if (Keyboard.GetState().IsKeyDown(Keys.H))
             {
                 score.ScoreUp();
@@ -531,7 +475,7 @@ namespace MonogameProject
             }
           
          
-            coinLevel3.Update(gameTime);
+            
          
          
             level1.Update(gameTime);
@@ -539,14 +483,7 @@ namespace MonogameProject
             level3.Update(gameTime);
            
            
-            if (LevelStates == LevelStates.Level3)
-            {
-                foreach (CollisionTiles tile in mapLevel3.CollisionTiles)
-                {
-                    player.Collision(tile.Rectangle, mapLevel3.Width, mapLevel3.Height);
-
-                }
-            }
+           
 
             base.Update(gameTime);
         }
@@ -582,15 +519,7 @@ namespace MonogameProject
                     break;
                 case LevelStates.Level3:
                     level3.Draw(_spriteBatch);
-                    //_spriteBatch.Draw(backgroundje3, rectje, Color.White);
-                 
-                    mapLevel3.Draw(_spriteBatch);
-                    coinLevel3.Draw(_spriteBatch);
-                    boss.Draw(_spriteBatch);
-                    _spriteBatch.Draw(healthTexture, healthRectangleBoss, Color.White);
-                    player.Draw(_spriteBatch);
-                    playerLife.Draw(_spriteBatch);
-                    score.Draw(_spriteBatch);
+                   
                     break;
 
                 case LevelStates.Win:

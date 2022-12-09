@@ -4,10 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Classes.Hero;
 using MonogameProject.Tiles;
 using MonogameProject.Classes.Enemies;
-using MonogameProject.Screen;
-using MonogameProject.Collision;
-using SharpDX.Direct3D9;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace MonogameProject.Classes.Levels
 {
