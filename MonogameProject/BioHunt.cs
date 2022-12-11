@@ -8,6 +8,7 @@ using MonogameProject.Classes.Hero;
 using MonogameProject.Classes.Levels;
 using System;
 using System.Diagnostics;
+using System.IO;
 
 
 namespace MonogameProject
@@ -17,6 +18,9 @@ namespace MonogameProject
         Rectangle mouseRectangle;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        MainMenu mainMenu;
+        Death death;
+        Win win;
         Level1 level1;
         Level2 level2;
         Level3 level3;
@@ -29,13 +33,13 @@ namespace MonogameProject
         }
 
 
-        MenuButtons btnPlay;
+        
         Death restart;
         Texture2D ghostTexture;
         Texture2D mouseTexture;
         
         Health playerLife;
-        WinButton winEindigKnop;
+        
        
        
         
@@ -87,9 +91,7 @@ namespace MonogameProject
         bool monsterHit = false;
 
         
-        public SpriteFont title;
-        public SpriteFont titleEdge;
-        public SpriteFont InputExplanation;
+        
        
 
         private static BioHunt instance;
@@ -107,13 +109,10 @@ namespace MonogameProject
         public BioHunt()
         {
             _graphics = new GraphicsDeviceManager(this);
-          
-            
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             fireball = new Fireball(fireballImage);
             score = new Score(tekst);
-            
         }
 
         protected override void Initialize()
@@ -136,22 +135,14 @@ namespace MonogameProject
             fishTexture = Content.Load<Texture2D>("FishmonsterMovement4");
             bossTexture = Content.Load<Texture2D>("BossMonsterMovement2");
 
+            mainMenu = new MainMenu();
+            death = new Death();
+            win = new Win();
             level1 = new Level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst);
             level2 = new Level2(portalTexture, coinTexture, playerTexture, fireballImage, tekst, lavaBallTexture, fishTexture);
             level3 = new Level3(healthTexture, bossTexture, playerTexture, fireballImage, coinTexture, tekst);
             //hier moeten de levels, BOVEN base.initialize
-
-
-           
-            title = Content.Load<SpriteFont>("Title");
-            titleEdge = Content.Load<SpriteFont>("TitleEdge");
-            InputExplanation = Content.Load<SpriteFont>("Explanation");
-            
             base.Initialize();
-            
-            
-           
-            //ufo = new Ufo(ufoTexture);
         }
 
         protected override void LoadContent()
@@ -159,23 +150,16 @@ namespace MonogameProject
             IsMouseVisible = true;
             mouseTexture = new Texture2D(GraphicsDevice, 1, 1);
             mouseTexture.SetData(new[] { Color.White });
-
+            mainMenu.Load(Content, GraphicsDevice);
+            death.Load(Content, GraphicsDevice);
+            win.Load(Content, GraphicsDevice);
             level1.Load(Content);
             level2.Load(Content);
             level3.Load(Content);
             //ufo = new Ufo(ufoTexture);
-
-           
-
             player = new Player(playerTexture, 100, fireballImage);
             healthTexture = Content.Load<Texture2D>("HealthBar");
-
-           
-            
-           
-         
             //portalTexture = Content.Load<Texture2D>("Portal");
-           
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _graphics.PreferredBackBufferHeight = screenHeight;
             _graphics.PreferredBackBufferWidth = screenWidth;
@@ -184,36 +168,8 @@ namespace MonogameProject
             screenWidth = grap.PresentationParameters.BackBufferWidth;
             screenHeight = grap.PresentationParameters.BackBufferHeight;
             Tiles.Tiles.Content = Content;
-
-
-            btnPlay = new MenuButtons(Content.Load<Texture2D>("Start_Button"), Content.Load<Texture2D>("Quit_Button"), GraphicsDevice);
-            winEindigKnop = new WinButton(Content.Load<Texture2D>("Quit_Button"), GraphicsDevice);
-            restart = new Death(Content.Load<Texture2D>("Restart_Button"), GraphicsDevice);
-
-
-
-           
-
-
-
-
-           
-
-
-            
-
-
-           
             IsMouseVisible = true;
-            btnPlay.SetPosition(new Vector2(40, 200), new Vector2(40, 350));
-            winEindigKnop.SetPosition(new Vector2(640, 450));
-            restart.setPosition(new Vector2(620, 250));
-            
-
-
         }
-
-
         protected override void Update(GameTime gameTime)
         {
             Debug.WriteLine(gameTime.TotalGameTime);
@@ -392,17 +348,17 @@ namespace MonogameProject
             switch (LevelStates)
             {
                 case LevelStates.MainMenu:
-                    if (Keyboard.GetState().IsKeyDown(Keys.A)) { LevelStates = LevelStates.Level1; }
-                    btnPlay.Update(mouse);
-                    if (btnPlay.isClicked == true)
-                    {
-                        restart.isRestarted = false;
+                   if (Keyboard.GetState().IsKeyDown(Keys.A)) { LevelStates = LevelStates.Level1; }
+                //    btnPlay.Update(mouse);
+                //    if (btnPlay.isClicked == true)
+                //    {
+                //        restart.isRestarted = false;
 
-                        LevelStates = LevelStates.Level1; //zet player op juiste positie samen met spaceship en reset timer
+                //        LevelStates = LevelStates.Level1; //zet player op juiste positie samen met spaceship en reset timer
 
 
-                    }
-                    else if (btnPlay.isClosed == true) Exit();
+                //    }
+                //    else if (btnPlay.isClosed == true) Exit();
 
 
                     break;
@@ -410,7 +366,7 @@ namespace MonogameProject
 
                 case LevelStates.Level1:
                  
-                    if (Keyboard.GetState().IsKeyDown(Keys.R)) LevelStates = LevelStates.Level2;
+                    if (Keyboard.GetState().IsKeyDown(Keys.R)) LevelStates = LevelStates.Win;
                     //if (portal2.teleported == true)
                     //{
                     //    LevelStates = LevelStates.Level2;
@@ -432,108 +388,72 @@ namespace MonogameProject
 
                     break;
                 case LevelStates.Win:
-                    if (winEindigKnop.isClicked == true) Exit();
-                    winEindigKnop.Update(mouse);
+                  
                     break;
-                case LevelStates.Death:
-                    restart.Update(mouse);
-                    if (restart.isRestarted == true)
-                    {
-                        gameTime.TotalGameTime = TimeSpan.Zero;
-                        btnPlay.isClicked = false;
-                        LevelStates = LevelStates.Level1; //bug, bij hoverout gaat het steeds terug van menu naar death
+                //case LevelStates.Death:
+                //    restart.Update(mouse);
+                //    if (restart.isRestarted == true)
+                //    {
+                //        gameTime.TotalGameTime = TimeSpan.Zero;
+                //        btnPlay.isClicked = false;
+                //        LevelStates = LevelStates.Level1; //bug, bij hoverout gaat het steeds terug van menu naar death
 
 
 
-                        player.timer = 0; //werkt gewoon, komt door knop bug, hij blijft 0 als je ingedrukt houdt en als je loslaat wordt het 2,3,4.. zie debug.writeline
-                        //ufo.timer = 0;
+                //        player.timer = 0; //werkt gewoon, komt door knop bug, hij blijft 0 als je ingedrukt houdt en als je loslaat wordt het 2,3,4.. zie debug.writeline
+                //        //ufo.timer = 0;
 
 
 
-                        player.restarted = true;
-                        //ufo.restarted = true;
+                //        player.restarted = true;
+                //        //ufo.restarted = true;
 
-                    }
+                //    }
 
-                    break;
+                //    break;
             }
 
-
-
-            
-            
-     
-            
-
-
-
-           
             if (Keyboard.GetState().IsKeyDown(Keys.H))
             {
                 score.ScoreUp();
 
             }
-          
-         
-            
-         
-         
+            mainMenu.Update(gameTime);
+            death.Update(gameTime);
+            win.Update(gameTime);
             level1.Update(gameTime);
             level2.Update(gameTime);
             level3.Update(gameTime);
-           
-           
-           
-
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkViolet);
-
-           
-
-
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null);
-
             switch (LevelStates)
             {
                 case LevelStates.MainMenu:
-
-                    _spriteBatch.Draw(Content.Load<Texture2D>("MenuScreen2"), new Rectangle(0, 0, screenWidth + 80, screenHeight), Color.White);
-                    btnPlay.Draw(_spriteBatch);
-                    _spriteBatch.DrawString(titleEdge, "BIOHUNT", new Vector2(565, 15), Color.Black);
-                    _spriteBatch.DrawString(title, "BIOHUNT", new Vector2(550, 0), Color.DarkViolet);
-                    _spriteBatch.DrawString(InputExplanation, "Controls:\n- Left button to go left.\n- Right button to go right\n- Space button to jump\n- \'E\' button to shoot fireball", new Vector2(40, 500), Color.DarkGreen);
-
+                    mainMenu.Draw(_spriteBatch);
                     break;
                 case LevelStates.Level1:
                     level1.Draw(_spriteBatch); //hier
                     break;
-
                 case LevelStates.Level2:
                     level2.Draw(_spriteBatch);
-        
-
                     break;
                 case LevelStates.Level3:
                     level3.Draw(_spriteBatch);
-                   
                     break;
-
                 case LevelStates.Win:
-                    _spriteBatch.Draw(winScreen, new Rectangle(0, 0, screenWidth + 80, screenHeight), Color.White);
-                    winEindigKnop.Draw(_spriteBatch);
+                    win.Draw(_spriteBatch);
                     break;
                 case LevelStates.Death:
-                    _spriteBatch.Draw(Content.Load<Texture2D>("Death_Screen"), new Rectangle(0, 0, screenWidth + 80, screenHeight), Color.White);
-                    restart.Draw(_spriteBatch);
+                    death.Draw(_spriteBatch);
                     break;
             }
             _spriteBatch.Draw(mouseTexture, mouseRectangle, Color.Red);
             _spriteBatch.End();
-
             base.Draw(gameTime);
         }
     }
