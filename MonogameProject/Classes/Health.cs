@@ -11,7 +11,7 @@ namespace MonogameProject.Classes
     internal class Health
     {
         private Texture2D heart;
-        private List<Texture2D> amountOfHealth;
+        public List<Texture2D> amountOfHealth;
 
         public Health() { }
         public void Load(ContentManager Content)
@@ -22,14 +22,15 @@ namespace MonogameProject.Classes
                 amountOfHealth.Add(heart);
             }
             heart = Content.Load<Texture2D>("Health1");
+            if (Player.Instance.HeartRate != amountOfHealth.Count)
+            {
+                healthReduce();
+            }
         }
         public void Update(GameTime gameTime)
         {
             
-           if(Player.Instance.HeartRate != amountOfHealth.Count) //hier hier hier hier hier hier
-            {
-                healthReduce();
-            }
+         
         }
         public void healthReduce()
         {

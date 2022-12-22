@@ -4,30 +4,38 @@ using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Classes.Hero;
 using MonogameProject.Tiles;
 using MonogameProject.Classes.Enemies;
+using Microsoft.Xna.Framework.Input;
+
+
+
+
+
 
 
 namespace MonogameProject.Classes.Levels
 {
-    internal class Level2
+    internal class level2
     {
-        Rectangle rectje = new Rectangle(0, 0, BioHunt.Instance.Screenwidth + 50, BioHunt.Instance.screenHeight + 30);
-        BackgroundMusic music;
-        LavaBall lBall1;
-        LavaBall lBall2;
-        Map mapLevel2;
-        Portal portal2;
-        Coin coinLevel2;
-        Rectangle healthRectangleFish;
-        FishMonsterTrap fish;
-        Player player;
-        Health playerLife;
-        Score score;
-        private Texture2D backgroundje2;
-        Texture2D healthTexture;
+        public Rectangle rectje = new Rectangle(0, 0, 1840, 733);
+        public BackgroundMusic music;
+        public LavaBall lBall1;
+        public LavaBall lBall2;
+        public Map mapLevel2;
+        public Portal portal2;
+        public Coin coinLevel2;
+        public Rectangle healthRectangleFish;
+        public FishMonsterTrap fish;
+        public Player player;
+        public Health playerLife;
+        public Score score;
+        public Texture2D backgroundje2;
+        public Texture2D healthTexture;
+        public bool playerFrozen = true;
 
         public bool objectInitialized = false;
-
-        public Level2(Texture2D texturePortal, Texture2D coinTexture, Texture2D playerTexture, Texture2D fireballImage, SpriteFont scoreTekst, Texture2D lavaBallTexture, Texture2D fishTexture)
+        public bool addedPortal = false;
+        private BioHunt game;
+        public level2(Texture2D texturePortal, Texture2D coinTexture, Texture2D playerTexture, Texture2D fireballImage, SpriteFont scoreTekst, Texture2D lavaBallTexture, Texture2D fishTexture, BioHunt game)
         {
 
             music = new BackgroundMusic();
@@ -41,16 +49,16 @@ namespace MonogameProject.Classes.Levels
             lBall2 = new LavaBall(lavaBallTexture);
             fish = new FishMonsterTrap(fishTexture, 150);
             mapLevel2 = new Map();
-
+            this.game = game;
         }
-        private static Level2 instance;
+        private static level2 instance;
 
-        public static Level2 Instance
+        public static level2 Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new Level2();
+                    instance = new level2();
 
                 return instance;
             }
@@ -58,13 +66,6 @@ namespace MonogameProject.Classes.Levels
         public void Load(ContentManager Content)
         {
            
-            
-           
-           
-           
-
-
-
             Tiles.Tiles.Content = Content;
             healthTexture = Content.Load<Texture2D>("HealthBar");
 
@@ -98,20 +99,21 @@ namespace MonogameProject.Classes.Levels
                 coinLevel2.AddCoin(new Rectangle(1110, 95, 32, 32));
                 coinLevel2.AddCoin(new Rectangle(1687, 287, 32, 32));
                 portal2.AddPortal(new Rectangle(65, 257, 128, 64));
-
+                addedPortal = true;
                 lBall1.AddLavaball(new Vector2(470, 0));
                 lBall2.AddLavaball(new Vector2(670, 400));
 
                 objectInitialized = true;
             }
             player.Update(gameTime);
+           
             lBall1.Update(gameTime);
             lBall2.Update(gameTime);
             fish.Update(gameTime);
             playerLife.Update(gameTime);
             coinLevel2.Update(gameTime);
             portal2.Update(gameTime);
-            if (BioHunt.Instance.LevelStates == LevelStates.Level2)
+            if (game.LevelStates == LevelStates.Level2)
             {
                 foreach (CollisionTiles tile in mapLevel2.CollisionTiles)
                 {
@@ -120,6 +122,16 @@ namespace MonogameProject.Classes.Levels
                 }
             }
             healthRectangleFish = new Rectangle(fish.rectangle.X - 2, fish.Rectangle.Y - 25, fish.health, 15);
+            if (Keyboard.GetState().IsKeyDown(Keys.T)) { game.LevelStates = LevelStates.Level3; }
+            if (Keyboard.GetState().IsKeyDown(Keys.U))
+            {
+                game.LevelStates = LevelStates.Death;
+            }
+            if (playerFrozen)
+            {
+                player.position = new Vector2(1100, 600);
+                player.velocity.Y = 0;
+            }
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -142,7 +154,7 @@ namespace MonogameProject.Classes.Levels
            
            
         }
-        public Level2()
+        public level2()
         {
         }
     }

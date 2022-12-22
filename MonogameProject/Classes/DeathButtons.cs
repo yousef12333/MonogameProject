@@ -25,6 +25,17 @@ namespace MonogameProject.Classes
 
 
         public Vector2 size;
+        private static DeathButtons instance;
+        public static DeathButtons Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new DeathButtons();
+
+                return instance;
+            }
+        }
         public DeathButtons(Texture2D newTexture, GraphicsDevice graphics)
         {
             texture = newTexture;
@@ -32,6 +43,9 @@ namespace MonogameProject.Classes
             size = new Vector2(graphics.Viewport.Width / 3, graphics.Viewport.Height / 5);
 
         }
+
+      
+
         bool down;
         public bool isRestarted;
 
@@ -66,6 +80,9 @@ namespace MonogameProject.Classes
         {
             spriteBatch.Draw(texture, rectangle, colour);
 
+        }
+        public DeathButtons()
+        {
         }
     }
 }

@@ -4,27 +4,30 @@ using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Classes.Hero;
 using MonogameProject.Tiles;
 using MonogameProject.Classes.Enemies;
+using Microsoft.Xna.Framework.Input;
 
 
 namespace MonogameProject.Classes.Levels
 {
-    internal class Level3
+    internal class level3
     {
-        Rectangle rectje = new Rectangle(0, 0, BioHunt.Instance.Screenwidth + 50, BioHunt.Instance.screenHeight + 30);
-        BackgroundMusic music;
-        private Texture2D backgroundje3;
-        Map mapLevel3;
-        Coin coinLevel3;
-        Rectangle healthRectangleBoss;
-        BossMonster boss;
-        Player player;
-        bool objectInitialized = false;
+        public Rectangle rectje = new Rectangle(0, 0, 1840, 733);
+        public BackgroundMusic music;
+        public Texture2D backgroundje3;
+        public Map mapLevel3;
+        public Coin coinLevel3;
+        public Rectangle healthRectangleBoss;
+        public BossMonster boss;
+        public Player player;
+        public bool objectInitialized = false;
         public SpriteFont tekst;
-        Score score;
-        Health playerLife;
-        Texture2D healthTexture;
+        public Score score;
+        public Health playerLife;
+        public Texture2D healthTexture;
+        public bool playerFrozen = true;
+        private BioHunt game;
 
-        public Level3(Texture2D healthTexture, Texture2D bossTexture, Texture2D playerTexture, Texture2D fireballImage, Texture2D coinTexture, SpriteFont scoreTekst)
+        public level3(Texture2D healthTexture, Texture2D bossTexture, Texture2D playerTexture, Texture2D fireballImage, Texture2D coinTexture, SpriteFont scoreTekst, BioHunt game)
         {
 
             music = new BackgroundMusic();
@@ -34,15 +37,17 @@ namespace MonogameProject.Classes.Levels
             boss = new BossMonster(bossTexture, 200);
             player = new Player(playerTexture, 100, fireballImage);
             coinLevel3 = new Coin(coinTexture);
+            player.rectangle = new Rectangle(200, 200, 64, 64); //werkt maar geen gravity en beweging
+            this.game = game;
         }
-        private static Level3 instance;
+        private static level3 instance;
 
-        public static Level3 Instance
+        public static level3 Instance
         {
             get
             {
                 if (instance == null)
-                    instance = new Level3();
+                    instance = new level3();
 
                 return instance;
             }
@@ -53,8 +58,8 @@ namespace MonogameProject.Classes.Levels
             backgroundje3 = Content.Load<Texture2D>("Castle_Background");
            
             healthTexture = Content.Load<Texture2D>("HealthBar");
+            tekst = Content.Load<SpriteFont>("File");
 
-         
             playerLife.Load(Content);
             music.Load(Content);
 
@@ -80,6 +85,7 @@ namespace MonogameProject.Classes.Levels
         }
         public void Update(GameTime gameTime)
         {
+            player.Update(gameTime);
             if (objectInitialized == false)
             {
                 coinLevel3.AddCoin(new Rectangle(1300, 250, 32, 32));
@@ -90,7 +96,8 @@ namespace MonogameProject.Classes.Levels
             boss.Update(gameTime);
             playerLife.Update(gameTime);
             coinLevel3.Update(gameTime);
-            if (BioHunt.Instance.LevelStates == LevelStates.Level3)
+
+            if (game.LevelStates == LevelStates.Level3)
             {
                 foreach (CollisionTiles tile in mapLevel3.CollisionTiles)
                 {
@@ -98,23 +105,30 @@ namespace MonogameProject.Classes.Levels
 
                 }
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.P)) { game.LevelStates = LevelStates.Win; }
+            if (playerFrozen)
+            {
+                player.position = new Vector2(200, 200);
+                player.velocity.Y = 0;
+            }
+
         }
         public void Draw(SpriteBatch spriteBatch)
         {
 
             music.Draw(spriteBatch);
             spriteBatch.Draw(backgroundje3, rectje, Color.White);
-
+            
             mapLevel3.Draw(spriteBatch);
             coinLevel3.Draw(spriteBatch);
             boss.Draw(spriteBatch);
             spriteBatch.Draw(healthTexture, healthRectangleBoss, Color.White);
-            player.Draw(spriteBatch);
+
             playerLife.Draw(spriteBatch);
             score.Draw(spriteBatch);
-
+            player.Draw(spriteBatch);
         }
-        public Level3()
+        public level3()
         {
         }
     }

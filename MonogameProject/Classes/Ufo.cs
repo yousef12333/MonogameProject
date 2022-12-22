@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonogameProject.Classes.Hero;
 using MonogameProject.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -39,12 +40,25 @@ namespace MonogameProject.Classes
                 ufoRectangle = value;
             }
         }
+        private static Ufo instance;
+        public static Ufo Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new Ufo();
 
+                return instance;
+            }
+        }
         public Ufo(Texture2D texture)
         {
             ufoImage = texture;
            
         }
+
+       
+
         public void Update(GameTime gameTime)
         {
             ufoRectangle.X -= (int)velocity.X;
@@ -66,6 +80,9 @@ namespace MonogameProject.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(ufoImage, ufoRectangle, Color.White);
+        }
+        public Ufo()
+        {
         }
     }
 }

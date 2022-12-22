@@ -35,7 +35,7 @@ namespace MonogameProject.Classes.Hero
 
 
         private bool hasJumped = false;
-        private int heartRate = 3;
+        private int heartRate = 3; 
 
         public int HeartRate
         {
@@ -251,11 +251,7 @@ namespace MonogameProject.Classes.Hero
             rectangle = new Rectangle((int)position.X, (int)position.Y, 64, 64);
 
             Input(gameTime);
-            if (Keyboard.GetState().IsKeyDown(Keys.L))
-            {
-                --Instance.HeartRate;
-
-            }
+           
             
         }
         public void Collision(Rectangle newRectangle, int xOffset, int yOffset)
