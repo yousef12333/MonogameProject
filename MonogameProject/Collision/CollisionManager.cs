@@ -30,14 +30,11 @@ namespace MonogameProject.Collision
 
         public bool objectInitialized = false;
 
-        bool levelLoaded = true;
         float monsterHitCounter;
         bool monsterHit = false;
         public level1 level1;
         public level2 level2;
         public level3 level3;
-        bool freeze2 = true;
-        bool freeze3 = true;
         private BioHunt game;
 
 
@@ -100,24 +97,23 @@ namespace MonogameProject.Collision
                     level1.player.vuurbal.directionFireball.RemoveAt(level1.player.vuurbal.directionFireball.Count - 1);
                 }
             }
-            if (level1.player.HeartRate < 1)
+            if (level1.player.HeartRate < 1 || (level1.player.Position.Y > 700 && level2.shiftLevel == false))
             {
                 game.LevelStates = LevelStates.Death;
             }
             if (level1.addedPortal == true && (level1.player.rectangle.Intersects(level1.portal1.portals[0]))) // portals hier ------------------------
             {
                 game.LevelStates = LevelStates.Level2;
-                level2.playerFrozen = false;
-
-
+                level2.shiftLevel = true; //SHIFTLEVEL IS OPLOSSING, PAS DIT OOK TOE VOOR LEVEL 3 en andere levels!
+                
             }
+          
 
 
 
 
 
-
-            if (level2.player.rectangle.Intersects(level2.fish.rectangle))
+            if (level2.player.rectangle.Intersects(level2.fish.rectangle) && game.LevelStates == LevelStates.Level2)
             {
                 if (level2.player.isHit == false)
                 {
@@ -126,39 +122,34 @@ namespace MonogameProject.Collision
                     if (level2.playerLife.amountOfHealth.Count > 0)
                         level2.playerLife.healthReduce();
                 }
-
-            }
-            if (level2.player.rectangle.Intersects(level2.lBall1.Rectangle))
-            {
-                if (level2.player.isHit == false)
-                {
-                    level2.player.isHit = true;
-                    level2.player.HeartRate--;
-                    if (level2.playerLife.amountOfHealth.Count > 0)
-                        level2.playerLife.healthReduce();
-                }
-
-            }
-            if (level2.player.rectangle.Intersects(level2.lBall2.Rectangle))
-            {
-                if (level2.player.isHit == false)
-                {
-                    level2.player.isHit = true;
-                    level2.player.HeartRate--;
-                    if (level2.playerLife.amountOfHealth.Count > 0)
-                        level2.playerLife.healthReduce();
-                }
-
-            }
-
-
-            if (level2.player.rectangle.Intersects(level2.fish.rectangle))
-            {
                 if (monsterHit == false)
                 {
                     monsterHit = true;
                     level2.fish.Velocity *= new Vector2(-1, 0);
                 }
+
+            }
+            if (level2.player.rectangle.Intersects(level2.lBall1.Rectangle) && game.LevelStates == LevelStates.Level2)
+            {
+                if (level2.player.isHit == false)
+                {
+                    level2.player.isHit = true;
+                    level2.player.HeartRate--;
+                    if (level2.playerLife.amountOfHealth.Count > 0)
+                        level2.playerLife.healthReduce();
+                }
+
+            }
+            if (level2.player.rectangle.Intersects(level2.lBall2.Rectangle) && game.LevelStates == LevelStates.Level2)
+            {
+                if (level2.player.isHit == false)
+                {
+                    level2.player.isHit = true;
+                    level2.player.HeartRate--;
+                    if (level2.playerLife.amountOfHealth.Count > 0)
+                        level2.playerLife.healthReduce();
+                }
+
             }
             for (int i = 0; i < level2.coinLevel2.coins.Count; i++)
             {
@@ -182,6 +173,30 @@ namespace MonogameProject.Collision
                     level2.player.vuurbal.directionFireball.RemoveAt(level2.player.vuurbal.directionFireball.Count - 1);
                 }
             }
+            for (int i = 0; i < level2.player.vuurbal.fireballRect.Count; i++)
+            {
+                if (level2.player.vuurbal.fireballRect[i].Intersects(level2.lBall1.Rectangle))
+                {
+                   
+                    level2.player.vuurbal.bullets.Remove(level2.player.vuurbal.bullets[i]);
+                    level2.player.vuurbal.fireballRect.Remove(level2.player.vuurbal.fireballRect[i]);
+                    level2.player.vuurbal.aanmaakBullet = false;
+                    level2.player.vuurbal.timer = 0;
+                    level2.player.vuurbal.directionFireball.RemoveAt(level2.player.vuurbal.directionFireball.Count - 1);
+                }
+            }
+            for (int i = 0; i < level2.player.vuurbal.fireballRect.Count; i++)
+            {
+                if (level2.player.vuurbal.fireballRect[i].Intersects(level2.lBall2.Rectangle))
+                {
+                    level2.fish.health -= 10;
+                    level2.player.vuurbal.bullets.Remove(level2.player.vuurbal.bullets[i]);
+                    level2.player.vuurbal.fireballRect.Remove(level2.player.vuurbal.fireballRect[i]);
+                    level2.player.vuurbal.aanmaakBullet = false;
+                    level2.player.vuurbal.timer = 0;
+                    level2.player.vuurbal.directionFireball.RemoveAt(level2.player.vuurbal.directionFireball.Count - 1);
+                }
+            }
             if (level2.player.HeartRate < 1)
             {
 
@@ -189,8 +204,10 @@ namespace MonogameProject.Collision
             }
             if (level2.addedPortal == true && (level2.player.rectangle.Intersects(level2.portal2.portals[0])))
             {
+               
+
                 game.LevelStates = LevelStates.Level3;
-                level3.playerFrozen = false;
+                level3.shiftLevel = true;
 
             }
 

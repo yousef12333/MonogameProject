@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*Deze klasse houdt zich aan het Singleton design pattern omdat er slechts één instantie van de klasse kan worden aangemaakt. 
+ * Het volgt het Single Responsibility Principle door alleen methoden te bevatten die gerelateerd zijn aan het Ufo game object, zoals update en draw.*/
+
 namespace MonogameProject.Classes
 {
     internal class Ufo : IGameObject
@@ -15,9 +18,10 @@ namespace MonogameProject.Classes
        
         private Texture2D ufoImage;
         private Rectangle ufoRectangle = new Rectangle(80, 200, 300, 65);
-        private Vector2 velocity = new Vector2(0, 0);
+        public Vector2 velocity = new Vector2(0, 0);
         public int timer;
         public bool restarted;
+        public bool levelLoaded = false;
         public Vector2 Velocity
         {
             get
@@ -56,9 +60,6 @@ namespace MonogameProject.Classes
             ufoImage = texture;
            
         }
-
-       
-
         public void Update(GameTime gameTime)
         {
             ufoRectangle.X -= (int)velocity.X;
@@ -68,15 +69,13 @@ namespace MonogameProject.Classes
                 Velocity = new Vector2(0, 0);
             }
 
-            timer = (int)gameTime.TotalGameTime.TotalSeconds;
-            if(timer > 3)
+  
+            if(levelLoaded)
             {
                 velocity.X = 6;
-                
-                    restarted = false;  
+                restarted = false;  
             }
         }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(ufoImage, ufoRectangle, Color.White);

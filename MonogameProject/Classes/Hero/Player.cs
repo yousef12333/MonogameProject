@@ -26,7 +26,7 @@ namespace MonogameProject.Classes.Hero
         Vector2 position2;
         public int timer;
         float hitCounter = 0;
-
+        public bool levelLoaded = false;
         bool isLeft = false;
         bool isRight = false;
         
@@ -213,16 +213,11 @@ namespace MonogameProject.Classes.Hero
             position2 = position;
           
             currentAnimation.Update(gameTime);
-            timer = (int)gameTime.TotalGameTime.TotalSeconds;
-            if (timer > 2)
+           
+            if (levelLoaded)
             {
                 if (velocity.Y < 20) velocity.Y += 0.22F;
-                 
                     restarted = false;
-                
-                
-                
-
             }
             else
             {

@@ -5,7 +5,7 @@ using MonogameProject.Classes.Hero;
 using MonogameProject.Tiles;
 using MonogameProject.Classes.Enemies;
 using Microsoft.Xna.Framework.Input;
-
+using System.Diagnostics;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -24,7 +24,7 @@ namespace MonogameProject.Classes.Levels
         public Texture2D backgroundje1;
         public Health playerLife;
         public Score score;
-
+        public bool started = false;
         public bool objectInitialized = false;
         public bool addedPortal = false;
         private BioHunt game;
@@ -93,6 +93,22 @@ namespace MonogameProject.Classes.Levels
                 coinLevel1.AddCoin(new Rectangle(1700, 355, 32, 32));
                 objectInitialized = true;
             }
+            //if (started == false)
+            //{
+                
+            //    player.Position = new Vector2(203, 200);
+            //    player.velocity.Y = 0F;
+            //    player.timer = 0;
+            //    ufo.UfoRectangle = new Rectangle(80, 200, 300, 65);
+            //    ufo.timer = 0;
+            //    ufo.velocity.X = 0F;
+            //}
+            if(game.LevelStates == LevelStates.Level1)
+            {
+                player.levelLoaded = true;
+                ufo.levelLoaded = true;
+            }
+           
 
             player.Update(gameTime);
             ufo.Update(gameTime);
@@ -105,6 +121,7 @@ namespace MonogameProject.Classes.Levels
                 {
                     player.Collision(tile.Rectangle, mapLevel1.Width, mapLevel1.Height);
                 }
+                
             }
             healthRectangleGhost = new Rectangle(spook.rectangle.X - 10, spook.Rectangle.Y - 25, spook.health, 15);
         }

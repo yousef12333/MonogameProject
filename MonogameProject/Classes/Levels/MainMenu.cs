@@ -2,9 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
-
-
+using MonogameProject.Classes.Hero;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -52,6 +50,7 @@ namespace MonogameProject.Classes.Levels
         }
         public void Update(GameTime gameTime)
         {
+           
 
             MouseState mouse = Mouse.GetState();
             btnPlay.Update(mouse);
@@ -59,12 +58,15 @@ namespace MonogameProject.Classes.Levels
             if (btnPlay.isClicked == true)
             {
                 DeathButtons.Instance.isRestarted = false;
-
+               
                 LevelStates = LevelStates.Level1; //zet player op juiste positie samen met spaceship en reset timer
+                Player.Instance.restarted = true;
 
 
             }
             else if (btnPlay.isClosed == true) ExitGame(); // verwijder biohunt instance
+           
+
             //-----------------------------------------------------------------------
         }
         public void Draw(SpriteBatch spriteBatch)

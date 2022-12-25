@@ -5,12 +5,7 @@ using MonogameProject.Classes.Hero;
 using MonogameProject.Tiles;
 using MonogameProject.Classes.Enemies;
 using Microsoft.Xna.Framework.Input;
-
-
-
-
-
-
+using MonogameProject.Collision;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -34,6 +29,7 @@ namespace MonogameProject.Classes.Levels
 
         public bool objectInitialized = false;
         public bool addedPortal = false;
+        public bool shiftLevel = false;
         private BioHunt game;
         public level2(Texture2D texturePortal, Texture2D coinTexture, Texture2D playerTexture, Texture2D fireballImage, SpriteFont scoreTekst, Texture2D lavaBallTexture, Texture2D fishTexture, BioHunt game)
         {
@@ -42,6 +38,7 @@ namespace MonogameProject.Classes.Levels
             portal2 = new Portal(texturePortal);
             coinLevel2 = new Coin(coinTexture);
             player = new Player(playerTexture, 100, fireballImage);
+            
             playerLife = new Health();
             mapLevel2 = new Map();
             score = new Score(scoreTekst);
@@ -50,7 +47,7 @@ namespace MonogameProject.Classes.Levels
             fish = new FishMonsterTrap(fishTexture, 150);
             mapLevel2 = new Map();
             this.game = game;
-        }
+        }                                       //alles van initialize krijgt waarde mainmenu bij begin;
         private static level2 instance;
 
         public static level2 Instance
@@ -68,7 +65,7 @@ namespace MonogameProject.Classes.Levels
            
             Tiles.Tiles.Content = Content;
             healthTexture = Content.Load<Texture2D>("HealthBar");
-
+            player.position = new Vector2(1300, 590);
             music.Load(Content);
             backgroundje2 = Content.Load<Texture2D>("Vulcanic_Background");
             playerLife.Load(Content);
@@ -89,7 +86,7 @@ namespace MonogameProject.Classes.Levels
 
           }, 64);
 
-        }
+        }                               // hier ook alleen mainmenu
         public void Update(GameTime gameTime)
         {
 
@@ -113,8 +110,20 @@ namespace MonogameProject.Classes.Levels
             playerLife.Update(gameTime);
             coinLevel2.Update(gameTime);
             portal2.Update(gameTime);
+            if (shiftLevel)
+            {
+                if(game.LevelStates == LevelStates.Level1)
+                {
+                    game.LevelStates = LevelStates.Level2;
+                }
+            }
             if (game.LevelStates == LevelStates.Level2)
             {
+                player.levelLoaded = true;
+            }
+            if (game.LevelStates == LevelStates.Level2)
+            {
+               // game.LevelStates = LevelStates.Level2;
                 foreach (CollisionTiles tile in mapLevel2.CollisionTiles)
                 {
                     player.Collision(tile.Rectangle, mapLevel2.Width, mapLevel2.Height);
@@ -129,11 +138,16 @@ namespace MonogameProject.Classes.Levels
             }
             if (playerFrozen)
             {
-                player.position = new Vector2(1100, 600);
+                player.position = new Vector2(1350, 550);
                 player.velocity.Y = 0;
+                
+            }
+            if(playerFrozen && game.LevelStates == LevelStates.Level2)
+            {
+                playerFrozen = false;
             }
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch) //hier wordt het bij portaalhit level 2 alleen bij update niet
         {
             spriteBatch.Draw(backgroundje2, rectje, Color.White);
             music.Draw(spriteBatch);

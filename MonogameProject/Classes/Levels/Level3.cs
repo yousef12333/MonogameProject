@@ -19,12 +19,13 @@ namespace MonogameProject.Classes.Levels
         public Rectangle healthRectangleBoss;
         public BossMonster boss;
         public Player player;
-        public bool objectInitialized = false;
         public SpriteFont tekst;
         public Score score;
         public Health playerLife;
         public Texture2D healthTexture;
+        public bool objectInitialized = false;
         public bool playerFrozen = true;
+        public bool shiftLevel = false;
         private BioHunt game;
 
         public level3(Texture2D healthTexture, Texture2D bossTexture, Texture2D playerTexture, Texture2D fireballImage, Texture2D coinTexture, SpriteFont scoreTekst, BioHunt game)
@@ -96,7 +97,17 @@ namespace MonogameProject.Classes.Levels
             boss.Update(gameTime);
             playerLife.Update(gameTime);
             coinLevel3.Update(gameTime);
-
+            if (shiftLevel)
+            {
+                if (game.LevelStates == LevelStates.Level2)
+                {
+                    game.LevelStates = LevelStates.Level3;
+                }
+            }
+            if (game.LevelStates == LevelStates.Level3)
+            {
+                player.levelLoaded = true;
+            }
             if (game.LevelStates == LevelStates.Level3)
             {
                 foreach (CollisionTiles tile in mapLevel3.CollisionTiles)
@@ -106,11 +117,18 @@ namespace MonogameProject.Classes.Levels
                 }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.P)) { game.LevelStates = LevelStates.Win; }
+
             if (playerFrozen)
             {
-                player.position = new Vector2(200, 200);
+                player.position = new Vector2(100, 200);
                 player.velocity.Y = 0;
+
             }
+            if (playerFrozen && game.LevelStates == LevelStates.Level3)
+            {
+                playerFrozen = false;
+            }
+         
 
         }
         public void Draw(SpriteBatch spriteBatch)

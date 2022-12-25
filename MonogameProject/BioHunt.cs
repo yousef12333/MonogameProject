@@ -84,9 +84,12 @@ namespace MonogameProject
             mainMenu = new MainMenu(this); // this zorgt ervoor dat quit button werkt, is instance;
             death = new Death(this);
             win = new Win(this);
-            level1 = new level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst, this);
-            level2 = new level2(portalTexture, coinTexture, playerTexture, fireballImage, tekst, lavaBallTexture, fishTexture, this);
-            level3 = new level3(healthTexture, bossTexture, playerTexture, fireballImage, coinTexture, tekst, this);
+         
+                level1 = new level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst, this);
+           
+                level2 = new level2(portalTexture, coinTexture, playerTexture, fireballImage, tekst, lavaBallTexture, fishTexture, this);
+        
+                level3 = new level3(healthTexture, bossTexture, playerTexture, fireballImage, coinTexture, tekst, this);
             collision = new CollisionManager(this);
             //hier moeten de levels, BOVEN base.initialize
             base.Initialize();
@@ -101,10 +104,10 @@ namespace MonogameProject
             death.Load(Content, GraphicsDevice);
             win.Load(Content, GraphicsDevice);
             level1.Load(Content);
-       
-            level2.Load(Content);
-        
-            level3.Load(Content);
+         
+                level2.Load(Content);
+     
+                level3.Load(Content);
           
             healthTexture = Content.Load<Texture2D>("HealthBar");
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -126,17 +129,21 @@ namespace MonogameProject
             mouseRectangle = new Rectangle(mouse.X, mouse.Y, 5, 5);
             if (LevelStates == LevelStates.MainMenu)
                 mainMenu.Update(gameTime);
-            death.Update(gameTime);
-            win.Update(gameTime);
+            if (LevelStates == LevelStates.Death)
+                death.Update(gameTime);
+            if (LevelStates == LevelStates.Win)
+                win.Update(gameTime);
             LevelStates = mainMenu.LevelStates;
-        
-                level1.Update(gameTime);
+
+
             collision.level1 = level1;
-           
-                level2.Update(gameTime);
+            level1.Update(gameTime);
             collision.level2 = level2;
-            level3.Update(gameTime);
+            level2.Update(gameTime);
             collision.level3 = level3;
+            level3.Update(gameTime);
+
+              
             collision.Update(gameTime);
             //LevelStates = collision.LevelStates;
 
