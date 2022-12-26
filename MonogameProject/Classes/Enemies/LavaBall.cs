@@ -1,17 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Interfaces;
-using SharpDX.Direct3D9;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonogameProject.Classes.Enemies
 {
-    internal class LavaBall :IGameObject
+    internal class LavaBall:IGameObject
     {
         public List<Vector2> lavaballList = new List<Vector2>();
         Vector2 velocity = new Vector2(0, 9);
@@ -24,17 +18,25 @@ namespace MonogameProject.Classes.Enemies
                 return rectangle;
             }
         }
+        public List<Vector2> previousPositions = new List<Vector2>();
+        Trails trail;
         public void AddLavaball(Vector2 pos)
         {
             lavaballList.Add(pos);
         }
         public LavaBall(Texture2D texture)
         {
+            trail = new Trails();
+            trail.maxTrails = 6;
+            trail.trailDelay = 7;
+            trail.trailDelayCounter = 0;
             lavaBall = texture;
         }
         public void Update(GameTime gameTime)
         {
+          
             move();
+            trail.Update(gameTime, rectangle);
         }
         private void move()
         {
@@ -52,7 +54,14 @@ namespace MonogameProject.Classes.Enemies
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < lavaballList.Count; i++){spriteBatch.Draw(lavaBall, rectangle, Color.White);}
+            for (int i = 0; i < lavaballList.Count; i++){
+
+                for (int j = 0; j < trail.previousPositions.Count; j++)
+                {
+                    spriteBatch.Draw(lavaBall, new Rectangle((int)trail.previousPositions[j].X, (int)trail.previousPositions[j].Y, 74, 74), Color.White * 0.5F);
+                }
+                spriteBatch.Draw(lavaBall, rectangle, Color.White);
+            }
         }
     }
 }

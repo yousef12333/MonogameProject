@@ -30,9 +30,10 @@ namespace MonogameProject.Classes.Levels
         public bool addedPortal = false;
         public ScoreUpdater scoreUpdater;
         public ScoreStorage scoreStorage;
+        public DamageDisplay damageDisplay;
         private BioHunt game;
 
-        public level1(Texture2D textureUfo, Texture2D texturePortal, Texture2D ghostTexture, Texture2D coinTexture, Texture2D playerTexture, Texture2D fireballImage, SpriteFont scoreTekst, BioHunt game)
+        public level1(Texture2D textureUfo, Texture2D texturePortal, Texture2D ghostTexture, Texture2D coinTexture, Texture2D playerTexture, Texture2D fireballImage, SpriteFont scoreTekst, SpriteFont damageText, BioHunt game)
         {
 
             music = new BackgroundMusic();
@@ -46,6 +47,7 @@ namespace MonogameProject.Classes.Levels
             scoreStorage = new ScoreStorage();
             scoreUpdater = new ScoreUpdater(scoreStorage);
             score = new Score(scoreTekst, scoreStorage);
+            damageDisplay = new DamageDisplay(damageText);
             this.game = game;
         }
 
@@ -111,6 +113,7 @@ namespace MonogameProject.Classes.Levels
             portal1.Update(gameTime);
             spook.Update(gameTime);
             coinLevel1.Update(gameTime);
+            damageDisplay.Update(gameTime);
             if (game.LevelStates == LevelStates.Level1)
             {
                 foreach (CollisionTiles tile in mapLevel1.CollisionTiles)
@@ -125,7 +128,7 @@ namespace MonogameProject.Classes.Levels
         {
             spriteBatch.Draw(backgroundje1, rectje, Color.White);
             playerLife.Draw(spriteBatch);
-            score.Draw(spriteBatch, new Vector2(game.screenWidth - 350, 10));
+            score.Draw(spriteBatch, new Vector2(game.screenWidth - 330, 10));
             music.Draw(spriteBatch);
             portal1.Draw(spriteBatch);
             mapLevel1.Draw(spriteBatch);
@@ -133,6 +136,7 @@ namespace MonogameProject.Classes.Levels
             player.Draw(spriteBatch);
             ufo.Draw(spriteBatch);
             spook.Draw(spriteBatch);
+            damageDisplay.Draw(spriteBatch);
             coinLevel1.Draw(spriteBatch);
         }
         public level1()

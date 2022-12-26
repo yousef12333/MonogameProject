@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-
 using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Interfaces;
-
 
 namespace MonogameProject.Classes.Enemies
 {
@@ -11,7 +9,7 @@ namespace MonogameProject.Classes.Enemies
         Vector2 bossPosition = new Vector2(1400, 515);
         Vector2 velocity = new Vector2(9, 0);
         public Texture2D boss;
-        
+        Trails trail;
         public Rectangle rectangle;
         public bool goLeft = false;
         public bool goRight = false;
@@ -28,13 +26,11 @@ namespace MonogameProject.Classes.Enemies
                 return rectangle;
             }
         }
-
-       
-
         public BossMonster(Texture2D texture, int newHealth)
         {
             boss = texture;
             animations = new AnimationModus();
+            trail = new Trails();
             animations.MoveStateRight = new Animation();
             animations.MoveStateLeft = new Animation();
             for (int i = 0; i < 5; i++) { animations.MoveStateRight.AddFrame(new AnimationFrame(new Rectangle(89 * i, 0, 86, 71))); }
@@ -47,6 +43,7 @@ namespace MonogameProject.Classes.Enemies
             currentAnimation.Update(gameTime);
             rectangle = new Rectangle((int)bossPosition.X, (int)bossPosition.Y, 160, 128);
             move(gameTime);
+            trail.Update(gameTime, rectangle);
         }
         private void move(GameTime gameTime)
         {
@@ -91,7 +88,11 @@ namespace MonogameProject.Classes.Enemies
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-                spriteBatch.Draw(boss, rectangle, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
+            for (int i = 0; i < trail.previousPositions.Count; i++)
+            {
+                spriteBatch.Draw(boss, new Rectangle((int)trail.previousPositions[i].X, (int)trail.previousPositions[i].Y, 160, 128), currentAnimation.CurrentFrame.SourceRectangle, Color.White * 0.4F);
+            }
+            spriteBatch.Draw(boss, rectangle, currentAnimation.CurrentFrame.SourceRectangle, Color.White);
         }
     }
 }

@@ -29,7 +29,6 @@ namespace MonogameProject.Collision
       
 
         public bool objectInitialized = false;
-
         float monsterHitCounter;
         bool monsterHit = false;
         public level1 level1;
@@ -61,9 +60,9 @@ namespace MonogameProject.Collision
 
             if (level1.player.rectangle.Intersects(level1.spook.rectangle))
             {
-                if (level1.player.isHit == false)
+                if (level1.player.IsHit == false)
                 {
-                    level1.player.isHit = true;
+                    level1.player.IsHit = true;
                     level1.player.HeartRate--;
                     if (level1.playerLife.amountOfHealth.Count > 0)
                         level1.playerLife.healthReduce();
@@ -95,6 +94,7 @@ namespace MonogameProject.Collision
                     level1.player.vuurbal.aanmaakBullet = false;
                     level1.player.vuurbal.timer = 0;
                     level1.player.vuurbal.directionFireball.RemoveAt(level1.player.vuurbal.directionFireball.Count - 1);
+                    level1.damageDisplay.DisplayDamage(new Vector2(level1.spook.rectangle.X, level1.spook.rectangle.Y - 50), 10);
                 }
             }
            
@@ -136,9 +136,9 @@ namespace MonogameProject.Collision
 
             if (level2.player.rectangle.Intersects(level2.fish.rectangle) && game.LevelStates == LevelStates.Level2)
             {
-                if (level2.player.isHit == false)
+                if (level2.player.IsHit == false)
                 {
-                    level2.player.isHit = true;
+                    level2.player.IsHit = true;
                     level2.player.HeartRate--;
                     if (level2.playerLife.amountOfHealth.Count > 0)
                         level2.playerLife.healthReduce();
@@ -152,9 +152,9 @@ namespace MonogameProject.Collision
             }
             if (level2.player.rectangle.Intersects(level2.lBall1.Rectangle) && game.LevelStates == LevelStates.Level2)
             {
-                if (level2.player.isHit == false)
+                if (level2.player.IsHit == false)
                 {
-                    level2.player.isHit = true;
+                    level2.player.IsHit = true;
                     level2.player.HeartRate--;
                     if (level2.playerLife.amountOfHealth.Count > 0)
                         level2.playerLife.healthReduce();
@@ -163,9 +163,9 @@ namespace MonogameProject.Collision
             }
             if (level2.player.rectangle.Intersects(level2.lBall2.Rectangle) && game.LevelStates == LevelStates.Level2)
             {
-                if (level2.player.isHit == false)
+                if (level2.player.IsHit == false)
                 {
-                    level2.player.isHit = true;
+                    level2.player.IsHit = true;
                     level2.player.HeartRate--;
                     if (level2.playerLife.amountOfHealth.Count > 0)
                         level2.playerLife.healthReduce();
@@ -192,6 +192,7 @@ namespace MonogameProject.Collision
                     level2.player.vuurbal.aanmaakBullet = false;
                     level2.player.vuurbal.timer = 0;
                     level2.player.vuurbal.directionFireball.RemoveAt(level2.player.vuurbal.directionFireball.Count - 1);
+                    level2.damageDisplay.DisplayDamage(new Vector2(level2.fish.rectangle.X, level2.fish.rectangle.Y - 50), 10);
                 }
             }
             for (int i = 0; i < level2.player.vuurbal.fireballRect.Count; i++)
@@ -234,9 +235,9 @@ namespace MonogameProject.Collision
             }
             if (level3.player.rectangle.Intersects(level3.boss.rectangle))
             {
-                if (level3.player.isHit == false)
+                if (level3.player.IsHit == false)
                 {
-                    level3.player.isHit = true;
+                    level3.player.IsHit = true;
                     level3.player.HeartRate--;
                     if (level3.playerLife.amountOfHealth.Count > 0)
                         level3.playerLife.healthReduce();
@@ -307,6 +308,7 @@ namespace MonogameProject.Collision
                     level3.player.vuurbal.aanmaakBullet = false;
                     level3.player.vuurbal.timer = 0;
                     level3.player.vuurbal.directionFireball.RemoveAt(level3.player.vuurbal.directionFireball.Count - 1);
+                    level3.damageDisplay.DisplayDamage(new Vector2(level3.boss.rectangle.X, level3.boss.rectangle.Y - 50), 10);
                 }
             }
 

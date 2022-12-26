@@ -4,10 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 
-using MonogameProject.Classes.Hero;
-using MonogameProject.Screen;
-using Microsoft.VisualBasic.Devices;
-using SharpDX.MediaFoundation;
 
 
 namespace MonogameProject.Classes.Levels
@@ -18,7 +14,6 @@ namespace MonogameProject.Classes.Levels
         WinButton winEindigKnop;
         Rectangle mouseRectangle;
         private BioHunt game;
-        public Vector2 size;
         public Score score;
         public ScoreUpdater scoreUpdater;
         public ScoreStorage scoreStorage;
@@ -46,7 +41,7 @@ namespace MonogameProject.Classes.Levels
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(winScreen, new Rectangle(0, 0, game.screenWidth + 80, game.screenHeight), Color.White);
-            score.Draw(spriteBatch, new Vector2((game.screenWidth / 2) - 100, 350));
+            score.Draw(spriteBatch, new Vector2((game.screenWidth / 2) - 90, 350));
             winEindigKnop.Draw(spriteBatch);
         }
     }

@@ -16,6 +16,9 @@ namespace MonogameProject.Classes
         public List<string> directionFireball;
         public List<Rectangle> fireballRect;
         public float timer;
+        public float colorTimer = 0f;
+        public int colorIndex = 0;
+        public Color[] changingColors;
         public bool aanmaakBullet = false;
         private Texture2D fireballTexture;
         private int bulletDirection = 6;
@@ -24,6 +27,7 @@ namespace MonogameProject.Classes
         public List<Rectangle> Rectangle { get { return fireballRect; } set { fireballRect = value; } }
         public Fireball(Texture2D texture)
         {
+            changingColors = new Color[] {Color.Yellow, Color.Purple, Color.Blue, Color.Green, Color.DarkGray, Color.LightPink, Color.White};
             fireballTexture = texture;
             bullets = new List<Vector2>();
             fireballRect = new List<Rectangle>();
@@ -38,6 +42,7 @@ namespace MonogameProject.Classes
         public void Update(GameTime gameTime, Vector2 position2, Vector2 position, bool isLeft, bool isRight, Texture2D image1, Texture2D image2)
         {
             currentAnimation.Update(gameTime);
+            changeColors(gameTime);
             if (aanmaakBullet) timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (Keyboard.GetState().IsKeyDown(Keys.E) && aanmaakBullet == false)
             {
@@ -90,13 +95,25 @@ namespace MonogameProject.Classes
                     directionFireball.RemoveAt(directionFireball.Count - 1);
                 }
             }
-            
+        }
+        public void changeColors(GameTime gameTime)
+        {
+            colorTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (colorTimer >= 0.1f)
+            {
+                colorIndex++;
+                if (colorIndex >= changingColors.Length)
+                {
+                    colorIndex = 0;
+                }
+                colorTimer = 0f;
+            }
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < bullets.Count; i++)
             {
-                spriteBatch.Draw(fireballTexture, fireballRect[i], currentAnimation.CurrentFrame.SourceRectangle, Color.White);
+                spriteBatch.Draw(fireballTexture, fireballRect[i], currentAnimation.CurrentFrame.SourceRectangle, changingColors[colorIndex]);
             }
         }
 

@@ -22,7 +22,10 @@ namespace MonogameProject.Classes
         private Vector2 velocity = new Vector2(0, 0);
         private bool restarted;
         public bool levelLoaded;
-
+        public List<Vector2> previousPositions = new List<Vector2>();
+        public const int maxTrails = 3;
+        public const int trailDelay = 5;
+        public int trailDelayCounter = 0;
         public Vector2 Velocity
         {
             get => velocity;
@@ -39,7 +42,7 @@ namespace MonogameProject.Classes
         {
             ufoImage = texture;
         }
-
+       
         public void Update(GameTime gameTime)
         {
             ufoRectangle.X -= (int)velocity.X;
@@ -55,10 +58,24 @@ namespace MonogameProject.Classes
                 velocity.X = 6;
                 restarted = false;
             }
+            trailDelayCounter++;
+            if (trailDelayCounter >= trailDelay)
+            {
+                previousPositions.Add(new Vector2(ufoRectangle.X, ufoRectangle.Y));
+                trailDelayCounter = 0;
+            }
+            if (previousPositions.Count > maxTrails)
+            {
+                previousPositions.RemoveAt(0);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            for (int i = 0; i < previousPositions.Count; i++)
+            {
+                spriteBatch.Draw(ufoImage, new Rectangle((int)previousPositions[i].X, (int)previousPositions[i].Y, 300, 65), Color.White * 0.4F);
+            }
             spriteBatch.Draw(ufoImage, ufoRectangle, Color.White);
         }
     }

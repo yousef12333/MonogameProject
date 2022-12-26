@@ -121,6 +121,13 @@
 /processorParam:TextureFormat=Color
 /build:CoinMovement2.png
 
+#begin damageText.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:damageText.spritefont
+
 #begin Death_Screen.png
 /importer:TextureImporter
 /processor:TextureProcessor

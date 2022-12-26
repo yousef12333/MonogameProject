@@ -27,9 +27,10 @@ namespace MonogameProject.Classes.Levels
         public bool shiftLevel = false;
         public ScoreUpdater scoreUpdater;
         public ScoreStorage scoreStorage;
+        public DamageDisplay damageDisplay;
         private BioHunt game;
 
-        public level3(Texture2D healthTexture, Texture2D bossTexture, Texture2D playerTexture, Texture2D fireballImage, Texture2D coinTexture, SpriteFont scoreTekst, BioHunt game)
+        public level3(Texture2D healthTexture, Texture2D bossTexture, Texture2D playerTexture, Texture2D fireballImage, Texture2D coinTexture, SpriteFont scoreTekst, SpriteFont damageText, BioHunt game)
         {
 
             music = new BackgroundMusic();
@@ -41,7 +42,8 @@ namespace MonogameProject.Classes.Levels
             boss = new BossMonster(bossTexture, 200);
             player = new Player(playerTexture, 100, fireballImage);
             coinLevel3 = new Coin(coinTexture);
-            player.rectangle = new Rectangle(200, 200, 64, 64); //werkt maar geen gravity en beweging
+            player.rectangle = new Rectangle(200, 200, 64, 64); 
+            damageDisplay = new DamageDisplay(damageText);
             this.game = game;
         }
         private static level3 instance;
@@ -100,6 +102,7 @@ namespace MonogameProject.Classes.Levels
             boss.Update(gameTime);
             playerLife.Update(gameTime);
             coinLevel3.Update(gameTime);
+            damageDisplay.Update(gameTime);
             if (shiftLevel)
             {
                 if (game.LevelStates == LevelStates.Level2)
@@ -145,8 +148,9 @@ namespace MonogameProject.Classes.Levels
             spriteBatch.Draw(healthTexture, healthRectangleBoss, Color.White);
 
             playerLife.Draw(spriteBatch);
-            score.Draw(spriteBatch, new Vector2(game.screenWidth - 350, 10));
+            score.Draw(spriteBatch, new Vector2(game.screenWidth - 330, 10));
             player.Draw(spriteBatch);
+            damageDisplay.Draw(spriteBatch);
         }
         public level3()
         {

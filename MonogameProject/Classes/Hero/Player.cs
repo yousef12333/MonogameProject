@@ -3,18 +3,15 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonogameProject.Interfaces;
-using System;
 
 namespace MonogameProject.Classes.Hero
 {
     internal class Player : IGameObject
     {
         public Texture2D texture;
-        
         public Texture2D bulletImage;
         public Color color { get; set; }
         public Rectangle collisionHitbox { get; set; }
-        
         public Vector2 position = new Vector2(200, 200);
         public Vector2 velocity;
         public Rectangle rectangle;
@@ -28,14 +25,10 @@ namespace MonogameProject.Classes.Hero
         public bool levelLoaded = false;
         bool isLeft = false;
         bool isRight = false;
-        
-        public bool isHit { get; set; } = false;
-
-
+        public bool IsHit { get; set; } = false;
 
         private bool hasJumped = false;
         private int heartRate = 3; 
-
         public int HeartRate
         {
             get { return heartRate; }
@@ -46,7 +39,6 @@ namespace MonogameProject.Classes.Hero
             }
         }
         private static Player instance;
-
         public static Player Instance
         {
             get
@@ -56,15 +48,6 @@ namespace MonogameProject.Classes.Hero
                     
                 return instance;
             }
-        }
-
-        public Rectangle Rectangle
-        {
-            get
-            {
-                return rectangle;
-            }
-
         }
         public Vector2 Position
         {
@@ -78,38 +61,20 @@ namespace MonogameProject.Classes.Hero
             }
 
         }
-        public Vector2 Position2
-        {
-            get
-            {
-                return position2;
-            }
-
-        }
-
-        
-
         public Player(Texture2D texture, int newHealth, Texture2D bulletImage)
         {
-
             this.texture = texture;
-          
-
             health = newHealth;
             vuurbal = new Fireball(bulletImage);
             color = new Color();
             color = Color.White;
             animations = new AnimationModus();
-
             animations.MoveStateRight = new Animation();
             animations.MoveStateLeft = new Animation();
             animations.IdleStateRight = new Animation();
-
             animations.IdleStateLeft = new Animation();
             animations.JumpRight = new Animation();
             animations.JumpLeft = new Animation();
-
-
             for (int i = 0; i < 2; i++)
             {
                 animations.MoveStateRight.AddFrame(new AnimationFrame(new Rectangle(40 * i, 0, 40, 47)));
@@ -123,21 +88,12 @@ namespace MonogameProject.Classes.Hero
             animations.IdleStateLeft.AddFrame(new AnimationFrame(new Rectangle(0, 49, 40, 49)));
             animations.JumpRight.AddFrame(new AnimationFrame(new Rectangle(120, 0, 40, 49)));
             animations.JumpLeft.AddFrame(new AnimationFrame(new Rectangle(120, 49, 40, 49)));
-
-
             currentAnimation = animations.IdleStateRight;
            
         }
 
         public Player()
         {
-        }
-
-        public void Load(ContentManager Content)
-        {
-
-            bulletImage = Content.Load<Texture2D>("Fireball");
-
         }
         private void Input(GameTime gameTime)
         {
@@ -179,8 +135,6 @@ namespace MonogameProject.Classes.Hero
                     currentAnimation = animations.IdleStateLeft;
                 }
             }
-
-
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && hasJumped == false && isRight)
             {
                 position.Y -= 4F;
@@ -199,8 +153,6 @@ namespace MonogameProject.Classes.Hero
 
             }
         }
-
-
         public void Update(GameTime gameTime)
         {
             if (restarted == true)
@@ -223,9 +175,7 @@ namespace MonogameProject.Classes.Hero
                 velocity.X = 0;
                 
             }
-
-
-            if (isHit == true)
+            if (IsHit == true)
             {
                 
                 color = Color.Red;
@@ -236,17 +186,11 @@ namespace MonogameProject.Classes.Hero
             {
                 color = Color.White;
                 hitCounter = 0;
-                isHit = false;
+                IsHit = false;
             }
-
-
             vuurbal.Update(gameTime, position2, position, isLeft, isRight, bulletImage, bulletImage);
-
             rectangle = new Rectangle((int)position.X, (int)position.Y, 64, 64);
-
             Input(gameTime);
-           
-            
         }
         public void Collision(Rectangle newRectangle, int xOffset, int yOffset)
         {
@@ -286,18 +230,12 @@ namespace MonogameProject.Classes.Hero
                 position.Y = 0.01F;
                 
             }
-  
         }
-
         public void Draw(SpriteBatch spriteBatch)
         {
-           
           spriteBatch.Draw(texture, rectangle, currentAnimation.CurrentFrame.SourceRectangle, color);
           vuurbal.Draw(spriteBatch);
-
         }
-
-
     }
 }
 

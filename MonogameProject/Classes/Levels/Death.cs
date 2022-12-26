@@ -2,10 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
-using System;
-using MonogameProject.Classes.Hero;
-using MonogameProject.Screen;
-
 namespace MonogameProject.Classes.Levels
 {
     internal class Death
@@ -54,7 +50,7 @@ namespace MonogameProject.Classes.Levels
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(deathBackground, new Rectangle(0, 0, game.screenWidth + 80, game.screenHeight), Color.White);
-            score.Draw(spriteBatch, new Vector2((game.screenWidth /2)-110, 200));
+            score.Draw(spriteBatch, new Vector2((game.screenWidth /2)-100, 200));
             quit.Draw(spriteBatch);
         }
         public Death()

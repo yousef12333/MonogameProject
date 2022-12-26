@@ -26,6 +26,7 @@ namespace MonogameProject
         level2 level2;
         level3 level3;
         SpriteFont tekst;
+        SpriteFont damageText;
         public LevelStates LevelStates = LevelStates.Death;
         public int screenWidth = ScreenSettings.Instance.ScreenWidth, screenHeight = ScreenSettings.Instance.ScreenHeight;
         Texture2D ghostTexture;
@@ -72,6 +73,7 @@ namespace MonogameProject
             playerTexture = Content.Load<Texture2D>("VerbeterigSpeler2");
             fireballImage = Content.Load<Texture2D>("Fireball");
             tekst = Content.Load<SpriteFont>("File");
+            damageText = Content.Load<SpriteFont>("damageText");
             lavaBallTexture = Content.Load<Texture2D>("Lava_Ball2");
             fishTexture = Content.Load<Texture2D>("FishmonsterMovement4");
             bossTexture = Content.Load<Texture2D>("BossMonsterMovement2");
@@ -81,11 +83,11 @@ namespace MonogameProject
             death = new Death(this, tekst);
             win = new Win(this, tekst);
 
-            level1 = new level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst, this);
+            level1 = new level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst, damageText, this);
            
-                level2 = new level2(portalTexture, coinTexture, playerTexture, fireballImage, tekst, lavaBallTexture, fishTexture, this);
+                level2 = new level2(portalTexture, coinTexture, playerTexture, fireballImage, tekst, lavaBallTexture, fishTexture, damageText, this);
         
-                level3 = new level3(healthTexture, bossTexture, playerTexture, fireballImage, coinTexture, tekst, this);
+                level3 = new level3(healthTexture, bossTexture, playerTexture, fireballImage, coinTexture, tekst, damageText, this);
             collision = new CollisionManager(this);
             //hier moeten de levels, BOVEN base.initialize
             base.Initialize();

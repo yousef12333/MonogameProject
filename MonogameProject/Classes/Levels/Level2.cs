@@ -20,7 +20,7 @@ namespace MonogameProject.Classes.Levels
         public Portal portal2;
         public Coin coinLevel2;
         public Rectangle healthRectangleFish;
-        public FishMonsterTrap fish;
+        public FishMonster fish;
         public Player player;
         public Health playerLife;
         public Score score;
@@ -32,8 +32,9 @@ namespace MonogameProject.Classes.Levels
         public bool objectInitialized = false;
         public bool addedPortal = false;
         public bool shiftLevel = false;
+        public DamageDisplay damageDisplay;
         private BioHunt game;
-        public level2(Texture2D texturePortal, Texture2D coinTexture, Texture2D playerTexture, Texture2D fireballImage, SpriteFont scoreTekst, Texture2D lavaBallTexture, Texture2D fishTexture, BioHunt game)
+        public level2(Texture2D texturePortal, Texture2D coinTexture, Texture2D playerTexture, Texture2D fireballImage, SpriteFont scoreTekst, Texture2D lavaBallTexture, Texture2D fishTexture, SpriteFont damageText, BioHunt game)
         {
 
             music = new BackgroundMusic();
@@ -48,8 +49,9 @@ namespace MonogameProject.Classes.Levels
             score = new Score(scoreTekst, scoreStorage);
             lBall1 = new LavaBall(lavaBallTexture);
             lBall2 = new LavaBall(lavaBallTexture);
-            fish = new FishMonsterTrap(fishTexture, 150);
+            fish = new FishMonster(fishTexture, 150);
             mapLevel2 = new Map();
+            damageDisplay = new DamageDisplay(damageText);
             this.game = game;
         }                                       //alles van initialize krijgt waarde mainmenu bij begin;
         private static level2 instance;
@@ -114,6 +116,7 @@ namespace MonogameProject.Classes.Levels
             playerLife.Update(gameTime);
             coinLevel2.Update(gameTime);
             portal2.Update(gameTime);
+            damageDisplay.Update(gameTime);
             if (shiftLevel)
             {
                 if (game.LevelStates == LevelStates.Level1)
@@ -158,15 +161,11 @@ namespace MonogameProject.Classes.Levels
             lBall2.Draw(spriteBatch);
             mapLevel2.Draw(spriteBatch);
             playerLife.Draw(spriteBatch);
-            score.Draw(spriteBatch, new Vector2(game.screenWidth - 350, 10));
-          
+            score.Draw(spriteBatch, new Vector2(game.screenWidth - 330, 10));
             coinLevel2.Draw(spriteBatch);
-            
             portal2.Draw(spriteBatch);
-            
             player.Draw(spriteBatch);
-           
-           
+            damageDisplay.Draw(spriteBatch);
         }
         public level2()
         {
