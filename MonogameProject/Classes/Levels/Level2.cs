@@ -27,7 +27,8 @@ namespace MonogameProject.Classes.Levels
         public Texture2D backgroundje2;
         public Texture2D healthTexture;
         public bool playerFrozen = true;
-
+        public ScoreUpdater scoreUpdater;
+        public ScoreStorage scoreStorage;
         public bool objectInitialized = false;
         public bool addedPortal = false;
         public bool shiftLevel = false;
@@ -42,7 +43,9 @@ namespace MonogameProject.Classes.Levels
             
             playerLife = new Health();
             mapLevel2 = new Map();
-            score = new Score(scoreTekst);
+            scoreStorage = new ScoreStorage();
+            scoreUpdater = new ScoreUpdater(scoreStorage);
+            score = new Score(scoreTekst, scoreStorage);
             lBall1 = new LavaBall(lavaBallTexture);
             lBall2 = new LavaBall(lavaBallTexture);
             fish = new FishMonsterTrap(fishTexture, 150);
@@ -155,7 +158,7 @@ namespace MonogameProject.Classes.Levels
             lBall2.Draw(spriteBatch);
             mapLevel2.Draw(spriteBatch);
             playerLife.Draw(spriteBatch);
-            score.Draw(spriteBatch, new Vector2(ScreenSettings.Instance.screenWidth - 350, 10));
+            score.Draw(spriteBatch, new Vector2(game.screenWidth - 350, 10));
           
             coinLevel2.Draw(spriteBatch);
             

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonogameProject.Classes.Levels;
 using MonogameProject.Collision;
-
+using MonogameProject.Screen;
 using System.Diagnostics;
 
 
@@ -27,11 +27,7 @@ namespace MonogameProject
         level3 level3;
         SpriteFont tekst;
         public LevelStates LevelStates = LevelStates.Death;
-        public int screenWidth = 1790, screenHeight = 703;
-        public int Screenwidth
-        {
-            get { return screenWidth; }
-        }
+        public int screenWidth = ScreenSettings.Instance.ScreenWidth, screenHeight = ScreenSettings.Instance.ScreenHeight;
         Texture2D ghostTexture;
         Texture2D mouseTexture;
         GraphicsDevice grap;

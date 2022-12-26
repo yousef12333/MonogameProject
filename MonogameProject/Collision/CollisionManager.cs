@@ -81,7 +81,7 @@ namespace MonogameProject.Collision
                 if (level1.player.rectangle.Intersects(level1.coinLevel1.coins[i]))
                 {
                     level1.coinLevel1.coins.RemoveAt(i);
-                    level1.score.ScoreUp();
+                    level1.scoreUpdater.ScoreUp();
                 }
             }
 
@@ -177,7 +177,7 @@ namespace MonogameProject.Collision
                 if (level2.player.rectangle.Intersects(level2.coinLevel2.coins[i]))
                 {
                     level2.coinLevel2.coins.RemoveAt(i);
-                    level2.score.ScoreUp();
+                    level2.scoreUpdater.ScoreUp();
                 }
             }
 
@@ -294,7 +294,7 @@ namespace MonogameProject.Collision
                 if (level3.player.rectangle.Intersects(level3.coinLevel3.coins[i]))
                 {
                     level3.coinLevel3.coins.RemoveAt(i);
-                    level3.score.ScoreUp();
+                    level3.scoreUpdater.ScoreUp();
                 }
             }
             for (int i = 0; i < level3.player.vuurbal.fireballRect.Count; i++)

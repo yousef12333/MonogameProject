@@ -20,9 +20,14 @@ namespace MonogameProject.Classes.Levels
         private BioHunt game;
         public Vector2 size;
         public Score score;
+        public ScoreUpdater scoreUpdater;
+        public ScoreStorage scoreStorage;
+
         public Win(BioHunt game, SpriteFont scoreTekst)
         {
-            score = new Score(scoreTekst);
+            scoreUpdater = new ScoreUpdater(scoreStorage);
+            scoreStorage = new ScoreStorage();
+            score = new Score(scoreTekst, scoreStorage);
             this.game = game;
         }
         public void Load(ContentManager Content, GraphicsDevice graphics)

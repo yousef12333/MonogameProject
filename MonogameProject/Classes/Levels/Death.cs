@@ -17,6 +17,8 @@ namespace MonogameProject.Classes.Levels
         private static Death instance;
         public MainMenu menu;
         public Score score;
+        public ScoreUpdater scoreUpdater;
+        public ScoreStorage scoreStorage;
         public static Death Instance
         {
             get
@@ -29,9 +31,10 @@ namespace MonogameProject.Classes.Levels
         }
         public Death(BioHunt game, SpriteFont scoreTekst)
         {
-            score = new Score(scoreTekst);
+            scoreUpdater = new ScoreUpdater(scoreStorage);
+            scoreStorage = new ScoreStorage();
+            score = new Score(scoreTekst, scoreStorage);
             this.game = game;
-           
         }
 
         public void Load(ContentManager Content, GraphicsDevice graphics)

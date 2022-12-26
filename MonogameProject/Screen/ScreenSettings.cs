@@ -5,25 +5,47 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MonogameProject.Screen
-{
+{// zie comment in score
     internal class ScreenSettings
     {
-        public int screenWidth = 1790, screenHeight = 703;
-        public bool objectInitialized = false;
-        public bool monsterHit = false;
-        public bool IsMouseVisible = true;
+       
+            private static ScreenSettings instance;
+            private int screenWidth = 1790;
+            private int screenHeight = 703;
 
-        private static ScreenSettings instance;
-        public static ScreenSettings Instance
-        {
-            get
+            public int ScreenWidth
             {
-                if (instance == null)
-                    instance = new ScreenSettings();
+                get { return screenWidth; }
+                set { screenWidth = value; }
+            }
 
-                return instance;
+            public int ScreenHeight
+            {
+                get { return screenHeight; }
+                set { screenHeight = value; }
+            }
+
+            private ScreenSettings() { }
+
+            public static ScreenSettings Instance
+            {
+                get
+                {
+                    if (instance == null)
+                        instance = new ScreenSettings();
+
+                    return instance;
+                }
             }
         }
-
-    }
 }
+//SOLID principes:
+// SRP: dit klasse heeft slechts één verantwoordelijkheid, namelijk de scherminstellingen(screenwidth- of height enzo) opslaan.
+
+//---(TWIJFEL)--- O/C principe: dit klasse is open voor uitbreiding, maar gesloten voor wijziging.
+
+// LSP: dit klasse kan gebruikt worden als vervanging voor elke klasse die scherminstellingen moet opslaan.
+
+// Design patterns:
+// - Voldoet aan het Singleton patroon, omdat het ervoor zorgt dat er slechts één instantie van de klasse is en een globaal toegangspunt tot die instantie biedt.
+// Dit zorgt ervoor dat er gebruik makend van dat instantie, het overal in de code kan worden benaderd via de Instance-eigenschap.

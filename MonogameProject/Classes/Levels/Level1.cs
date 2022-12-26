@@ -28,6 +28,8 @@ namespace MonogameProject.Classes.Levels
         public bool started = false;
         public bool objectInitialized = false;
         public bool addedPortal = false;
+        public ScoreUpdater scoreUpdater;
+        public ScoreStorage scoreStorage;
         private BioHunt game;
 
         public level1(Texture2D textureUfo, Texture2D texturePortal, Texture2D ghostTexture, Texture2D coinTexture, Texture2D playerTexture, Texture2D fireballImage, SpriteFont scoreTekst, BioHunt game)
@@ -41,7 +43,9 @@ namespace MonogameProject.Classes.Levels
             player = new Player(playerTexture, 100, fireballImage);
             playerLife = new Health();
             mapLevel1 = new Map();
-            score = new Score(scoreTekst);
+            scoreStorage = new ScoreStorage();
+            scoreUpdater = new ScoreUpdater(scoreStorage);
+            score = new Score(scoreTekst, scoreStorage);
             this.game = game;
         }
 
@@ -84,13 +88,13 @@ namespace MonogameProject.Classes.Levels
         }
         public void Update(GameTime gameTime)
         {
-
+          
             if (objectInitialized == false)
             {
-                portal1.AddPortal(new Rectangle(1150, 625, 128, 64));
+                portal1.AddPortal(new Rectangle(1150, 575, 128, 64));
                 addedPortal = true;
                 coinLevel1.AddCoin(new Rectangle(910, 290, 32, 32));
-                coinLevel1.AddCoin(new Rectangle(1200, 580, 32, 32));
+                coinLevel1.AddCoin(new Rectangle(1200, 530, 32, 32));
                 coinLevel1.AddCoin(new Rectangle(1700, 355, 32, 32));
                 objectInitialized = true;
             }
@@ -121,7 +125,7 @@ namespace MonogameProject.Classes.Levels
         {
             spriteBatch.Draw(backgroundje1, rectje, Color.White);
             playerLife.Draw(spriteBatch);
-            score.Draw(spriteBatch, new Vector2(ScreenSettings.Instance.screenWidth - 350, 10));
+            score.Draw(spriteBatch, new Vector2(game.screenWidth - 350, 10));
             music.Draw(spriteBatch);
             portal1.Draw(spriteBatch);
             mapLevel1.Draw(spriteBatch);

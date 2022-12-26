@@ -81,7 +81,7 @@ namespace MonogameProject.Classes.Levels
             btnPlay.Draw(spriteBatch);
             spriteBatch.DrawString(titleEdge, "BIOHUNT", new Vector2(565, 15), Color.Black);
             spriteBatch.DrawString(title, "BIOHUNT", new Vector2(550, 0), Color.DarkViolet);
-            spriteBatch.DrawString(InputExplanation, "Controls:\n- Left button to go left.\n- Right button to go right\n- Space button to jump\n- \'E\' button to shoot fireball", new Vector2(40, 500), Color.DarkGreen);
+            spriteBatch.DrawString(InputExplanation, "Controls:\n- Left button to go left\n- Right button to go right\n- Space button to jump\n- \'E\' button to shoot fireball", new Vector2(40, 500), Color.DarkGreen);
         }
         public MainMenu()
         {

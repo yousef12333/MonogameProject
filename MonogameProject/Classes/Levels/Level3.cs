@@ -25,13 +25,17 @@ namespace MonogameProject.Classes.Levels
         public bool objectInitialized = false;
         public bool playerFrozen = true;
         public bool shiftLevel = false;
+        public ScoreUpdater scoreUpdater;
+        public ScoreStorage scoreStorage;
         private BioHunt game;
 
         public level3(Texture2D healthTexture, Texture2D bossTexture, Texture2D playerTexture, Texture2D fireballImage, Texture2D coinTexture, SpriteFont scoreTekst, BioHunt game)
         {
 
             music = new BackgroundMusic();
-            score = new Score(scoreTekst);
+            scoreStorage = new ScoreStorage();
+            scoreUpdater = new ScoreUpdater(scoreStorage);
+            score = new Score(scoreTekst, scoreStorage);
             mapLevel3 = new Map();
             playerLife = new Health();
             boss = new BossMonster(bossTexture, 200);
@@ -141,7 +145,7 @@ namespace MonogameProject.Classes.Levels
             spriteBatch.Draw(healthTexture, healthRectangleBoss, Color.White);
 
             playerLife.Draw(spriteBatch);
-            score.Draw(spriteBatch, new Vector2(ScreenSettings.Instance.screenWidth - 350, 10));
+            score.Draw(spriteBatch, new Vector2(game.screenWidth - 350, 10));
             player.Draw(spriteBatch);
         }
         public level3()
