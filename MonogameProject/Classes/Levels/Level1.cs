@@ -6,6 +6,7 @@ using MonogameProject.Tiles;
 using MonogameProject.Classes.Enemies;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using MonogameProject.Screen;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -93,16 +94,7 @@ namespace MonogameProject.Classes.Levels
                 coinLevel1.AddCoin(new Rectangle(1700, 355, 32, 32));
                 objectInitialized = true;
             }
-            //if (started == false)
-            //{
-                
-            //    player.Position = new Vector2(203, 200);
-            //    player.velocity.Y = 0F;
-            //    player.timer = 0;
-            //    ufo.UfoRectangle = new Rectangle(80, 200, 300, 65);
-            //    ufo.timer = 0;
-            //    ufo.velocity.X = 0F;
-            //}
+          
             if(game.LevelStates == LevelStates.Level1)
             {
                 player.levelLoaded = true;
@@ -129,7 +121,7 @@ namespace MonogameProject.Classes.Levels
         {
             spriteBatch.Draw(backgroundje1, rectje, Color.White);
             playerLife.Draw(spriteBatch);
-            score.Draw(spriteBatch);
+            score.Draw(spriteBatch, new Vector2(ScreenSettings.Instance.screenWidth - 350, 10));
             music.Draw(spriteBatch);
             portal1.Draw(spriteBatch);
             mapLevel1.Draw(spriteBatch);

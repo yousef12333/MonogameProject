@@ -82,10 +82,10 @@ namespace MonogameProject
 
            
             mainMenu = new MainMenu(this); // this zorgt ervoor dat quit button werkt, is instance;
-            //death = new Death(this);
-            //win = new Win(this);
-         
-                level1 = new level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst, this);
+            death = new Death(this, tekst);
+            win = new Win(this, tekst);
+
+            level1 = new level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst, this);
            
                 level2 = new level2(portalTexture, coinTexture, playerTexture, fireballImage, tekst, lavaBallTexture, fishTexture, this);
         
@@ -101,8 +101,8 @@ namespace MonogameProject
             mouseTexture = new Texture2D(GraphicsDevice, 1, 1);
             mouseTexture.SetData(new[] { Color.White });
             mainMenu.Load(Content, GraphicsDevice);
-            //death.Load(Content, GraphicsDevice);
-            //win.Load(Content, GraphicsDevice);
+            death.Load(Content, GraphicsDevice);
+            win.Load(Content, GraphicsDevice);
             level1.Load(Content);
          
                 level2.Load(Content);
@@ -122,20 +122,27 @@ namespace MonogameProject
         }
         protected override void Update(GameTime gameTime)
         {
-            Debug.WriteLine(gameTime.TotalGameTime);
+            //Debug.WriteLine(gameTime.TotalGameTime);
             MouseState mouse = Mouse.GetState();
-            Debug.WriteLine(mouse.Position);
+            //Debug.WriteLine(mouse.Position);
           
             mouseRectangle = new Rectangle(mouse.X, mouse.Y, 5, 5);
             if (LevelStates == LevelStates.MainMenu)
+            {
                 mainMenu.Update(gameTime);
-            //if (LevelStates == LevelStates.Death)
-            //    death.Update(gameTime);
-            //if (LevelStates == LevelStates.Win)
-            //    win.Update(gameTime);
+                
+            }
+            if (LevelStates == LevelStates.Death)
+            {
+                death.Update(gameTime);
+               
+            }
+                
+            if (LevelStates == LevelStates.Win)
+                win.Update(gameTime);
+
+            death.menu = mainMenu;
             LevelStates = mainMenu.LevelStates;
-
-
             collision.level1 = level1;
             level1.Update(gameTime);
             collision.level2 = level2;
@@ -171,10 +178,10 @@ namespace MonogameProject
                     level3.Draw(_spriteBatch);
                     break;
                 case LevelStates.Win:
-                    //win.Draw(_spriteBatch);
+                    win.Draw(_spriteBatch);
                     break;
                 case LevelStates.Death:
-                    //death.Draw(_spriteBatch);
+                    death.Draw(_spriteBatch);
                     break;
             }
             _spriteBatch.Draw(mouseTexture, mouseRectangle, Color.Red);

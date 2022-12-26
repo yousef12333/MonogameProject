@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Reflection.Metadata;
 using Microsoft.VisualBasic.Devices;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
-using MonogameProject.ViewStates;
+
 using MonogameProject.Classes.Hero;
 using MonogameProject.Screen;
 

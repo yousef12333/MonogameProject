@@ -18,6 +18,7 @@
     <Folder Include="Content\Tiles\" />
     <Folder Include="Controls\" />
     <Folder Include="Input\" />
+    <Folder Include="ViewStates\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />

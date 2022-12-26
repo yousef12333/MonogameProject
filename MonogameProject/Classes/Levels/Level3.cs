@@ -4,8 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Classes.Hero;
 using MonogameProject.Tiles;
 using MonogameProject.Classes.Enemies;
-using Microsoft.Xna.Framework.Input;
-
+using MonogameProject.Screen;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -142,7 +141,7 @@ namespace MonogameProject.Classes.Levels
             spriteBatch.Draw(healthTexture, healthRectangleBoss, Color.White);
 
             playerLife.Draw(spriteBatch);
-            score.Draw(spriteBatch);
+            score.Draw(spriteBatch, new Vector2(ScreenSettings.Instance.screenWidth - 350, 10));
             player.Draw(spriteBatch);
         }
         public level3()

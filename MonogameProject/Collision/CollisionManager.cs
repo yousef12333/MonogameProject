@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Reflection.Metadata;
 using Microsoft.VisualBasic.Devices;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
-using MonogameProject.ViewStates;
+
 using MonogameProject.Classes.Hero;
 using MonogameProject.Tiles;
 using static System.Net.Mime.MediaTypeNames;
@@ -98,7 +98,7 @@ namespace MonogameProject.Collision
                 }
             }
            
-                if (level1.player.HeartRate < 1 || (level1.player.Position.Y > 700 && level2.shiftLevel == false))
+                if (level1.player.HeartRate < 1 || level1.player.Position.Y > 700 ) //niet oorzaak van muisprobleem, er is ergens anders detectie op 700
                 {
                     game.LevelStates = LevelStates.Death;
                 }
@@ -231,14 +231,7 @@ namespace MonogameProject.Collision
                     game.LevelStates = LevelStates.Level3;
                     level3.shiftLevel = true;
                 }
-
-
             }
-
-
-
-
-
             if (level3.player.rectangle.Intersects(level3.boss.rectangle))
             {
                 if (level3.player.isHit == false)

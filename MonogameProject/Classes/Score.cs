@@ -29,13 +29,11 @@ namespace MonogameProject.Classes
             this.tekst = tekst;
            
         }
-    
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            
-            spriteBatch.DrawString(tekst, "Score: " + score, new Vector2(ScreenSettings.Instance.screenWidth - 350, 10), Color.White);
+            spriteBatch.DrawString(tekst, "Score: " + score, position, Color.White);
         }
 
-     
+
     }
 }

@@ -286,7 +286,7 @@ namespace MonogameProject.Classes.Hero
                 position.Y = 0.01F;
                 
             }
-            if (position.Y > yOffset - rectangle.Height) BioHunt.Instance.LevelStates = LevelStates.Death;
+  
         }
 
         public void Draw(SpriteBatch spriteBatch)

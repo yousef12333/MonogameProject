@@ -6,6 +6,7 @@ using MonogameProject.Tiles;
 using MonogameProject.Classes.Enemies;
 using Microsoft.Xna.Framework.Input;
 using MonogameProject.Collision;
+using MonogameProject.Screen;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -154,7 +155,7 @@ namespace MonogameProject.Classes.Levels
             lBall2.Draw(spriteBatch);
             mapLevel2.Draw(spriteBatch);
             playerLife.Draw(spriteBatch);
-            score.Draw(spriteBatch);
+            score.Draw(spriteBatch, new Vector2(ScreenSettings.Instance.screenWidth - 350, 10));
           
             coinLevel2.Draw(spriteBatch);
             

@@ -53,7 +53,7 @@ namespace MonogameProject.Classes
                 {
                 colourPlay.A += 3;
                 isClicked = false;
-                }
+            }
                 if (mouseRectangle.Intersects(rectangleQuit))
                 {
                     if (colourQuit.A == 255) down = false;
