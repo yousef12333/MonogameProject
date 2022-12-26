@@ -9,11 +9,9 @@ using System.Threading.Tasks;
 
 namespace MonogameProject.Classes
 {
-    /*SRP: deze klasse houdt zich aan de single responsibility principe omdat het slechts één hoofdverantwoordelijkheid heeft, 
-     * namelijk het maken en weergeven van munten in het spel. Het heeft geen andere verantwoordelijkheden, zoals het verwerken van gebruikersinvoer of het 
-     * beheren van de score van het spel. Alle methoden zijn gerelateerd aan zijn enige verantwoordelijkheid om munten te beheren, 
-     * waaronder de methode AddCoin voor het toevoegen van munten aan het spel, de methode Update voor het bijwerken van de animatie van de munt, 
-     * en de methode Draw voor het weergeven van de munten op het scherm.
+    /*ISP: In dit geval implementeert de Coin class alleen de methoden die vereist zijn door de IGameObject interface, 
+     * en implementeert geen andere methoden die hij niet nodig heeft.
+     * De addcoin methode maakt deel uit van de Coin klasse en volgt dus nog altijd de ISP principe. 
    */
     internal class Coin : IGameObject
     {

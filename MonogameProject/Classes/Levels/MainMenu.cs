@@ -8,7 +8,7 @@ namespace MonogameProject.Classes.Levels
 {
     internal class MainMenu 
     {
-        Rectangle mouseRectangle;
+
         public MenuButtons btnPlay;
         Texture2D menuScreen;
         public SpriteFont InputExplanation;

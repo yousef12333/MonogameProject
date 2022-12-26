@@ -116,8 +116,7 @@ namespace MonogameProject.Classes.Levels
 
                 }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.P)) { game.LevelStates = LevelStates.Win; }
-
+       
             if (playerFrozen)
             {
                 player.position = new Vector2(100, 200);

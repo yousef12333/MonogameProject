@@ -112,9 +112,9 @@ namespace MonogameProject.Classes.Levels
             portal2.Update(gameTime);
             if (shiftLevel)
             {
-                if(game.LevelStates == LevelStates.Level1)
+                if (game.LevelStates == LevelStates.Level1)
                 {
-                    game.LevelStates = LevelStates.Level2;
+                    game.LevelStates = LevelStates.Level2; //bij level3 werkt het wel, zie de link
                 }
             }
             if (game.LevelStates == LevelStates.Level2)
@@ -123,7 +123,7 @@ namespace MonogameProject.Classes.Levels
             }
             if (game.LevelStates == LevelStates.Level2)
             {
-               // game.LevelStates = LevelStates.Level2;
+               
                 foreach (CollisionTiles tile in mapLevel2.CollisionTiles)
                 {
                     player.Collision(tile.Rectangle, mapLevel2.Width, mapLevel2.Height);
@@ -131,18 +131,14 @@ namespace MonogameProject.Classes.Levels
                 }
             }
             healthRectangleFish = new Rectangle(fish.rectangle.X - 2, fish.Rectangle.Y - 25, fish.health, 15);
-            if (Keyboard.GetState().IsKeyDown(Keys.T)) { game.LevelStates = LevelStates.Level3; }
-            if (Keyboard.GetState().IsKeyDown(Keys.U))
-            {
-                game.LevelStates = LevelStates.Death;
-            }
+      
             if (playerFrozen)
             {
                 player.position = new Vector2(1350, 550);
                 player.velocity.Y = 0;
-                
+
             }
-            if(playerFrozen && game.LevelStates == LevelStates.Level2)
+            if (playerFrozen && game.LevelStates == LevelStates.Level2)//zorgt ervoor dat je bovenaan spawnt, misschien heb je ergens y as te laag gezet?
             {
                 playerFrozen = false;
             }

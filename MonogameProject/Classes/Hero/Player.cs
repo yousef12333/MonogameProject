@@ -24,7 +24,6 @@ namespace MonogameProject.Classes.Hero
         public AnimationModus animations { get; set; }
         public Animation currentAnimation { get; set; }
         Vector2 position2;
-        public int timer;
         float hitCounter = 0;
         public bool levelLoaded = false;
         bool isLeft = false;

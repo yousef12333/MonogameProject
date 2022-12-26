@@ -97,18 +97,39 @@ namespace MonogameProject.Collision
                     level1.player.vuurbal.directionFireball.RemoveAt(level1.player.vuurbal.directionFireball.Count - 1);
                 }
             }
-            if (level1.player.HeartRate < 1 || (level1.player.Position.Y > 700 && level2.shiftLevel == false))
-            {
-                game.LevelStates = LevelStates.Death;
-            }
-            if (level1.addedPortal == true && (level1.player.rectangle.Intersects(level1.portal1.portals[0]))) // portals hier ------------------------
-            {
-                game.LevelStates = LevelStates.Level2;
-                level2.shiftLevel = true; //SHIFTLEVEL IS OPLOSSING, PAS DIT OOK TOE VOOR LEVEL 3 en andere levels!
-                
-            }
-          
+           
+                if (level1.player.HeartRate < 1 || (level1.player.Position.Y > 700 && level2.shiftLevel == false))
+                {
+                    game.LevelStates = LevelStates.Death;
+                }
 
+            if (game.LevelStates == LevelStates.Level1) //restrictie voor level1 alleen
+            {
+                if (level1.addedPortal == true && (level1.player.rectangle.Intersects(level1.portal1.portals[0])))
+                {
+                    game.LevelStates = LevelStates.Level2;
+                    level2.shiftLevel = true;
+
+                }
+            }
+            //--------------------------------------------------------
+            if (game.LevelStates == LevelStates.Level1)
+            {
+                if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.L)) { game.LevelStates = LevelStates.Level2; }
+            }
+            else if (game.LevelStates == LevelStates.Level2)
+            {
+                if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.L)) { game.LevelStates = LevelStates.Level3; }
+            }
+            else if (game.LevelStates == LevelStates.Level3)
+            {
+                if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.L)) { game.LevelStates = LevelStates.Level1; }
+            }
+
+            if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.D)) { game.LevelStates = LevelStates.Death; }
+            if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.W)) { game.LevelStates = LevelStates.Win; }
+            if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.M)) { game.LevelStates = LevelStates.MainMenu; }
+            //-------------------
 
 
 
@@ -202,12 +223,15 @@ namespace MonogameProject.Collision
 
                 game.LevelStates = LevelStates.Death;
             }
-            if (level2.addedPortal == true && (level2.player.rectangle.Intersects(level2.portal2.portals[0])))
-            {
-               
 
-                game.LevelStates = LevelStates.Level3;
-                level3.shiftLevel = true;
+            if (game.LevelStates == LevelStates.Level2) //restrictie voor level2 alleen, dat fixed de probleem van uit de portaal springen.
+            {
+                if (level2.addedPortal == true && (level2.player.rectangle.Intersects(level2.portal2.portals[0])))
+                {
+                    game.LevelStates = LevelStates.Level3;
+                    level3.shiftLevel = true;
+                }
+
 
             }
 

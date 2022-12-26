@@ -26,7 +26,7 @@ namespace MonogameProject
         level2 level2;
         level3 level3;
         SpriteFont tekst;
-        public LevelStates LevelStates = LevelStates.Level1;
+        public LevelStates LevelStates = LevelStates.Death;
         public int screenWidth = 1790, screenHeight = 703;
         public int Screenwidth
         {
@@ -82,8 +82,8 @@ namespace MonogameProject
 
            
             mainMenu = new MainMenu(this); // this zorgt ervoor dat quit button werkt, is instance;
-            death = new Death(this);
-            win = new Win(this);
+            //death = new Death(this);
+            //win = new Win(this);
          
                 level1 = new level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst, this);
            
@@ -101,8 +101,8 @@ namespace MonogameProject
             mouseTexture = new Texture2D(GraphicsDevice, 1, 1);
             mouseTexture.SetData(new[] { Color.White });
             mainMenu.Load(Content, GraphicsDevice);
-            death.Load(Content, GraphicsDevice);
-            win.Load(Content, GraphicsDevice);
+            //death.Load(Content, GraphicsDevice);
+            //win.Load(Content, GraphicsDevice);
             level1.Load(Content);
          
                 level2.Load(Content);
@@ -129,10 +129,10 @@ namespace MonogameProject
             mouseRectangle = new Rectangle(mouse.X, mouse.Y, 5, 5);
             if (LevelStates == LevelStates.MainMenu)
                 mainMenu.Update(gameTime);
-            if (LevelStates == LevelStates.Death)
-                death.Update(gameTime);
-            if (LevelStates == LevelStates.Win)
-                win.Update(gameTime);
+            //if (LevelStates == LevelStates.Death)
+            //    death.Update(gameTime);
+            //if (LevelStates == LevelStates.Win)
+            //    win.Update(gameTime);
             LevelStates = mainMenu.LevelStates;
 
 
@@ -142,8 +142,9 @@ namespace MonogameProject
             level2.Update(gameTime);
             collision.level3 = level3;
             level3.Update(gameTime);
+           
 
-              
+
             collision.Update(gameTime);
             //LevelStates = collision.LevelStates;
 
@@ -170,10 +171,10 @@ namespace MonogameProject
                     level3.Draw(_spriteBatch);
                     break;
                 case LevelStates.Win:
-                    win.Draw(_spriteBatch);
+                    //win.Draw(_spriteBatch);
                     break;
                 case LevelStates.Death:
-                    death.Draw(_spriteBatch);
+                    //death.Draw(_spriteBatch);
                     break;
             }
             _spriteBatch.Draw(mouseTexture, mouseRectangle, Color.Red);
