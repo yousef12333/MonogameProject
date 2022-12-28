@@ -64,7 +64,7 @@ namespace MonogameProject.Collision
                 {
                     level1.player.IsHit = true;
                     level1.player.HeartRate--;
-                    if (level1.playerLife.amountOfHealth.Count > 0)
+                    if (Health.amountOfHealth.Count > 0)
                         level1.playerLife.healthReduce();
                 }
                 if (monsterHit == false)
@@ -140,7 +140,7 @@ namespace MonogameProject.Collision
                 {
                     level2.player.IsHit = true;
                     level2.player.HeartRate--;
-                    if (level2.playerLife.amountOfHealth.Count > 0)
+                    if (Health.amountOfHealth.Count > 0)
                         level2.playerLife.healthReduce();
                 }
                 if (monsterHit == false)
@@ -156,7 +156,7 @@ namespace MonogameProject.Collision
                 {
                     level2.player.IsHit = true;
                     level2.player.HeartRate--;
-                    if (level2.playerLife.amountOfHealth.Count > 0)
+                    if (Health.amountOfHealth.Count > 0)
                         level2.playerLife.healthReduce();
                 }
 
@@ -167,7 +167,7 @@ namespace MonogameProject.Collision
                 {
                     level2.player.IsHit = true;
                     level2.player.HeartRate--;
-                    if (level2.playerLife.amountOfHealth.Count > 0)
+                    if (Health.amountOfHealth.Count > 0)
                         level2.playerLife.healthReduce();
                 }
 
@@ -239,7 +239,7 @@ namespace MonogameProject.Collision
                 {
                     level3.player.IsHit = true;
                     level3.player.HeartRate--;
-                    if (level3.playerLife.amountOfHealth.Count > 0)
+                    if (Health.amountOfHealth.Count > 0)
                         level3.playerLife.healthReduce();
                 }
 

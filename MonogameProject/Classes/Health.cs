@@ -11,7 +11,7 @@ namespace MonogameProject.Classes
     internal class Health
     {
         private Texture2D heart;
-        public List<Texture2D> amountOfHealth;
+        public static List<Texture2D> amountOfHealth;
 
         public Health() { }
         public void Load(ContentManager Content)

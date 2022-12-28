@@ -28,7 +28,7 @@ namespace MonogameProject.Classes.Hero
         public bool IsHit { get; set; } = false;
 
         private bool hasJumped = false;
-        private int heartRate = 3; 
+        private static int heartRate = 3; 
         public int HeartRate
         {
             get { return heartRate; }
