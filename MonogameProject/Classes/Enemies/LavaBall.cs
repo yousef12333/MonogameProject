@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MonogameProject.Classes.Enemies
 {
-    internal class LavaBall:IGameObject
+    internal class LavaBall:IUpdatable, IDrawableClass
     {
         public List<Vector2> lavaballList = new List<Vector2>();
         Vector2 velocity = new Vector2(0, 9);
@@ -65,3 +65,4 @@ namespace MonogameProject.Classes.Enemies
         }
     }
 }
+/*ISP: gebruikt alleen draw en update of eventueel zelfgemaakte methoden, en de interfaces geven de draw en update methoden apart aan dit klasse*/

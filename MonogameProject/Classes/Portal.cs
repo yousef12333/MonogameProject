@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MonogameProject.Classes
 {
-    internal class Portal : IGameObject
+    internal class Portal : IUpdatable, IDrawableClass
     {
         Animation animation;
         private Texture2D portal1;

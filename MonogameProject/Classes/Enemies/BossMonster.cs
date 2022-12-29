@@ -4,7 +4,7 @@ using MonogameProject.Interfaces;
 
 namespace MonogameProject.Classes.Enemies
 {
-    internal class BossMonster : IGameObject
+    internal class BossMonster : IUpdatable, IDrawableClass
     {
         Vector2 bossPosition = new Vector2(1400, 515);
         Vector2 velocity = new Vector2(9, 0);
@@ -96,3 +96,4 @@ namespace MonogameProject.Classes.Enemies
         }
     }
 }
+/*ISP: gebruikt alleen draw en update of eventueel zelfgemaakte methoden, en de interfaces geven de draw en update methoden apart aan dit klasse*/

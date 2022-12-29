@@ -26,7 +26,11 @@ namespace MonogameProject.Collision
 {
     internal class CollisionManager
     {
-      
+        //constantes voor een leesbaardere code
+        private const int MONSTER_HIT_DURATION = 1;
+        private const int PLAYER_FALL = 700;
+        private const int PLAYER_DAMAGE = 10;
+        private const int PLAYER_MIN_HEARTRATE = 1;
 
         public bool objectInitialized = false;
         float monsterHitCounter;
@@ -35,8 +39,6 @@ namespace MonogameProject.Collision
         public level2 level2;
         public level3 level3;
         private BioHunt game;
-
-
 
         private static CollisionManager instance;
 
@@ -50,6 +52,7 @@ namespace MonogameProject.Collision
                 return instance;
             }
         }
+
         public CollisionManager(BioHunt game)
         {
             this.game = game;
@@ -57,7 +60,21 @@ namespace MonogameProject.Collision
 
         public void Update(GameTime gameTime)
         {
-
+            UpdateLevel1(gameTime);
+            UpdateLevel2(gameTime);
+            UpdateLevel3(gameTime);
+            if (monsterHit == true)
+            {
+                monsterHitCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (monsterHitCounter > MONSTER_HIT_DURATION)
+                {
+                    monsterHit = false;
+                    monsterHitCounter = 0;
+                }
+            }
+        }
+        public void UpdateLevel1(GameTime gameTime)
+        {
             if (level1.player.rectangle.Intersects(level1.spook.rectangle))
             {
                 if (level1.player.IsHit == false)
@@ -88,20 +105,20 @@ namespace MonogameProject.Collision
             {
                 if (level1.player.vuurbal.fireballRect[i].Intersects(level1.spook.rectangle))
                 {
-                    level1.spook.health -= 10;
+                    level1.spook.health -= PLAYER_DAMAGE;
                     level1.player.vuurbal.bullets.Remove(level1.player.vuurbal.bullets[i]);
                     level1.player.vuurbal.fireballRect.Remove(level1.player.vuurbal.fireballRect[i]);
                     level1.player.vuurbal.aanmaakBullet = false;
                     level1.player.vuurbal.timer = 0;
                     level1.player.vuurbal.directionFireball.RemoveAt(level1.player.vuurbal.directionFireball.Count - 1);
-                    level1.damageDisplay.DisplayDamage(new Vector2(level1.spook.rectangle.X, level1.spook.rectangle.Y - 50), 10);
+                    level1.damageDisplay.DisplayDamage(new Vector2(level1.spook.rectangle.X, level1.spook.rectangle.Y - 50), PLAYER_DAMAGE);
                 }
             }
-           
-                if (level1.player.HeartRate < 1 || level1.player.Position.Y > 700 ) //niet oorzaak van muisprobleem, er is ergens anders detectie op 700
-                {
-                    game.LevelStates = LevelStates.Death;
-                }
+
+            if (level1.player.HeartRate < PLAYER_MIN_HEARTRATE || level1.player.Position.Y > PLAYER_FALL) //niet oorzaak van muisprobleem, er is ergens anders detectie op 700
+            {
+                game.LevelStates = LevelStates.Death;
+            }
 
             if (game.LevelStates == LevelStates.Level1) //restrictie voor level1 alleen
             {
@@ -112,28 +129,10 @@ namespace MonogameProject.Collision
 
                 }
             }
-            //--------------------------------------------------------
-            if (game.LevelStates == LevelStates.Level1)
-            {
-                if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.L)) { game.LevelStates = LevelStates.Level2; }
-            }
-            else if (game.LevelStates == LevelStates.Level2)
-            {
-                if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.L)) { game.LevelStates = LevelStates.Level3; }
-            }
-            else if (game.LevelStates == LevelStates.Level3)
-            {
-                if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.L)) { game.LevelStates = LevelStates.Level1; }
-            }
 
-            if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.D)) { game.LevelStates = LevelStates.Death; }
-            if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.W)) { game.LevelStates = LevelStates.Win; }
-            if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.M)) { game.LevelStates = LevelStates.MainMenu; }
-            //-------------------
-
-
-
-
+        }
+        public void UpdateLevel2(GameTime gameTime)
+        {
             if (level2.player.rectangle.Intersects(level2.fish.rectangle) && game.LevelStates == LevelStates.Level2)
             {
                 if (level2.player.IsHit == false)
@@ -186,20 +185,20 @@ namespace MonogameProject.Collision
             {
                 if (level2.player.vuurbal.fireballRect[i].Intersects(level2.fish.rectangle))
                 {
-                    level2.fish.health -= 10;
+                    level2.fish.health -= PLAYER_DAMAGE;
                     level2.player.vuurbal.bullets.Remove(level2.player.vuurbal.bullets[i]);
                     level2.player.vuurbal.fireballRect.Remove(level2.player.vuurbal.fireballRect[i]);
                     level2.player.vuurbal.aanmaakBullet = false;
                     level2.player.vuurbal.timer = 0;
                     level2.player.vuurbal.directionFireball.RemoveAt(level2.player.vuurbal.directionFireball.Count - 1);
-                    level2.damageDisplay.DisplayDamage(new Vector2(level2.fish.rectangle.X, level2.fish.rectangle.Y - 50), 10);
+                    level2.damageDisplay.DisplayDamage(new Vector2(level2.fish.rectangle.X, level2.fish.rectangle.Y - 50), PLAYER_DAMAGE);
                 }
             }
             for (int i = 0; i < level2.player.vuurbal.fireballRect.Count; i++)
             {
                 if (level2.player.vuurbal.fireballRect[i].Intersects(level2.lBall1.Rectangle))
                 {
-                   
+
                     level2.player.vuurbal.bullets.Remove(level2.player.vuurbal.bullets[i]);
                     level2.player.vuurbal.fireballRect.Remove(level2.player.vuurbal.fireballRect[i]);
                     level2.player.vuurbal.aanmaakBullet = false;
@@ -211,7 +210,7 @@ namespace MonogameProject.Collision
             {
                 if (level2.player.vuurbal.fireballRect[i].Intersects(level2.lBall2.Rectangle))
                 {
-                    level2.fish.health -= 10;
+                    level2.fish.health -= PLAYER_DAMAGE;
                     level2.player.vuurbal.bullets.Remove(level2.player.vuurbal.bullets[i]);
                     level2.player.vuurbal.fireballRect.Remove(level2.player.vuurbal.fireballRect[i]);
                     level2.player.vuurbal.aanmaakBullet = false;
@@ -219,13 +218,13 @@ namespace MonogameProject.Collision
                     level2.player.vuurbal.directionFireball.RemoveAt(level2.player.vuurbal.directionFireball.Count - 1);
                 }
             }
-            if (level2.player.HeartRate < 1)
+            if (level2.player.HeartRate < PLAYER_MIN_HEARTRATE)
             {
 
                 game.LevelStates = LevelStates.Death;
             }
 
-            if (game.LevelStates == LevelStates.Level2) //restrictie voor level2 alleen, dat fixed de probleem van uit de portaal springen.
+            if (game.LevelStates == LevelStates.Level2) 
             {
                 if (level2.addedPortal == true && (level2.player.rectangle.Intersects(level2.portal2.portals[0])))
                 {
@@ -233,6 +232,9 @@ namespace MonogameProject.Collision
                     level3.shiftLevel = true;
                 }
             }
+        }
+        public void UpdateLevel3(GameTime gameTime)
+        {
             if (level3.player.rectangle.Intersects(level3.boss.rectangle))
             {
                 if (level3.player.IsHit == false)
@@ -302,17 +304,17 @@ namespace MonogameProject.Collision
             {
                 if (level3.player.vuurbal.fireballRect[i].Intersects(level3.boss.rectangle))
                 {
-                    level3.boss.health -= 10;
+                    level3.boss.health -= PLAYER_DAMAGE;
                     level3.player.vuurbal.bullets.Remove(level3.player.vuurbal.bullets[i]);
                     level3.player.vuurbal.fireballRect.Remove(level3.player.vuurbal.fireballRect[i]);
                     level3.player.vuurbal.aanmaakBullet = false;
                     level3.player.vuurbal.timer = 0;
                     level3.player.vuurbal.directionFireball.RemoveAt(level3.player.vuurbal.directionFireball.Count - 1);
-                    level3.damageDisplay.DisplayDamage(new Vector2(level3.boss.rectangle.X, level3.boss.rectangle.Y - 50), 10);
+                    level3.damageDisplay.DisplayDamage(new Vector2(level3.boss.rectangle.X, level3.boss.rectangle.Y - 50), PLAYER_DAMAGE);
                 }
             }
 
-            if (level3.player.HeartRate < 1)
+            if (level3.player.HeartRate < PLAYER_MIN_HEARTRATE)
             {
                 game.LevelStates = LevelStates.Death;
             }
@@ -320,19 +322,6 @@ namespace MonogameProject.Collision
             {
                 game.LevelStates = LevelStates.Win;
             }
-
-
-
-            if (monsterHit == true)
-            {
-                monsterHitCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (monsterHitCounter > 1)
-                {
-                    monsterHit = false;
-                    monsterHitCounter = 0;
-                }
-            }
-
         }
         public CollisionManager()
         {

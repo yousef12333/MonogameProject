@@ -6,7 +6,7 @@ using MonogameProject.Interfaces;
 
 namespace MonogameProject.Classes.Hero
 {
-    internal class Player : IGameObject
+    internal class Player : IUpdatable, IDrawableClass
     {
         public Texture2D texture;
         public Texture2D bulletImage; 
@@ -238,4 +238,5 @@ namespace MonogameProject.Classes.Hero
         }
     }
 }
+/*ISP: gebruikt alleen draw en update of eventueel zelfgemaakte methoden, en de interfaces geven de draw en update methoden apart aan dit klasse*/
 

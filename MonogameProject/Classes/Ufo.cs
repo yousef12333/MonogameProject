@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace MonogameProject.Classes
 {
-    internal class Ufo : IGameObject
+    internal class Ufo : IUpdatable, IDrawableClass
     {
 
         private readonly Texture2D ufoImage;
@@ -80,3 +80,4 @@ namespace MonogameProject.Classes
         }
     }
 }
+/*ISP: gebruikt alleen draw en update of eventueel zelfgemaakte methoden, en de interfaces geven de draw en update methoden apart aan dit klasse*/

@@ -4,7 +4,7 @@ using MonogameProject.Interfaces;
 
 namespace MonogameProject.Classes.Enemies
 {
-    internal class GhostMonster : IGameObject
+    internal class GhostMonster : IUpdatable, IDrawableClass
     {
         Vector2 ghostPosition = new Vector2(1400, 323);
         Vector2 velocity = new Vector2(2, 0);
@@ -75,3 +75,4 @@ namespace MonogameProject.Classes.Enemies
         }
     }
 }
+/*ISP: gebruikt alleen draw en update of eventueel zelfgemaakte methoden, en de interfaces geven de draw en update methoden apart aan dit klasse*/
