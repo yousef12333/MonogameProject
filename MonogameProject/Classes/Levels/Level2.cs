@@ -95,7 +95,7 @@ namespace MonogameProject.Classes.Levels
         }                               // hier ook alleen mainmenu
         public void Update(GameTime gameTime)
         {
-
+            music.Play();
             if (objectInitialized == false)
             {
                 coinLevel2.AddCoin(new Rectangle(594, 95, 32, 32));
@@ -153,8 +153,6 @@ namespace MonogameProject.Classes.Levels
         public void Draw(SpriteBatch spriteBatch) //hier wordt het bij portaalhit level 2 alleen bij update niet
         {
             spriteBatch.Draw(backgroundje2, rectje, Color.White);
-            music.Draw(spriteBatch);
-           
             spriteBatch.Draw(healthTexture, healthRectangleFish, Color.White);
             fish.Draw(spriteBatch);
             lBall1.Draw(spriteBatch);

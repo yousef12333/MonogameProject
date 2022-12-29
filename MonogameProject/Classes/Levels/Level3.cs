@@ -91,6 +91,7 @@ namespace MonogameProject.Classes.Levels
         }
         public void Update(GameTime gameTime)
         {
+            music.Play();
             player.Update(gameTime);
             if (objectInitialized == false)
             {
@@ -138,8 +139,6 @@ namespace MonogameProject.Classes.Levels
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-
-            music.Draw(spriteBatch);
             spriteBatch.Draw(backgroundje3, rectje, Color.White);
             
             mapLevel3.Draw(spriteBatch);

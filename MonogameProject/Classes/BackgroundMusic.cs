@@ -13,12 +13,14 @@ namespace MonogameProject.Classes
 {
     internal class BackgroundMusic
     {
-        Song music;
+        private Song music;
+
         public void Load(ContentManager Content)
         {
             music = Content.Load<Song>("BackgroundMusicBetter");
         }
-        public void Draw(SpriteBatch spriteBatch)
+
+        public void Play()
         {
             if (MediaPlayer.State != MediaState.Playing || MediaPlayer.State == MediaState.Stopped || MediaPlayer.State == MediaState.Paused)
             {

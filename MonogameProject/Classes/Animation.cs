@@ -43,7 +43,5 @@ namespace MonogameProject.Classes
                 counter = 0;
             }
         }
-
-
     }
 }

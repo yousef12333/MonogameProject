@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace MonogameProject.Classes
 {
-    /*ISP: In dit geval implementeert de Coin class alleen de methoden die vereist zijn door de IGameObject interface, 
+    /*ISP: In dit geval implementeert de Coin class alleen de methoden die vereist zijn door de IDrawableClass interface, 
      * en implementeert geen andere methoden die hij niet nodig heeft.
      * De addcoin methode maakt deel uit van de Coin klasse en volgt dus nog altijd de ISP principe. 
    */
-    internal class Coin : IGameObject
+    internal class Coin : IDrawableClass
     {
         public List<Rectangle> coins = new List<Rectangle>();
         Animation animation;
@@ -34,11 +34,10 @@ namespace MonogameProject.Classes
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            for(int i = 0; i < coins.Count; i++)
+            for (int i = 0; i < coins.Count; i++)
             {
                 spriteBatch.Draw(coinImage, coins[i], animation.CurrentFrame.SourceRectangle, Color.White);
             }
-            
         }
     }
 }

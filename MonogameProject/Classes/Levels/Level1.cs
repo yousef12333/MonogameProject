@@ -90,7 +90,7 @@ namespace MonogameProject.Classes.Levels
         }
         public void Update(GameTime gameTime)
         {
-          
+            music.Play();
             if (objectInitialized == false)
             {
                 portal1.AddPortal(new Rectangle(1150, 575, 128, 64));
@@ -129,7 +129,6 @@ namespace MonogameProject.Classes.Levels
             spriteBatch.Draw(backgroundje1, rectje, Color.White);
             playerLife.Draw(spriteBatch);
             score.Draw(spriteBatch, new Vector2(game.screenWidth - 330, 10));
-            music.Draw(spriteBatch);
             portal1.Draw(spriteBatch);
             mapLevel1.Draw(spriteBatch);
             spriteBatch.Draw(healthTexture, healthRectangleGhost, Color.White);

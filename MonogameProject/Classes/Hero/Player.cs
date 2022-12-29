@@ -9,17 +9,16 @@ namespace MonogameProject.Classes.Hero
     internal class Player : IGameObject
     {
         public Texture2D texture;
-        public Texture2D bulletImage;
-        public Color color { get; set; }
-        public Rectangle collisionHitbox { get; set; }
+        public Texture2D bulletImage; 
+        public Color Color { get; set; }
         public Vector2 position = new Vector2(200, 200);
         public Vector2 velocity;
         public Rectangle rectangle;
         public int health;
         public Fireball vuurbal;
         public bool restarted;
-        public AnimationModus animations { get; set; }
-        public Animation currentAnimation { get; set; }
+        public AnimationModus Animations { get; set; }
+        public Animation CurrentAnimation { get; set; }
         Vector2 position2;
         float hitCounter = 0;
         public bool levelLoaded = false;
@@ -43,8 +42,7 @@ namespace MonogameProject.Classes.Hero
         {
             get
             {
-                if (instance == null)
-                    instance = new Player();
+                instance ??= new Player();
                     
                 return instance;
             }
@@ -61,41 +59,43 @@ namespace MonogameProject.Classes.Hero
             }
 
         }
-        public Player(Texture2D texture, int newHealth, Texture2D bulletImage)
+        public Player(Texture2D texture, int newHealth, Texture2D bullet)
         {
             this.texture = texture;
             health = newHealth;
-            vuurbal = new Fireball(bulletImage);
-            color = new Color();
-            color = Color.White;
-            animations = new AnimationModus();
-            animations.MoveStateRight = new Animation();
-            animations.MoveStateLeft = new Animation();
-            animations.IdleStateRight = new Animation();
-            animations.IdleStateLeft = new Animation();
-            animations.JumpRight = new Animation();
-            animations.JumpLeft = new Animation();
+            vuurbal = new Fireball(bullet);
+            Color = new Color();
+            Color = Color.White;
+            Animations = new AnimationModus
+            {
+                MoveStateRight = new Animation(),
+                MoveStateLeft = new Animation(),
+                IdleStateRight = new Animation(),
+                IdleStateLeft = new Animation(),
+                JumpRight = new Animation(),
+                JumpLeft = new Animation()
+            };
             for (int i = 0; i < 2; i++)
             {
-                animations.MoveStateRight.AddFrame(new AnimationFrame(new Rectangle(40 * i, 0, 40, 47)));
+                Animations.MoveStateRight.AddFrame(new AnimationFrame(new Rectangle(40 * i, 0, 40, 47)));
             }
             for (int i = 0; i < 2; i++)
             {
-                animations.MoveStateLeft.AddFrame(new AnimationFrame(new Rectangle(40 * i, 49, 40, 49)));
+                Animations.MoveStateLeft.AddFrame(new AnimationFrame(new Rectangle(40 * i, 49, 40, 49)));
 
             }
-            animations.IdleStateRight.AddFrame(new AnimationFrame(new Rectangle(0, 0, 40, 47)));
-            animations.IdleStateLeft.AddFrame(new AnimationFrame(new Rectangle(0, 49, 40, 49)));
-            animations.JumpRight.AddFrame(new AnimationFrame(new Rectangle(120, 0, 40, 49)));
-            animations.JumpLeft.AddFrame(new AnimationFrame(new Rectangle(120, 49, 40, 49)));
-            currentAnimation = animations.IdleStateRight;
+            Animations.IdleStateRight.AddFrame(new AnimationFrame(new Rectangle(0, 0, 40, 47)));
+            Animations.IdleStateLeft.AddFrame(new AnimationFrame(new Rectangle(0, 49, 40, 49)));
+            Animations.JumpRight.AddFrame(new AnimationFrame(new Rectangle(120, 0, 40, 49)));
+            Animations.JumpLeft.AddFrame(new AnimationFrame(new Rectangle(120, 49, 40, 49)));
+            CurrentAnimation = Animations.IdleStateRight;
            
         }
 
         public Player()
         {
         }
-        private void Input(GameTime gameTime)
+        private void Input()
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
@@ -104,7 +104,7 @@ namespace MonogameProject.Classes.Hero
                 {
                     velocity.X += 0.15F;
                 }
-                if (hasJumped == false) currentAnimation = animations.MoveStateRight;
+                if (hasJumped == false) CurrentAnimation = Animations.MoveStateRight;
                 isRight = true;
                 isLeft = false;
                 
@@ -117,7 +117,7 @@ namespace MonogameProject.Classes.Hero
                 {
                     velocity.X -= 0.15F;
                 }
-                if (hasJumped == false) currentAnimation = animations.MoveStateLeft;
+                if (hasJumped == false) CurrentAnimation = Animations.MoveStateLeft;
                 isLeft = true;
                 isRight = false;
                 
@@ -128,11 +128,11 @@ namespace MonogameProject.Classes.Hero
                 velocity.X = 0F;
                 if (isRight && hasJumped == false)
                 {
-                    currentAnimation = animations.IdleStateRight;
+                    CurrentAnimation = Animations.IdleStateRight;
                 }
                 else if (isLeft && hasJumped == false)
                 {
-                    currentAnimation = animations.IdleStateLeft;
+                    CurrentAnimation = Animations.IdleStateLeft;
                 }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && hasJumped == false && isRight)
@@ -141,7 +141,7 @@ namespace MonogameProject.Classes.Hero
                 velocity.Y = -9F;
                 hasJumped = true;
 
-                currentAnimation = animations.JumpRight;
+                CurrentAnimation = Animations.JumpRight;
 
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && hasJumped == false && isLeft)
@@ -149,7 +149,7 @@ namespace MonogameProject.Classes.Hero
                 position.Y -= 4F;
                 velocity.Y = -9F;
                 hasJumped = true;
-                currentAnimation = animations.JumpLeft;
+                CurrentAnimation = Animations.JumpLeft;
 
             }
         }
@@ -163,7 +163,7 @@ namespace MonogameProject.Classes.Hero
             position += velocity;
             position2 = position;
           
-            currentAnimation.Update(gameTime);
+            CurrentAnimation.Update(gameTime);
            
             if (levelLoaded)
             {
@@ -178,19 +178,19 @@ namespace MonogameProject.Classes.Hero
             if (IsHit == true)
             {
                 
-                color = Color.Red;
+                Color = Color.Red;
                 hitCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             }
             if(hitCounter > 2)
             {
-                color = Color.White;
+                Color = Color.White;
                 hitCounter = 0;
                 IsHit = false;
             }
             vuurbal.Update(gameTime, position2, position, isLeft, isRight, bulletImage, bulletImage);
             rectangle = new Rectangle((int)position.X, (int)position.Y, 64, 64);
-            Input(gameTime);
+            Input();
         }
         public void Collision(Rectangle newRectangle, int xOffset, int yOffset)
         {
@@ -233,7 +233,7 @@ namespace MonogameProject.Classes.Hero
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-          spriteBatch.Draw(texture, rectangle, currentAnimation.CurrentFrame.SourceRectangle, color);
+          spriteBatch.Draw(texture, rectangle, CurrentAnimation.CurrentFrame.SourceRectangle, Color);
           vuurbal.Draw(spriteBatch);
         }
     }

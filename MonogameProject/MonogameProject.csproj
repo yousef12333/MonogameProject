@@ -12,12 +12,18 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Controls\**" />
+    <Compile Remove="Input\**" />
+    <EmbeddedResource Remove="Controls\**" />
+    <EmbeddedResource Remove="Input\**" />
+    <None Remove="Controls\**" />
+    <None Remove="Input\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Content\Music\" />
     <Folder Include="Content\Backgrounds\" />
     <Folder Include="Content\Text\" />
     <Folder Include="Content\Tiles\" />
-    <Folder Include="Controls\" />
-    <Folder Include="Input\" />
     <Folder Include="ViewStates\" />
   </ItemGroup>
   <ItemGroup>
