@@ -7,6 +7,7 @@ using MonogameProject.Classes.Enemies;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using MonogameProject.Screen;
+using MonogameProject.Classes.Score;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -24,7 +25,7 @@ namespace MonogameProject.Classes.Levels
         public Rectangle rectje = new Rectangle(0, 0, 1840, 733); //biohunt instance is de reden dat muis vast staat
         public Texture2D backgroundje1;
         public Health playerLife;
-        public Score score;
+        public ScoreHandler score;
         public bool started = false;
         public bool objectInitialized = false;
         public bool addedPortal = false;
@@ -46,24 +47,9 @@ namespace MonogameProject.Classes.Levels
             mapLevel1 = new Map();
             scoreStorage = new ScoreStorage();
             scoreUpdater = new ScoreUpdater(scoreStorage);
-            score = new Score(scoreTekst, scoreStorage);
+            score = new ScoreHandler(scoreTekst, scoreStorage);
             damageDisplay = new DamageDisplay(damageText);
             this.game = game;
-        }
-
-
-
-        private static level1 instance;
-
-        public static level1 Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new level1();
-
-                return instance;
-            }
         }
         public void Load(ContentManager Content)
         {
@@ -137,9 +123,6 @@ namespace MonogameProject.Classes.Levels
             spook.Draw(spriteBatch);
             damageDisplay.Draw(spriteBatch);
             coinLevel1.Draw(spriteBatch);
-        }
-        public level1()
-        {
         }
     }
 }

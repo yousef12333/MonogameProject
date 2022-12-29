@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace MonogameProject.Classes
+namespace MonogameProject.Classes.Score
 { //zie comment in score class
     internal class ScoreStorage
     {

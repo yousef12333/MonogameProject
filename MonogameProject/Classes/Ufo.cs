@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonogameProject.Classes.Hero;
 using MonogameProject.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 /*Deze klasse houdt zich aan het Singleton design pattern omdat er slechts één instantie van de klasse kan worden aangemaakt. 
  

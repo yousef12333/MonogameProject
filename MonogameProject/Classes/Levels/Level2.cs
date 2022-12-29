@@ -4,9 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Classes.Hero;
 using MonogameProject.Tiles;
 using MonogameProject.Classes.Enemies;
-using Microsoft.Xna.Framework.Input;
-using MonogameProject.Collision;
-using MonogameProject.Screen;
+using MonogameProject.Classes.Score;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -23,7 +21,7 @@ namespace MonogameProject.Classes.Levels
         public FishMonster fish;
         public Player player;
         public Health playerLife;
-        public Score score;
+        public ScoreHandler score;
         public Texture2D backgroundje2;
         public Texture2D healthTexture;
         public bool playerFrozen = true;
@@ -46,26 +44,14 @@ namespace MonogameProject.Classes.Levels
             mapLevel2 = new Map();
             scoreStorage = new ScoreStorage();
             scoreUpdater = new ScoreUpdater(scoreStorage);
-            score = new Score(scoreTekst, scoreStorage);
+            score = new ScoreHandler(scoreTekst, scoreStorage);
             lBall1 = new LavaBall(lavaBallTexture);
             lBall2 = new LavaBall(lavaBallTexture);
             fish = new FishMonster(fishTexture, 150);
             mapLevel2 = new Map();
             damageDisplay = new DamageDisplay(damageText);
             this.game = game;
-        }                                       //alles van initialize krijgt waarde mainmenu bij begin;
-        private static level2 instance;
-
-        public static level2 Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new level2();
-
-                return instance;
-            }
-        }
+        }                                   
         public void Load(ContentManager Content)
         {
            
@@ -92,7 +78,7 @@ namespace MonogameProject.Classes.Levels
 
           }, 64);
 
-        }                               // hier ook alleen mainmenu
+        }                           
         public void Update(GameTime gameTime)
         {
             music.Play();
@@ -113,7 +99,6 @@ namespace MonogameProject.Classes.Levels
             lBall1.Update(gameTime);
             lBall2.Update(gameTime);
             fish.Update(gameTime);
-            playerLife.Update(gameTime);
             coinLevel2.Update(gameTime);
             portal2.Update(gameTime);
             damageDisplay.Update(gameTime);
@@ -121,7 +106,7 @@ namespace MonogameProject.Classes.Levels
             {
                 if (game.LevelStates == LevelStates.Level1)
                 {
-                    game.LevelStates = LevelStates.Level2; //bij level3 werkt het wel, zie de link
+                    game.LevelStates = LevelStates.Level2; 
                 }
             }
             if (game.LevelStates == LevelStates.Level2)
@@ -145,12 +130,12 @@ namespace MonogameProject.Classes.Levels
                 player.velocity.Y = 0;
 
             }
-            if (playerFrozen && game.LevelStates == LevelStates.Level2)//zorgt ervoor dat je bovenaan spawnt, misschien heb je ergens y as te laag gezet?
+            if (playerFrozen && game.LevelStates == LevelStates.Level2)
             {
                 playerFrozen = false;
             }
         }
-        public void Draw(SpriteBatch spriteBatch) //hier wordt het bij portaalhit level 2 alleen bij update niet
+        public void Draw(SpriteBatch spriteBatch) 
         {
             spriteBatch.Draw(backgroundje2, rectje, Color.White);
             spriteBatch.Draw(healthTexture, healthRectangleFish, Color.White);
@@ -164,9 +149,6 @@ namespace MonogameProject.Classes.Levels
             portal2.Draw(spriteBatch);
             player.Draw(spriteBatch);
             damageDisplay.Draw(spriteBatch);
-        }
-        public level2()
-        {
         }
     }
 }

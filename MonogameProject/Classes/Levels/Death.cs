@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using MonogameProject.Classes.Score;
+
 namespace MonogameProject.Classes.Levels
 {
     internal class Death
@@ -10,26 +12,16 @@ namespace MonogameProject.Classes.Levels
         Rectangle mouseRectangle;
         Texture2D deathBackground;
         private BioHunt game;
-        private static Death instance;
         public MainMenu menu;
-        public Score score;
+        public ScoreHandler score;
         public ScoreUpdater scoreUpdater;
         public ScoreStorage scoreStorage;
-        public static Death Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new Death();
-
-                return instance;
-            }
-        }
+     
         public Death(BioHunt game, SpriteFont scoreTekst)
         {
             scoreUpdater = new ScoreUpdater(scoreStorage);
             scoreStorage = new ScoreStorage();
-            score = new Score(scoreTekst, scoreStorage);
+            score = new ScoreHandler(scoreTekst, scoreStorage);
             this.game = game;
         }
 
@@ -52,10 +44,6 @@ namespace MonogameProject.Classes.Levels
             spriteBatch.Draw(deathBackground, new Rectangle(0, 0, game.screenWidth + 80, game.screenHeight), Color.White);
             score.Draw(spriteBatch, new Vector2((game.screenWidth /2)-100, 200));
             quit.Draw(spriteBatch);
-        }
-        public Death()
-        {
-
         }
     }
 }

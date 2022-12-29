@@ -6,6 +6,7 @@ namespace MonogameProject.Classes
 {
     internal class MenuButtons
     {
+        // bron: https://www.youtube.com/watch?v=54L_w0PiRa8
         Texture2D texturePlay;
         Texture2D textureQuit;
         Vector2 positionPlay;

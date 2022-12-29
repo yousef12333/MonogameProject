@@ -1,14 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonogameProject.Classes
 {
     internal static class RectangleHelper
-    {
+    {//Bron: https://www.youtube.com/watch?v=CV8P9aq2gQo
         public static bool TouchTopOf(this Rectangle r1, Rectangle r2)
         {
             return r1.Bottom >= r2.Top + 2 &&

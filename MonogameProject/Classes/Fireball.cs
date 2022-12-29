@@ -1,17 +1,14 @@
-﻿using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework;
-using System;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonogameProject.Classes.Animations;
 
 namespace MonogameProject.Classes
 {
     internal class Fireball
     {
+        //Bron: https://www.youtube.com/watch?v=sg53SdeNdWI
         public List<Vector2> bullets;
         public List<string> directionFireball;
         public List<Rectangle> fireballRect;
@@ -39,7 +36,7 @@ namespace MonogameProject.Classes
             for (int i = 0; i < 7; i++) { animations.MoveStateLeft.AddFrame(new AnimationFrame(new Rectangle(71 * i, 28, 71, 28))); }
             currentAnimation = animations.MoveStateRight;
         }
-        public void Update(GameTime gameTime, Vector2 position2, Vector2 position, bool isLeft, bool isRight, Texture2D image1, Texture2D image2)
+        public void Update(GameTime gameTime, Vector2 position2, Vector2 position, bool isLeft, bool isRight, Texture2D fireballTexture1, Texture2D fireballTexture2)
         {
             currentAnimation.Update(gameTime);
             changeColors(gameTime);

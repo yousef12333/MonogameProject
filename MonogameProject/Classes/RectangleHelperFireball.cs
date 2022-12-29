@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonogameProject.Classes
-{
+{//Bron: https://www.youtube.com/watch?v=CV8P9aq2gQo
     internal static class RectangleHelperFireball
     {
         public static bool CollideLeft(this Rectangle r1, Rectangle r2)

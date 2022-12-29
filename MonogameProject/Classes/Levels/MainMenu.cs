@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonogameProject.Classes.Hero;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Diagnostics;
 
 namespace MonogameProject.Classes.Levels
@@ -28,19 +26,6 @@ namespace MonogameProject.Classes.Levels
         {
             game.Exit();
         }
-
-        private static MainMenu instance;
-        public static MainMenu Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new MainMenu();
-
-                return instance;
-            }
-        }
-
         public void Load(ContentManager Content, GraphicsDevice graphics)
         {
             btnPlay = new MenuButtons(Content.Load<Texture2D>("Start_Button"), Content.Load<Texture2D>("Quit_Button"), graphics);
@@ -56,23 +41,13 @@ namespace MonogameProject.Classes.Levels
 
             MouseState mouse = Mouse.GetState();
             btnPlay.Update(mouse);
-
-            //-----------------------------------------
-            Debug.WriteLine(btnPlay.isClicked);
             if (btnPlay.isClicked == true)
             {
-                Debug.WriteLine(btnPlay.isClicked);
                 DeathButtons.Instance.isRestarted = false;
-               
-                LevelStates = LevelStates.Level1; //zet player op juiste positie samen met spaceship en reset timer
-                //Player.Instance.restarted = true;
-
-
+                LevelStates = LevelStates.Level1; 
             }
             else if (btnPlay.isClosed == true) ExitGame();
             btnPlay.Update(mouse);
-
-            //-----------------------------------------------------------------------
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -82,10 +57,6 @@ namespace MonogameProject.Classes.Levels
             spriteBatch.DrawString(titleEdge, "BIOHUNT", new Vector2(565, 15), Color.Black);
             spriteBatch.DrawString(title, "BIOHUNT", new Vector2(550, 0), Color.DarkViolet);
             spriteBatch.DrawString(InputExplanation, "Controls:\n- Left button to go left\n- Right button to go right\n- Space button to jump\n- \'E\' button to shoot fireball", new Vector2(40, 500), Color.DarkGreen);
-        }
-        public MainMenu()
-        {
-
         }
     }
 }

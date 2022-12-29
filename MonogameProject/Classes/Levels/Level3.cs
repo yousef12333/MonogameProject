@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Classes.Hero;
 using MonogameProject.Tiles;
 using MonogameProject.Classes.Enemies;
-using MonogameProject.Screen;
+using MonogameProject.Classes.Score;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -19,7 +19,7 @@ namespace MonogameProject.Classes.Levels
         public BossMonster boss;
         public Player player;
         public SpriteFont tekst;
-        public Score score;
+        public ScoreHandler score;
         public Health playerLife;
         public Texture2D healthTexture;
         public bool objectInitialized = false;
@@ -36,7 +36,7 @@ namespace MonogameProject.Classes.Levels
             music = new BackgroundMusic();
             scoreStorage = new ScoreStorage();
             scoreUpdater = new ScoreUpdater(scoreStorage);
-            score = new Score(scoreTekst, scoreStorage);
+            score = new ScoreHandler(scoreTekst, scoreStorage);
             mapLevel3 = new Map();
             playerLife = new Health();
             boss = new BossMonster(bossTexture, 200);
@@ -45,18 +45,6 @@ namespace MonogameProject.Classes.Levels
             player.rectangle = new Rectangle(200, 200, 64, 64); 
             damageDisplay = new DamageDisplay(damageText);
             this.game = game;
-        }
-        private static level3 instance;
-
-        public static level3 Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = new level3();
-
-                return instance;
-            }
         }
         public void Load(ContentManager Content)
         {
@@ -101,7 +89,6 @@ namespace MonogameProject.Classes.Levels
             }
             healthRectangleBoss = new Rectangle(boss.rectangle.X, boss.Rectangle.Y - 25, boss.health, 15);
             boss.Update(gameTime);
-            playerLife.Update(gameTime);
             coinLevel3.Update(gameTime);
             damageDisplay.Update(gameTime);
             if (shiftLevel)
@@ -150,9 +137,6 @@ namespace MonogameProject.Classes.Levels
             score.Draw(spriteBatch, new Vector2(game.screenWidth - 330, 10));
             player.Draw(spriteBatch);
             damageDisplay.Draw(spriteBatch);
-        }
-        public level3()
-        {
         }
     }
 }

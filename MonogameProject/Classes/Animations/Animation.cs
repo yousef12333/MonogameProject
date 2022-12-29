@@ -1,11 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MonogameProject.Classes
+namespace MonogameProject.Classes.Animations
 {
     internal class Animation
     {
@@ -30,7 +26,7 @@ namespace MonogameProject.Classes
             CurrentFrame = frames[counter];
 
             secondCounter += gameTime.ElapsedGameTime.TotalSeconds;
-            
+
 
             if (secondCounter >= 1d / fps)
             {

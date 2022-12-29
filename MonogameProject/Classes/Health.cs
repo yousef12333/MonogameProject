@@ -27,11 +27,6 @@ namespace MonogameProject.Classes
                 healthReduce();
             }
         }
-        public void Update(GameTime gameTime)
-        {
-            
-         
-        }
         public void healthReduce()
         {
             amountOfHealth.RemoveAt(amountOfHealth.Count - 1);

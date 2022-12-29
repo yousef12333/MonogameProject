@@ -3,8 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Mouse = Microsoft.Xna.Framework.Input.Mouse;
-
-
+using MonogameProject.Classes.Score;
 
 namespace MonogameProject.Classes.Levels
 {
@@ -14,7 +13,7 @@ namespace MonogameProject.Classes.Levels
         WinButton winEindigKnop;
         Rectangle mouseRectangle;
         private BioHunt game;
-        public Score score;
+        public ScoreHandler score;
         public ScoreUpdater scoreUpdater;
         public ScoreStorage scoreStorage;
 
@@ -22,7 +21,7 @@ namespace MonogameProject.Classes.Levels
         {
             scoreUpdater = new ScoreUpdater(scoreStorage);
             scoreStorage = new ScoreStorage();
-            score = new Score(scoreTekst, scoreStorage);
+            score = new ScoreHandler(scoreTekst, scoreStorage);
             this.game = game;
         }
         public void Load(ContentManager Content, GraphicsDevice graphics)

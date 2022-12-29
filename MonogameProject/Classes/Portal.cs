@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonogameProject.Classes.Animations;
 using MonogameProject.Interfaces;
 using System.Collections.Generic;
 

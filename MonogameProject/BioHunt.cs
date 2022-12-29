@@ -1,27 +1,20 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using MonogameProject.Classes.Levels;
 using MonogameProject.Collision;
 using MonogameProject.Screen;
-using System.Diagnostics;
-
-
 
 namespace MonogameProject
 {
     public class BioHunt : Game
     {
-        Rectangle mouseRectangle;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         CollisionManager collision;
         MainMenu mainMenu;
         Death death;
         Win win;
-
-
         level1 level1;
         level2 level2;
         level3 level3;
@@ -30,7 +23,6 @@ namespace MonogameProject
         public LevelStates LevelStates = LevelStates.Death;
         public int screenWidth = ScreenSettings.Instance.ScreenWidth, screenHeight = ScreenSettings.Instance.ScreenHeight;
         Texture2D ghostTexture;
-        Texture2D mouseTexture;
         GraphicsDevice grap;
         Texture2D coinTexture;
         Texture2D ufoTexture;
@@ -63,7 +55,6 @@ namespace MonogameProject
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
 
             fireballImage = Content.Load<Texture2D>("Fireball");
             ufoTexture = Content.Load<Texture2D>("Pixel_Ufo");
@@ -77,36 +68,28 @@ namespace MonogameProject
             lavaBallTexture = Content.Load<Texture2D>("Lava_Ball2");
             fishTexture = Content.Load<Texture2D>("FishmonsterMovement4");
             bossTexture = Content.Load<Texture2D>("BossMonsterMovement2");
-
-           
-            mainMenu = new MainMenu(this); // this zorgt ervoor dat quit button werkt, is instance;
+            mainMenu = new MainMenu(this); 
             death = new Death(this, tekst);
             win = new Win(this, tekst);
 
             level1 = new level1(ufoTexture, portalTexture, ghostTexture, coinTexture, playerTexture, fireballImage, tekst, damageText, this);
            
-                level2 = new level2(portalTexture, coinTexture, playerTexture, fireballImage, tekst, lavaBallTexture, fishTexture, damageText, this);
+            level2 = new level2(portalTexture, coinTexture, playerTexture, fireballImage, tekst, lavaBallTexture, fishTexture, damageText, this);
         
-                level3 = new level3(healthTexture, bossTexture, playerTexture, fireballImage, coinTexture, tekst, damageText, this);
+            level3 = new level3(healthTexture, bossTexture, playerTexture, fireballImage, coinTexture, tekst, damageText, this);
             collision = new CollisionManager(this);
-            //hier moeten de levels, BOVEN base.initialize
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             IsMouseVisible = true;
-            mouseTexture = new Texture2D(GraphicsDevice, 1, 1);
-            mouseTexture.SetData(new[] { Color.White });
             mainMenu.Load(Content, GraphicsDevice);
             death.Load(Content, GraphicsDevice);
             win.Load(Content, GraphicsDevice);
             level1.Load(Content);
-         
-                level2.Load(Content);
-     
-                level3.Load(Content);
-          
+            level2.Load(Content);
+            level3.Load(Content);
             healthTexture = Content.Load<Texture2D>("HealthBar");
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _graphics.PreferredBackBufferHeight = screenHeight;
@@ -120,11 +103,6 @@ namespace MonogameProject
         }
         protected override void Update(GameTime gameTime)
         {
-            //Debug.WriteLine(gameTime.TotalGameTime);
-            MouseState mouse = Mouse.GetState();
-            //Debug.WriteLine(mouse.Position);
-          
-            mouseRectangle = new Rectangle(mouse.X, mouse.Y, 5, 5);
             if (LevelStates == LevelStates.MainMenu)
             {
                 mainMenu.Update(gameTime);
@@ -133,12 +111,10 @@ namespace MonogameProject
             if (LevelStates == LevelStates.Death)
             {
                 death.Update(gameTime);
-               
             }
                 
             if (LevelStates == LevelStates.Win)
                 win.Update(gameTime);
-
             death.menu = mainMenu;
             LevelStates = mainMenu.LevelStates;
             collision.level1 = level1;
@@ -147,13 +123,7 @@ namespace MonogameProject
             level2.Update(gameTime);
             collision.level3 = level3;
             level3.Update(gameTime);
-           
-
-
             collision.Update(gameTime);
-            //LevelStates = collision.LevelStates;
-
-
             base.Update(gameTime);
         }
 
@@ -182,7 +152,6 @@ namespace MonogameProject
                     death.Draw(_spriteBatch);
                     break;
             }
-            _spriteBatch.Draw(mouseTexture, mouseRectangle, Color.Red);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
