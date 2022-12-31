@@ -24,7 +24,7 @@ namespace MonogameProject.Classes
                 timer = 0;
                 currentColor = (currentColor + 1) % colors.Length; 
             }
-            float colorAmount = (float)(Math.Abs(Math.Sin(timer / interval * Math.PI))); //zorgt voor de correcte kleurovergang
+            float colorAmount = (float)(Math.Abs(Math.Sin(timer / interval * Math.PI)));
             return Color.Lerp(Color.White, colors[currentColor], colorAmount);
         }
     }

@@ -4,9 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Classes.Hero;
 using MonogameProject.Tiles;
 using MonogameProject.Classes.Enemies;
-using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
-using MonogameProject.Screen;
 using MonogameProject.Classes.Score;
 
 namespace MonogameProject.Classes.Levels
@@ -22,7 +19,7 @@ namespace MonogameProject.Classes.Levels
         public GhostMonster spook;
         public Player player;
         public Coin coinLevel1;
-        public Rectangle rectje = new Rectangle(0, 0, 1840, 733); //biohunt instance is de reden dat muis vast staat
+        public Rectangle rectje = new Rectangle(0, 0, 1840, 733); 
         public Texture2D backgroundje1;
         public Health playerLife;
         public ScoreHandler score;
@@ -38,7 +35,7 @@ namespace MonogameProject.Classes.Levels
         {
 
             music = new BackgroundMusic();
-            spook = new GhostMonster(ghostTexture, 100); //iets voor newhealth? (tenzij geen nullreferror)
+            spook = new GhostMonster(ghostTexture, 100); 
             portal1 = new Portal(texturePortal);
             ufo = new Ufo(textureUfo);
             coinLevel1 = new Coin(coinTexture);

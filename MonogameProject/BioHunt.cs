@@ -137,7 +137,7 @@ namespace MonogameProject
                     mainMenu.Draw(_spriteBatch);
                     break;
                 case LevelStates.Level1:
-                    level1.Draw(_spriteBatch); //hier
+                    level1.Draw(_spriteBatch); 
                     break;
                 case LevelStates.Level2:
                     level2.Draw(_spriteBatch);
