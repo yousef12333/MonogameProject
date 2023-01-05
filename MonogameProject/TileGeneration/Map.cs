@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 
 namespace MonogameProject.Tiles
-{
+{  //Bron:  https://www.youtube.com/watch?v=PKlHcxFAEk0 deel1 en 2
     internal class Map
     {
         private List<CollisionTiles> collisionTiles = new List<CollisionTiles>();

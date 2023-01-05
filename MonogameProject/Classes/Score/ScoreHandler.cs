@@ -1,20 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using MonogameProject.Interfaces;
 
 namespace MonogameProject.Classes.Score
 {
-    internal class ScoreHandler
+    internal class ScoreHandler : IScoreHandler
     {
         private SpriteFont tekst;
         private ScoreStorage scoreStorage;
 
-        // Factory pattern: dit constructor hier creëert en retourneert een instantie van de Score klasse.
         public ScoreHandler(SpriteFont tekst, ScoreStorage scoreStorage)
         {
             this.tekst = tekst;
             this.scoreStorage = scoreStorage;
         }
+
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             spriteBatch.DrawString(tekst, "Score: " + scoreStorage.Score, position, Color.White);
@@ -23,10 +23,18 @@ namespace MonogameProject.Classes.Score
 }
 //SOLID principes:
 // SRP: dit klasse heeft slechts één verantwoordelijkheid, namelijk het weergeven van de score
-// LSP: het kan gebruikt worden als vervanging voor elke klasse die een score moet weergeven.
+
+// LSP: dit klasse volgt LSP omdat het de Draw methode van de Iscorehandler interface overridet
+// op een manier die consistent is met het gedrag van de bovenliggende klasse. Dit betekent dat u een instantie van de klasse scorehandler
+// overal kunt gebruiken waar een instantie van de Iscorehandler interface wordt verwacht, en dat deze zich op dezelfde
+// manier gedraagt ​​als de bovenliggende klasse.
+
+//DIP (Dependency Inversion Principle): het hangt af van de ScoreStorage en niet is gekoppeld aan specifieke implementaties van deze interfaces.
 
 // Design patterns:
-// - Factory pattern, zie deze constructor.
+//Design pattern: DIP(Dependency Inversion Pattern): de afhandelijkheden van andere klassen worden vervuld door de dependency the injecteren in de constructor
+//zie ook scoreupdater klasse
+
 
 
 

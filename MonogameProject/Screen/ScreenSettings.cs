@@ -42,10 +42,6 @@ namespace MonogameProject.Screen
 //SOLID principes:
 // SRP: dit klasse heeft slechts één verantwoordelijkheid, namelijk de scherminstellingen(screenwidth- of height enzo) opslaan.
 
-// O/C principe: dit klasse is open voor uitbreiding, maar gesloten voor wijziging.
-
-// LSP: dit klasse kan gebruikt worden als vervanging voor elke klasse die scherminstellingen moet opslaan.
-
 // Design patterns:
 // - Voldoet aan het Singleton patroon, omdat het ervoor zorgt dat er slechts één instantie van de klasse is en een globaal toegangspunt tot die instantie biedt.
 // Dit zorgt ervoor dat er gebruik makend van dat instantie, het overal in de code kan worden benaderd via de Instance-eigenschap.

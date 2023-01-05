@@ -39,3 +39,6 @@ namespace MonogameProject.Classes
         }
     }
 }
+//Design pattern: Factory Pattern:
+//1. Voorziet in AddCoin voor het creëren van een lijst van coins van het type Rectangle.
+//2. Definieert een gemeenschappelijke interface (AddCoin) voor creatie objecten, anderen hoeven dan deze code alleen te gebruiken zonder details van implementatie te kennen.

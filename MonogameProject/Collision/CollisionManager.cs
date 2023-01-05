@@ -310,3 +310,5 @@ namespace MonogameProject.Collision
         }
     }
   } 
+//Design pattern:
+//Singleton pattern: In de private constructor kan een instantie gemaakt worden van collisionmanager klasse

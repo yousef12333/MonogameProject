@@ -6,6 +6,8 @@ using MonogameProject.Interfaces;
 
 namespace MonogameProject.Tiles
 {
+    //Bron:  https://www.youtube.com/watch?v=PKlHcxFAEk0 deel1 en 2
+    //Bron: DIP heb ik geleerd van de slides van het vak .NET advanced
     internal class Tiles
     {
         protected Texture2D texture;
@@ -49,7 +51,9 @@ namespace MonogameProject.Tiles
     }
 }
 /*SRP: Tiles zorgt voor tekenen textuur van tegels, collisiontiles zorgt ervoor dat de tiles uiteindelijk zijn collision meegegeven krijgt.
+
+ 
  Design pattern: DIP (Dependency Injection Pattern): In dit geval is de klasse tiles afhankelijk van een instantie van de ITileColorProvider om de kleur voor de tiles te meegeven, 
 en de klasse CollisionTiles injecteert deze afhankelijkheid in de basisklasse door een instantie van de klasse TileColors door te geven aan 
-de constructor van de basisklasse. 
+de constructor van de basisklasse. (misschien een slechte uitleg maar als je tilecolors and ITilecolorprovider bekijkt, is het correct)
  */

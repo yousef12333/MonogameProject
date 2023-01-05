@@ -3,9 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonogameProject.Interfaces;
 using System.Collections.Generic;
 
-/*Deze klasse houdt zich aan het SRP omdat er slechts één instantie van de klasse kan worden aangemaakt. 
- 
- */
+
 
 namespace MonogameProject.Classes
 {
