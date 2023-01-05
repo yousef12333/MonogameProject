@@ -32,7 +32,7 @@ namespace MonogameProject.Classes.Score
 //DIP (Dependency Inversion Principle): het hangt af van de ScoreStorage en niet is gekoppeld aan specifieke implementaties van deze interfaces.
 
 // Design patterns:
-//Design pattern: DIP(Dependency Inversion Pattern): de afhandelijkheden van andere klassen worden vervuld door de dependency the injecteren in de constructor
+//Design pattern: DIP(Dependency Injection Pattern): de afhandelijkheden van andere klassen worden vervuld door de dependency the injecteren in de constructor
 //zie ook scoreupdater klasse
 
 
